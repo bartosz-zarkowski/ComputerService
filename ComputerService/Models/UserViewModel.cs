@@ -1,7 +1,9 @@
-﻿using ComputerService.Entities.Enums;
+﻿using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 
-namespace ComputerService.Entities;
-public class User : IEntity
+namespace ComputerService.Models;
+
+public class UserViewModel
 {
     public Guid Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
@@ -18,3 +20,4 @@ public class User : IEntity
     public virtual IEnumerable<Order>? ServicedOrders { get; set; }
     public virtual IEnumerable<Order>? CompletedOrders { get; set; }
 }
+

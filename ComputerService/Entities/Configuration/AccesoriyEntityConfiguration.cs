@@ -6,13 +6,14 @@ public class AccessoryEntityConfiguration : IEntityTypeConfiguration<Accessory>
 {
     public void Configure(EntityTypeBuilder<Accessory> builder)
     {
-        builder.Property(o => o.Id).ValueGeneratedOnAdd();
-        builder.Property(o => o.CreatedAt).ValueGeneratedOnAdd();
-        builder.Property(o => o.Name).IsRequired();
-        builder.Property(o => o.OrderId).IsRequired();
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();
+        builder.Property(x => x.Name).IsRequired()
+            .HasMaxLength(50);
+        builder.Property(x => x.OrderId).IsRequired();
 
-        builder.HasOne(o => o.Order)
-            .WithMany(o => o.Accessories)
-            .HasForeignKey(o => o.OrderId);
+        builder.HasOne(x => x.Order)
+            .WithMany(x => x.Accessories)
+            .HasForeignKey(x => x.OrderId);
     }
 }

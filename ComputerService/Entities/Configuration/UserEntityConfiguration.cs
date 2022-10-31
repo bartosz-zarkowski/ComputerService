@@ -1,5 +1,4 @@
-﻿using ComputerService.Entities.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ComputerService.Entities.Configuration;
@@ -7,29 +6,33 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.Property(r => r.Id).ValueGeneratedOnAdd();
-        builder.Property(r => r.CreatedAt).ValueGeneratedOnAdd();
-        builder.Property(r => r.FirstName).IsRequired();
-        builder.Property(r => r.LastName).IsRequired();
-        builder.Property(r => r.Email).IsRequired();
-        builder.Property(r => r.Password).IsRequired();
-        builder.Property(r => r.PhoneNumber).IsRequired();
-        builder.Property(r => r.IsActive).HasDefaultValue(true);
-        builder.Property(r => r.Role).HasDefaultValue(UserRoleEnum.Technician);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();
+        builder.Property(x => x.FirstName).IsRequired()
+            .HasMaxLength(50);
+        builder.Property(x => x.LastName).IsRequired()
+            .HasMaxLength(50);
+        builder.Property(x => x.Email).IsRequired()
+            .HasMaxLength(62);
+        builder.Property(x => x.Password).IsRequired();
+        builder.Property(x => x.PhoneNumber).IsRequired()
+            .HasMaxLength(18);
+        builder.Property(x => x.IsActive).HasDefaultValue(true);
+        builder.Property(x => x.Role).IsRequired();
 
-        builder.HasMany(o => o.CreatedOrders)
-            .WithOne(o => o.CreateUser)
-            .HasForeignKey(o => o.CreatedBy)
+        builder.HasMany(x => x.CreatedOrders)
+            .WithOne(x => x.CreateUser)
+            .HasForeignKey(x => x.CreatedBy)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
-        builder.HasMany(o => o.ServicedOrders)
-            .WithOne(o => o.ServiceUser)
-            .HasForeignKey(o => o.ServicedBy)
+        builder.HasMany(x => x.ServicedOrders)
+            .WithOne(x => x.ServiceUser)
+            .HasForeignKey(x => x.ServicedBy)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
-        builder.HasMany(o => o.CompletedOrders)
-            .WithOne(o => o.CompleteUser)
-            .HasForeignKey(o => o.CompletedBy)
+        builder.HasMany(x => x.CompletedOrders)
+            .WithOne(x => x.CompleteUser)
+            .HasForeignKey(x => x.CompletedBy)
             .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

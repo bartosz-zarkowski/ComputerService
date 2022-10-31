@@ -6,16 +6,22 @@ public class AddressEntityConfiguration : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)
     {
-        builder.Property(o => o.Id).IsRequired();
-        builder.Property(o => o.Country).IsRequired();
-        builder.Property(o => o.State).IsRequired();
-        builder.Property(o => o.City).IsRequired();
-        builder.Property(o => o.PostalCode).IsRequired();
-        builder.Property(o => o.Street).IsRequired();
-        builder.Property(o => o.StreetNumber).IsRequired();
+        builder.Property(x => x.Id).IsRequired();
+        builder.Property(x => x.Country).IsRequired()
+            .HasMaxLength(90);
+        builder.Property(x => x.State).IsRequired()
+            .HasMaxLength(90);
+        builder.Property(x => x.City).IsRequired()
+            .HasMaxLength(90);
+        builder.Property(x => x.PostalCode).IsRequired()
+            .HasMaxLength(18);
+        builder.Property(x => x.Street).IsRequired();
+        builder.Property(x => x.StreetNumber).IsRequired()
+            .HasMaxLength(90);
+        builder.Property(x => x.Apartment).HasMaxLength(90);
 
-        builder.HasOne(o => o.Client)
-            .WithOne(o => o.Address)
-            .HasForeignKey<Address>(o => o.Id);
+        builder.HasOne(x => x.Client)
+            .WithOne(x => x.Address)
+            .HasForeignKey<Address>(x => x.Id);
     }
 }

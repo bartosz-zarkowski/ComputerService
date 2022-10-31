@@ -15,10 +15,10 @@ namespace ComputerService.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumbers = table.Column<int>(type: "int", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(62)", maxLength: 62, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,13 +32,13 @@ namespace ComputerService.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(62)", maxLength: 62, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    Role = table.Column<int>(type: "int", nullable: false, defaultValue: 2)
+                    Role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,13 +50,13 @@ namespace ComputerService.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StreetNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apartment = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    StreetNumber = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
+                    Apartment = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,7 +79,7 @@ namespace ComputerService.Migrations
                     ReceivedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ServicedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CompletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -134,7 +134,7 @@ namespace ComputerService.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -155,10 +155,10 @@ namespace ComputerService.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SerialNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Condition = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Condition = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     HasWarranty = table.Column<bool>(type: "bit", nullable: false),
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -183,7 +183,7 @@ namespace ComputerService.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ServiceDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ServiceDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HardwareCharges = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: true),
                     ServiceCharges = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: true)
