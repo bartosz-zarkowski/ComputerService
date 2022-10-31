@@ -1,4 +1,8 @@
 using ComputerService.Data;
+using ComputerService.Interfaces;
+using ComputerService.Services;
+using ComputerService.Validators;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -37,11 +41,12 @@ builder.Services.AddDbContext<ComputerServiceContext>(options =>
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // registers the Interfaces service with the concrete type Services
-//builder.Services
-//    .AddScoped<IOrderService, OrderService>();
+builder.Services
+    .AddScoped<IPaginationService, PaginationService>()
+    .AddScoped<IUriService, UriService>();
 
 // Add validators
-//builder.Services.AddValidatorsFromAssemblyContaining<Validator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ParametersValidator>();
 
 //Configure Serilog-Logging
 var logger = new LoggerConfiguration()
