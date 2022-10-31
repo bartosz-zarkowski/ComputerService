@@ -1,4 +1,4 @@
-﻿using ComputerService.Data.Enums;
+﻿using ComputerService.Entities.Enums;
 
 namespace ComputerService.Entities;
 public class User : IEntity
@@ -13,4 +13,8 @@ public class User : IEntity
     public int PhoneNumber { get; set; }
     public bool IsActive { get; set; }
     public UserRoleEnum Role { get; set; }
+
+    public virtual IEnumerable<Order>? CreatedOrders { get; set; }
+    public virtual IEnumerable<Order>? ServicedOrders { get; set; }
+    public virtual IEnumerable<Order>? CompletedOrders { get; set; }
 }

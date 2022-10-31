@@ -1,4 +1,4 @@
-﻿namespace ComputerService.Data.Enums;
+﻿namespace ComputerService.Entities.Enums;
 public enum UserRoleEnum
 {
     Administrator,

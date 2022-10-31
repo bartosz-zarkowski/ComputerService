@@ -1,7 +1,5 @@
-﻿namespace ComputerService.Entities
+﻿namespace ComputerService.Entities;
+public interface IEntity
 {
-    public interface IEntity
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }
