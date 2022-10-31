@@ -15,7 +15,8 @@ public class AddressEntityConfiguration : IEntityTypeConfiguration<Address>
             .HasMaxLength(90);
         builder.Property(x => x.PostalCode).IsRequired()
             .HasMaxLength(18);
-        builder.Property(x => x.Street).IsRequired();
+        builder.Property(x => x.Street).IsRequired()
+            .HasMaxLength(90);
         builder.Property(x => x.StreetNumber).IsRequired()
             .HasMaxLength(90);
         builder.Property(x => x.Apartment).HasMaxLength(90);

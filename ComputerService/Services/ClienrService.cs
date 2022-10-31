@@ -7,34 +7,34 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ComputerService.Services;
-public class ClientService : BaseEntityService<Client>, IClientService
+public class AddressService : BaseEntityService<Address>, IAddressService
 {
-    public ClientService(ComputerServiceContext context, IValidator<Client> validator, IMapper mapper) : base(context, validator, mapper) { }
+    public AddressService(ComputerServiceContext context, IValidator<Address> validator, IMapper mapper) : base(context, validator, mapper) { }
 
-    public async Task<PagedList<Client>> GetAllClientsAsync(ParametersModel parametersModel)
+    public async Task<PagedList<Address>> GetAllAddressesAsync(ParametersModel parametersModel)
     {
-        return await PagedList<Client>.ToPagedListAsync(FindAll(), parametersModel.PageNumber, parametersModel.PageSize);
+        return await PagedList<Address>.ToPagedListAsync(FindAll(), parametersModel.PageNumber, parametersModel.PageSize);
     }
 
-    public async Task<Client> GetClientAsync(Guid id)
+    public async Task<Address> GetAddressAsync(Guid id)
     {
         return await FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task AddClientAsync(Client client)
+    public async Task AddAddressAsync(Address address)
     {
-        await ValidateEntityAsync(client);
-        await CreateAsync(client);
+        await ValidateEntityAsync(address);
+        await CreateAsync(address);
     }
 
-    public async Task UpdateClientAsync(Client client)
+    public async Task UpdateAddressAsync(Address address)
     {
-        await ValidateEntityAsync(client);
-        await UpdateAsync(client);
+        await ValidateEntityAsync(address);
+        await UpdateAsync(address);
     }
 
-    public async Task DeleteClientAsync(Client client)
+    public async Task DeleteAddressAsync(Address address)
     {
-        await DeleteAsync(client);
+        await DeleteAsync(address);
     }
 }
