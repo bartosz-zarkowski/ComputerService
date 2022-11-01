@@ -18,7 +18,7 @@ namespace ComputerService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedListViewModel<PagedResponse<DeviceViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters)
+        public async Task<ActionResult<PagedListViewModel<PagedResponse<DeviceViewModel>>>> GetAllDevicesAsync([FromQuery] ParametersModel parameters)
         {
             var devices = await _deviceService.GetAllDevicesAsync(parameters);
             Logger.LogInformation("Returned {Count} devices from database. ", devices.Count());

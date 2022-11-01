@@ -18,7 +18,7 @@ namespace ComputerService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters)
+        public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllUsersAsync([FromQuery] ParametersModel parameters)
         {
             var users = await _userService.GetAllUsersAsync(parameters);
             Logger.LogInformation("Returned {Count} users from database. ", users.Count());

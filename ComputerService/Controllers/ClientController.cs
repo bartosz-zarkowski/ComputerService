@@ -18,7 +18,7 @@ namespace ComputerService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedListViewModel<PagedResponse<ClientViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters)
+        public async Task<ActionResult<PagedListViewModel<PagedResponse<ClientViewModel>>>> GetAllClientsAsync([FromQuery] ParametersModel parameters)
         {
             var clients = await _clientService.GetAllClientsAsync(parameters);
             Logger.LogInformation("Returned {Count} clients from database. ", clients.Count());

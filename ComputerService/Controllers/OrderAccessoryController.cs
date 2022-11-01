@@ -18,7 +18,7 @@ namespace ComputerService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderAccessoryViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters)
+        public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderAccessoryViewModel>>>> GetAllOrderAccessoriesAsync([FromQuery] ParametersModel parameters)
         {
             var accessories = await _orderAccessoryService.GetAllOrderAccessoriesAsync(parameters);
             Logger.LogInformation("Returned {Count} accessories from database. ", accessories.Count());

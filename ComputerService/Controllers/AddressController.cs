@@ -18,7 +18,7 @@ namespace ComputerService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedListViewModel<PagedResponse<AddressViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters)
+        public async Task<ActionResult<PagedListViewModel<PagedResponse<AddressViewModel>>>> GetAllAddressesAsync([FromQuery] ParametersModel parameters)
         {
             var addresses = await _addressService.GetAllAddressesAsync(parameters);
             Logger.LogInformation("Returned {Count} addresses from database. ", addresses.Count());
