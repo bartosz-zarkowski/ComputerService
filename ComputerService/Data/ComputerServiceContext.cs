@@ -15,11 +15,11 @@ public class ComputerServiceContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public DbSet<OrderAccessory> OrderAccessories { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Client> Clients { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderAccessory> OrderAccessories { get; set; }
     public DbSet<OrderDetails> OrdersDetails { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserTracking> UserTrackings { get; set; }

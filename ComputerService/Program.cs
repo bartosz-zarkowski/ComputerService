@@ -59,12 +59,14 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services
     .AddScoped<IPaginationService, PaginationService>()
     .AddScoped<IUriService, UriService>()
-    .AddScoped<IUserService, UserService>()
-    .AddScoped<IClientService, ClientService>()
     .AddScoped<IAddressService, AddressService>()
-    .AddScoped<IOrderService, OrderService>()
+    .AddScoped<IClientService, ClientService>()
     .AddScoped<IDeviceService, DeviceService>()
-    .AddScoped<IOrderAccessoryService, OrderAccessoryService>();
+    .AddScoped<IOrderService, OrderService>()
+    .AddScoped<IOrderAccessoryService, OrderAccessoryService>()
+    .AddScoped<IOrderDetailsService, OrderDetailsService>()
+    .AddScoped<IUserService, UserService>();
+
 
 // Add validators
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
