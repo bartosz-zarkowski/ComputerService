@@ -59,6 +59,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services
     .AddScoped<IPaginationService, PaginationService>()
     .AddScoped<IUriService, UriService>()
+    .AddScoped<IAccessoryService, AccessoryService>()
     .AddScoped<IAddressService, AddressService>()
     .AddScoped<IClientService, ClientService>()
     .AddScoped<IDeviceService, DeviceService>()
