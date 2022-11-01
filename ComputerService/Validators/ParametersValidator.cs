@@ -1,4 +1,4 @@
-﻿using DF.Ordering.Models;
+﻿using ComputerService.Models;
 using FluentValidation;
 
 namespace ComputerService.Validators;

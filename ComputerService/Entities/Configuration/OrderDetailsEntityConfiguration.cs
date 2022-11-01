@@ -6,12 +6,13 @@ public class OrderDetailsEntityConfiguration : IEntityTypeConfiguration<OrderDet
 {
     public void Configure(EntityTypeBuilder<OrderDetails> builder)
     {
-        builder.Property(r => r.Id).IsRequired();
-        builder.Property(o => o.ServiceCharges).HasPrecision(10, 2);
-        builder.Property(o => o.HardwareCharges).HasPrecision(10, 2);
+        builder.Property(x => x.Id).IsRequired();
+        builder.Property(x => x.ServiceDescription).HasMaxLength(500);
+        builder.Property(x => x.ServiceCharges).HasPrecision(10, 2);
+        builder.Property(x => x.HardwareCharges).HasPrecision(10, 2);
 
-        builder.HasOne(o => o.Order)
-            .WithOne(o => o.Details)
-            .HasForeignKey<OrderDetails>(o => o.Id);
+        builder.HasOne(x => x.Order)
+            .WithOne(x => x.Details)
+            .HasForeignKey<OrderDetails>(x => x.Id);
     }
 }

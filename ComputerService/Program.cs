@@ -1,5 +1,6 @@
 using ComputerService.Data;
 using ComputerService.Interfaces;
+using ComputerService.Middleware;
 using ComputerService.Services;
 using ComputerService.Validators;
 using FluentValidation;
@@ -57,10 +58,19 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // registers the Interfaces service with the concrete type Services
 builder.Services
     .AddScoped<IPaginationService, PaginationService>()
-    .AddScoped<IUriService, UriService>();
+    .AddScoped<IUriService, UriService>()
+    .AddScoped<IAccessoryService, AccessoryService>()
+    .AddScoped<IAddressService, AddressService>()
+    .AddScoped<IClientService, ClientService>()
+    .AddScoped<IDeviceService, DeviceService>()
+    .AddScoped<IOrderService, OrderService>()
+    .AddScoped<IOrderAccessoryService, OrderAccessoryService>()
+    .AddScoped<IOrderDetailsService, OrderDetailsService>()
+    .AddScoped<IUserService, UserService>();
+
 
 // Add validators
-builder.Services.AddValidatorsFromAssemblyContaining<ParametersValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
 
 //Configure Serilog-Logging
 var logger = new LoggerConfiguration()
@@ -76,6 +86,8 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

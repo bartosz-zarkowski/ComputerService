@@ -7,36 +7,37 @@ public class OrderEntityConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.Property(o => o.Id).ValueGeneratedOnAdd();
-        builder.Property(o => o.CreatedAt).ValueGeneratedOnAdd();
-        builder.Property(o => o.ClientId).IsRequired();
-        builder.Property(o => o.Status).HasDefaultValue(OrderStatusEnum.Pending);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();
+        builder.Property(x => x.ClientId).IsRequired();
+        builder.Property(x => x.Status).HasDefaultValue(OrderStatusEnum.Pending);
+        builder.Property(x => x.Description).HasMaxLength(500);
 
-        builder.HasOne(o => o.Client)
-            .WithMany(o => o.Orders)
-            .HasForeignKey(o => o.ClientId);
+        builder.HasOne(x => x.Client)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.ClientId);
 
-        builder.HasMany(o => o.Accessories)
-            .WithOne(o => o.Order)
-            .HasForeignKey(o => o.OrderId);
+        builder.HasMany(x => x.Accessories)
+            .WithOne(x => x.Order)
+            .HasForeignKey(x => x.OrderId);
 
-        builder.HasOne(o => o.Details)
-            .WithOne(o => o.Order)
-            .HasForeignKey<OrderDetails>(o => o.Id);
+        builder.HasOne(x => x.Details)
+            .WithOne(x => x.Order)
+            .HasForeignKey<OrderDetails>(x => x.Id);
 
-        builder.HasOne(o => o.CreateUser)
-            .WithMany(o => o.CreatedOrders)
-            .HasForeignKey(o => o.CreatedBy)
+        builder.HasOne(x => x.CreateUser)
+            .WithMany(x => x.CreatedOrders)
+            .HasForeignKey(x => x.CreatedBy)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
-        builder.HasOne(o => o.ServiceUser)
-            .WithMany(o => o.ServicedOrders)
-            .HasForeignKey(o => o.ServicedBy)
+        builder.HasOne(x => x.ServiceUser)
+            .WithMany(x => x.ServicedOrders)
+            .HasForeignKey(x => x.ServicedBy)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
-        builder.HasOne(o => o.CompleteUser)
-            .WithMany(o => o.CompletedOrders)
-            .HasForeignKey(o => o.CompletedBy)
+        builder.HasOne(x => x.CompleteUser)
+            .WithMany(x => x.CompletedOrders)
+            .HasForeignKey(x => x.CompletedBy)
             .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }
