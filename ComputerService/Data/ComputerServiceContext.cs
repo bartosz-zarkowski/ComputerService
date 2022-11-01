@@ -15,7 +15,7 @@ public class ComputerServiceContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public DbSet<Accessory> Accessories { get; set; }
+    public DbSet<OrderAccessory> OrderAccessories { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Client> Clients { get; set; }
     public DbSet<Device> Devices { get; set; }

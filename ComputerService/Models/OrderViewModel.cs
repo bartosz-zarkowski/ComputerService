@@ -17,6 +17,6 @@ public class OrderViewModel
     public Guid? ServicedBy { get; set; }
     public Guid? CompletedBy { get; set; }
     public virtual IEnumerable<Device>? Devices { get; set; }
-    public virtual IEnumerable<Accessory>? Accessories { get; set; }
+    public virtual IEnumerable<OrderAccessory>? Accessories { get; set; }
 }
 

@@ -54,7 +54,7 @@ namespace ComputerService.Migrations
                     State = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
                     City = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
                     StreetNumber = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
                     Apartment = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: true)
                 },
@@ -128,27 +128,6 @@ namespace ComputerService.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Accessories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accessories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Accessories_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Devices",
                 columns: table => new
                 {
@@ -179,6 +158,27 @@ namespace ComputerService.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderAccessories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderAccessories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderAccessories_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrdersDetails",
                 columns: table => new
                 {
@@ -200,11 +200,6 @@ namespace ComputerService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accessories_OrderId",
-                table: "Accessories",
-                column: "OrderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Devices_ClientId",
                 table: "Devices",
                 column: "ClientId");
@@ -212,6 +207,11 @@ namespace ComputerService.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_OrderId",
                 table: "Devices",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderAccessories_OrderId",
+                table: "OrderAccessories",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
@@ -243,13 +243,13 @@ namespace ComputerService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Accessories");
-
-            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Devices");
+
+            migrationBuilder.DropTable(
+                name: "OrderAccessories");
 
             migrationBuilder.DropTable(
                 name: "OrdersDetails");

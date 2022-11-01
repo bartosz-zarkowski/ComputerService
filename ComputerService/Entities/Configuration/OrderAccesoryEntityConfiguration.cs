@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ComputerService.Entities.Configuration;
-public class AccessoryEntityConfiguration : IEntityTypeConfiguration<Accessory>
+public class OrderAccessoryEntityConfiguration : IEntityTypeConfiguration<OrderAccessory>
 {
-    public void Configure(EntityTypeBuilder<Accessory> builder)
+    public void Configure(EntityTypeBuilder<OrderAccessory> builder)
     {
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();

@@ -25,5 +25,5 @@ public class Order : IEntity
     public virtual User CompleteUser { get; set; }
 
     public virtual IEnumerable<Device>? Devices { get; set; }
-    public virtual IEnumerable<Accessory>? Accessories { get; set; }
+    public virtual IEnumerable<OrderAccessory>? Accessories { get; set; }
 }

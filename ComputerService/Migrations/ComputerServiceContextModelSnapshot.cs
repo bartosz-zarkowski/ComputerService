@@ -22,34 +22,6 @@ namespace ComputerService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ComputerService.Entities.Accessory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Accessories");
-                });
-
             modelBuilder.Entity("ComputerService.Entities.Address", b =>
                 {
                     b.Property<Guid>("Id")
@@ -81,7 +53,8 @@ namespace ComputerService.Migrations
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(90)
+                        .HasColumnType("nvarchar(90)");
 
                     b.Property<string>("StreetNumber")
                         .IsRequired()
@@ -228,6 +201,34 @@ namespace ComputerService.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("ComputerService.Entities.OrderAccessory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderAccessories");
+                });
+
             modelBuilder.Entity("ComputerService.Entities.OrderDetails", b =>
                 {
                     b.Property<Guid>("Id")
@@ -321,17 +322,6 @@ namespace ComputerService.Migrations
                     b.ToTable("UserTrackings");
                 });
 
-            modelBuilder.Entity("ComputerService.Entities.Accessory", b =>
-                {
-                    b.HasOne("ComputerService.Entities.Order", "Order")
-                        .WithMany("Accessories")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("ComputerService.Entities.Address", b =>
                 {
                     b.HasOne("ComputerService.Entities.Client", "Client")
@@ -390,6 +380,17 @@ namespace ComputerService.Migrations
                     b.Navigation("CreateUser");
 
                     b.Navigation("ServiceUser");
+                });
+
+            modelBuilder.Entity("ComputerService.Entities.OrderAccessory", b =>
+                {
+                    b.HasOne("ComputerService.Entities.Order", "Order")
+                        .WithMany("Accessories")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ComputerService.Entities.OrderDetails", b =>

@@ -63,7 +63,8 @@ builder.Services
     .AddScoped<IClientService, ClientService>()
     .AddScoped<IAddressService, AddressService>()
     .AddScoped<IOrderService, OrderService>()
-    .AddScoped<IDeviceService, DeviceService>();
+    .AddScoped<IDeviceService, DeviceService>()
+    .AddScoped<IOrderAccessoryService, OrderAccessoryService>();
 
 // Add validators
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
