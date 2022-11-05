@@ -3,6 +3,7 @@ using ComputerService.Models;
 using System.Net;
 
 namespace ComputerService.Middleware;
+
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
@@ -43,7 +44,6 @@ public class ExceptionMiddleware
                 errorModelMessage.Source = badRequestException.Source;
                 errorModelMessage.StackTrace = badRequestException.StackTrace;
                 break;
-
             case NotFoundException:
                 context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 errorModelMessage.StatusCode = (int)HttpStatusCode.NotFound;
@@ -51,7 +51,13 @@ public class ExceptionMiddleware
                 errorModelMessage.Source = exception.Source;
                 errorModelMessage.StackTrace = exception.StackTrace;
                 break;
-
+            case AuthenticationException:
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                errorModelMessage.StatusCode = (int)HttpStatusCode.Unauthorized;
+                errorModelMessage.Message = _hostEnvironment.IsDevelopment() ? exception.Message : "Authentication error";
+                errorModelMessage.Source = exception.Source;
+                errorModelMessage.StackTrace = exception.StackTrace;
+                break;
             default:
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 if (!_hostEnvironment.IsDevelopment())
