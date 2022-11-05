@@ -2,66 +2,66 @@
 using ComputerService.Entities;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ComputerService.Controllers
+namespace ComputerService.Controllers;
+[Route("api/v1/users")]
+[ApiVersion("1.0")]
+[Authorize]
+[ApiController]
+public class UserController : BaseController<User>
 {
-    [Route("api/v1/users")]
-    [ApiVersion("1.0")]
-    [ApiController]
-    public class UserController : BaseController<User>
+    private readonly IUserService _userService;
+    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger) : base(paginationService, mapper, logger)
     {
-        private readonly IUserService _userService;
-        public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger) : base(paginationService, mapper, logger)
-        {
-            _userService = userService;
-        }
+        _userService = userService;
+    }
 
-        [HttpGet]
-        public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllUsersAsync([FromQuery] ParametersModel parameters)
-        {
-            var users = await _userService.GetAllUsersAsync(parameters);
-            Logger.LogInformation("Returned {Count} users from database. ", users.Count());
+    [HttpGet]
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllUsersAsync([FromQuery] ParametersModel parameters)
+    {
+        var users = await _userService.GetAllUsersAsync(parameters);
+        Logger.LogInformation("Returned {Count} users from database. ", users.Count());
 
-            var mappedUsers = PaginationService.ToPagedListViewModelAsync<User, UserViewModel>(users);
-            var pagedResponse = PaginationService.CreatePagedResponse(mappedUsers);
+        var mappedUsers = PaginationService.ToPagedListViewModelAsync<User, UserViewModel>(users);
+        var pagedResponse = PaginationService.CreatePagedResponse(mappedUsers);
 
-            return Ok(pagedResponse);
-        }
+        return Ok(pagedResponse);
+    }
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<Response<UserViewModel>>> GetUserAsync(Guid id)
-        {
-            var user = await _userService.GetUserAsync(id);
-            CheckIfEntityExists(user, "Given user does not exist");
-            return Ok(new Response<UserViewModel>(Mapper.Map<UserViewModel>(user)));
-        }
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<Response<UserViewModel>>> GetUserAsync(Guid id)
+    {
+        var user = await _userService.GetUserAsync(id);
+        CheckIfEntityExists(user, "Given user does not exist");
+        return Ok(new Response<UserViewModel>(Mapper.Map<UserViewModel>(user)));
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> AddUserAsync([FromBody] CreateUserModel createUserModel)
-        {
-            var user = Mapper.Map<User>(createUserModel);
-            await _userService.AddUserAsync(user);
-            return Ok();
-        }
+    [HttpPost]
+    public async Task<IActionResult> AddUserAsync([FromBody] CreateUserModel createUserModel)
+    {
+        var user = Mapper.Map<User>(createUserModel);
+        await _userService.AddUserAsync(user);
+        return Ok();
+    }
 
-        [HttpPatch("{id:guid}")]
-        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
-        {
-            var user = await _userService.GetUserAsync(id);
-            CheckIfEntityExists(user, "Given user does not exist");
-            var updatedUser = Mapper.Map(updateUserModel, user);
-            await _userService.UpdateUserAsync(updatedUser);
-            return Ok();
-        }
+    [HttpPatch("{id:guid}")]
+    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
+    {
+        var user = await _userService.GetUserAsync(id);
+        CheckIfEntityExists(user, "Given user does not exist");
+        var updatedUser = Mapper.Map(updateUserModel, user);
+        await _userService.UpdateUserAsync(updatedUser);
+        return Ok();
+    }
 
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteUserAsync(Guid id)
-        {
-            var user = await _userService.GetUserAsync(id);
-            CheckIfEntityExists(user, "Given user does not exist");
-            await _userService.DeleteUserAsync(user);
-            return Ok();
-        }
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteUserAsync(Guid id)
+    {
+        var user = await _userService.GetUserAsync(id);
+        CheckIfEntityExists(user, "Given user does not exist");
+        await _userService.DeleteUserAsync(user);
+        return Ok();
     }
 }
