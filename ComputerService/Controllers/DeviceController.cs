@@ -20,6 +20,7 @@ public class DeviceController : BaseController<Device>
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<DeviceViewModel>>>> GetAllDevicesAsync([FromQuery] ParametersModel parameters)
     {
         var devices = await _deviceService.GetAllDevicesAsync(parameters);
@@ -32,6 +33,7 @@ public class DeviceController : BaseController<Device>
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<Response<DeviceViewModel>>> GetDeviceAsync(Guid id)
     {
         var device = await _deviceService.GetDeviceAsync(id);
@@ -40,6 +42,7 @@ public class DeviceController : BaseController<Device>
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<IActionResult> AddDeviceAsync([FromBody] CreateDeviceModel createDeviceModel)
     {
         var device = Mapper.Map<Device>(createDeviceModel);
@@ -48,6 +51,7 @@ public class DeviceController : BaseController<Device>
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult> UpdateDevice(Guid id, [FromBody] UpdateDeviceModel updateDeviceModel)
     {
         var device = await _deviceService.GetDeviceAsync(id);

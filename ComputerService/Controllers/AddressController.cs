@@ -20,6 +20,7 @@ public class AddressController : BaseController<Address>
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<AddressViewModel>>>> GetAllAddressesAsync([FromQuery] ParametersModel parameters)
     {
         var addresses = await _addressService.GetAllAddressesAsync(parameters);
@@ -32,6 +33,7 @@ public class AddressController : BaseController<Address>
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<Response<AddressViewModel>>> GetAddressAsync(Guid id)
     {
         var address = await _addressService.GetAddressAsync(id);
@@ -40,6 +42,7 @@ public class AddressController : BaseController<Address>
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<IActionResult> AddAddressAsync([FromBody] CreateAddressModel createAddressModel)
     {
         var address = Mapper.Map<Address>(createAddressModel);
@@ -48,6 +51,7 @@ public class AddressController : BaseController<Address>
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult> UpdateAddress(Guid id, [FromBody] UpdateAddressModel updateAddressModel)
     {
         var address = await _addressService.GetAddressAsync(id);
@@ -58,6 +62,7 @@ public class AddressController : BaseController<Address>
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<IActionResult> DeleteAddressAsync(Guid id)
     {
         var address = await _addressService.GetAddressAsync(id);

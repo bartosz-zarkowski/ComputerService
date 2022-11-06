@@ -20,6 +20,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<AccessoryViewModel>>>> GetAllAccessoriesAsync([FromQuery] ParametersModel parameters)
     {
         var accessories = await _accessoryService.GetAllAccessoriesAsync(parameters);
@@ -32,6 +33,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<Response<AccessoryViewModel>>> GetAccessoryAsync(Guid id)
     {
         var accessory = await _accessoryService.GetAccessoryAsync(id);
@@ -40,6 +42,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<IActionResult> AddAccessoryAsync([FromBody] CreateAccessoryModel createAccessoryModel)
     {
         var accessory = Mapper.Map<Accessory>(createAccessoryModel);
@@ -48,6 +51,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult> UpdateAccessory(Guid id, [FromBody] UpdateAccessoryModel updateAccessoryModel)
     {
         var accessory = await _accessoryService.GetAccessoryAsync(id);
@@ -58,6 +62,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<IActionResult> DeleteAccessoryAsync(Guid id)
     {
         var accessory = await _accessoryService.GetAccessoryAsync(id);
