@@ -20,6 +20,7 @@ public class OrderController : BaseController<Order>
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters)
     {
         var orders = await _orderService.GetAllOrdersAsync(parameters);
@@ -32,6 +33,7 @@ public class OrderController : BaseController<Order>
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<Response<OrderViewModel>>> GetOrderAsync(Guid id)
     {
         var order = await _orderService.GetOrderAsync(id);
@@ -40,6 +42,7 @@ public class OrderController : BaseController<Order>
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<IActionResult> AddOrderAsync([FromBody] CreateOrderModel createOrderModel)
     {
         var order = Mapper.Map<Order>(createOrderModel);
@@ -48,6 +51,7 @@ public class OrderController : BaseController<Order>
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult> UpdateOrder(Guid id, [FromBody] UpdateOrderModel updateOrderModel)
     {
         var order = await _orderService.GetOrderAsync(id);
@@ -58,6 +62,7 @@ public class OrderController : BaseController<Order>
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteOrderAsync(Guid id)
     {
         var order = await _orderService.GetOrderAsync(id);

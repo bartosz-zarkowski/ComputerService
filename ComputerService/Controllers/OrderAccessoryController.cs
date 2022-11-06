@@ -20,6 +20,7 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderAccessoryViewModel>>>> GetAllOrderAccessoriesAsync([FromQuery] ParametersModel parameters)
     {
         var accessories = await _orderAccessoryService.GetAllOrderAccessoriesAsync(parameters);
@@ -32,6 +33,7 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<Response<OrderAccessoryViewModel>>> GetOrderAccessoryAsync(Guid id)
     {
         var orderAccessory = await _orderAccessoryService.GetOrderAccessoryAsync(id);
@@ -40,6 +42,7 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<IActionResult> AddOrderAccessoryAsync([FromBody] CreateOrderAccessoryModel createOrderAccessoryModel)
     {
         var orderAccessory = Mapper.Map<OrderAccessory>(createOrderAccessoryModel);
@@ -48,6 +51,7 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult> UpdateOrderAccessory(Guid id, [FromBody] UpdateOrderAccessoryModel updateOrderAccessoryModel)
     {
         var orderAccessory = await _orderAccessoryService.GetOrderAccessoryAsync(id);
@@ -58,6 +62,7 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<IActionResult> DeleteOrderAccessoryAsync(Guid id)
     {
         var orderAccessory = await _orderAccessoryService.GetOrderAccessoryAsync(id);

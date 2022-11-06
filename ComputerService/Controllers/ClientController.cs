@@ -9,7 +9,7 @@ namespace ComputerService.Controllers;
 
 [Route("api/v1/clients")]
 [ApiVersion("1.0")]
-[Authorize]
+[Authorize(Roles = "Administrator")]
 [ApiController]
 public class ClientController : BaseController<Client>
 {
@@ -19,6 +19,7 @@ public class ClientController : BaseController<Client>
         _clientService = clientService;
     }
 
+    [Authorize(Roles = "Receiver")]
     [HttpGet]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<ClientViewModel>>>> GetAllClientsAsync([FromQuery] ParametersModel parameters)
     {
@@ -31,6 +32,7 @@ public class ClientController : BaseController<Client>
         return Ok(pagedResponse);
     }
 
+    [Authorize(Roles = "Receiver, Technician")]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Response<ClientViewModel>>> GetClientAsync(Guid id)
     {
@@ -39,6 +41,7 @@ public class ClientController : BaseController<Client>
         return Ok(new Response<ClientViewModel>(Mapper.Map<ClientViewModel>(client)));
     }
 
+    [Authorize(Roles = "Receiver")]
     [HttpPost]
     public async Task<IActionResult> AddClientAsync([FromBody] CreateClientModel createClientModel)
     {
@@ -47,6 +50,7 @@ public class ClientController : BaseController<Client>
         return Ok();
     }
 
+    [Authorize(Roles = "Receiver, Technician")]
     [HttpPatch("{id:guid}")]
     public async Task<ActionResult> UpdateClient(Guid id, [FromBody] UpdateClientModel updateClientModel)
     {

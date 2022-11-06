@@ -19,6 +19,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllUsersAsync([FromQuery] ParametersModel parameters)
     {
         var users = await _userService.GetAllUsersAsync(parameters);
@@ -31,6 +32,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<Response<UserViewModel>>> GetUserAsync(Guid id)
     {
         var user = await _userService.GetUserAsync(id);
@@ -39,6 +41,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> AddUserAsync([FromBody] CreateUserModel createUserModel)
     {
         var user = Mapper.Map<User>(createUserModel);
@@ -47,6 +50,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
     {
         var user = await _userService.GetUserAsync(id);
@@ -57,6 +61,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteUserAsync(Guid id)
     {
         var user = await _userService.GetUserAsync(id);
