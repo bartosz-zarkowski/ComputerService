@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +21,13 @@ public class OrderDetailsController : BaseController<OrderDetails>
 
     [HttpGet]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderDetailsViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters)
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderDetailsViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters, OrderDetailsSortEnum sortOrder)
     {
-        var orderDetails = await _orderDetailsService.GetAllOrderDetailsAsync(parameters);
+        var orderDetails = await _orderDetailsService.GetPagedOrderDetailsAsync(parameters, sortOrder);
         Logger.LogInformation("Returned {Count} orderDetails from database. ", orderDetails.Count());
 
         var mappedOrderDetails = PaginationService.ToPagedListViewModelAsync<OrderDetails, OrderDetailsViewModel>(orderDetails);
-        var pagedResponse = PaginationService.CreatePagedResponse(mappedOrderDetails);
+        var pagedResponse = PaginationService.CreatePagedResponse(mappedOrderDetails, parameters, sortOrder);
 
         return Ok(pagedResponse);
     }

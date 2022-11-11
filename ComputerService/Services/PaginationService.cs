@@ -14,16 +14,16 @@ public class PaginationService : IPaginationService
         _mapper = mapper;
     }
 
-    public PagedResponse<PagedListViewModel<T>> CreatePagedResponse<T>(PagedListViewModel<T> pagedData)
+    public PagedResponse<PagedListViewModel<T>> CreatePagedResponse<T>(PagedListViewModel<T> pagedData, ParametersModel? parameters, Enum? sortOrder)
     {
         var nextPage = pagedData.HasNext && pagedData.CurrentPage < pagedData.TotalPages
-            ? _uriService.GetPageUri(pagedData.CurrentPage + 1, pagedData.PageSize)
+            ? _uriService.GetPageUri(pagedData.CurrentPage + 1, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder)
             : null;
         var previousPage = pagedData.HasPrevious && pagedData.CurrentPage <= pagedData.TotalPages
-            ? _uriService.GetPageUri(pagedData.CurrentPage - 1, pagedData.PageSize)
+            ? _uriService.GetPageUri(pagedData.CurrentPage - 1, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder)
             : null;
-        var firstPage = _uriService.GetPageUri(1, pagedData.PageSize);
-        var lastPage = _uriService.GetPageUri(pagedData.TotalPages, pagedData.PageSize);
+        var firstPage = _uriService.GetPageUri(1, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder);
+        var lastPage = _uriService.GetPageUri(pagedData.TotalPages, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder);
 
         var links = new List<Link>()
         {

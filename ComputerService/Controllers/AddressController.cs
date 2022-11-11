@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,13 +22,13 @@ public class AddressController : BaseController<Address>
 
     [HttpGet]
     [Authorize(Roles = "Administrator, Receiver")]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<AddressViewModel>>>> GetAllAddressesAsync([FromQuery] ParametersModel parameters)
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<AddressViewModel>>>> GetAllAddressesAsync([FromQuery] ParametersModel parameters, [FromQuery] AddressSortEnum? sortOrder)
     {
-        var addresses = await _addressService.GetAllAddressesAsync(parameters);
+        var addresses = await _addressService.GetPagedAddressesAsync(parameters, sortOrder);
         Logger.LogInformation("Returned {Count} addresses from database. ", addresses.Count());
 
         var mappedAddresses = PaginationService.ToPagedListViewModelAsync<Address, AddressViewModel>(addresses);
-        var pagedResponse = PaginationService.CreatePagedResponse(mappedAddresses);
+        var pagedResponse = PaginationService.CreatePagedResponse(mappedAddresses, parameters, sortOrder);
 
         return Ok(pagedResponse);
     }

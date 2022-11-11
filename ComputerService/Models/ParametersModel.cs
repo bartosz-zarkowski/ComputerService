@@ -9,4 +9,10 @@ public class ParametersModel
 
     [FromQuery(Name = "pageSize")]
     public int PageSize { get; set; } = 10;
+
+    [FromQuery(Name = "searchString")]
+    public string? searchString { get; set; } = null;
+
+    [FromQuery(Name = "asc")]
+    public bool? asc { get; set; } = true;
 }

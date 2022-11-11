@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,13 +22,13 @@ public class DeviceController : BaseController<Device>
 
     [HttpGet]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<DeviceViewModel>>>> GetAllDevicesAsync([FromQuery] ParametersModel parameters)
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<DeviceViewModel>>>> GetAllDevicesAsync([FromQuery] ParametersModel parameters, [FromQuery] DeviceSortEnum? sortOrder)
     {
-        var devices = await _deviceService.GetAllDevicesAsync(parameters);
+        var devices = await _deviceService.GetPagedDevicesAsync(parameters, sortOrder);
         Logger.LogInformation("Returned {Count} devices from database. ", devices.Count());
 
         var mappedDevices = PaginationService.ToPagedListViewModelAsync<Device, DeviceViewModel>(devices);
-        var pagedResponse = PaginationService.CreatePagedResponse(mappedDevices);
+        var pagedResponse = PaginationService.CreatePagedResponse(mappedDevices, parameters, sortOrder);
 
         return Ok(pagedResponse);
     }

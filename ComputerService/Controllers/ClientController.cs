@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ namespace ComputerService.Controllers;
 
 [Route("api/v1/clients")]
 [ApiVersion("1.0")]
-[Authorize(Roles = "Administrator")]
+[Authorize]
 [ApiController]
 public class ClientController : BaseController<Client>
 {
@@ -19,20 +20,20 @@ public class ClientController : BaseController<Client>
         _clientService = clientService;
     }
 
-    [Authorize(Roles = "Receiver")]
+    [Authorize(Roles = "Administrator, Receiver")]
     [HttpGet]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<ClientViewModel>>>> GetAllClientsAsync([FromQuery] ParametersModel parameters)
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<ClientViewModel>>>> GetAllClientsAsync([FromQuery] ParametersModel parameters, [FromQuery] ClientSortEnum? sortOrder)
     {
-        var clients = await _clientService.GetAllClientsAsync(parameters);
+        var clients = await _clientService.GetPagedClientsAsync(parameters, sortOrder);
         Logger.LogInformation("Returned {Count} clients from database. ", clients.Count());
 
         var mappedClients = PaginationService.ToPagedListViewModelAsync<Client, ClientViewModel>(clients);
-        var pagedResponse = PaginationService.CreatePagedResponse(mappedClients);
+        var pagedResponse = PaginationService.CreatePagedResponse(mappedClients, parameters, sortOrder);
 
         return Ok(pagedResponse);
     }
 
-    [Authorize(Roles = "Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Response<ClientViewModel>>> GetClientAsync(Guid id)
     {
@@ -41,7 +42,7 @@ public class ClientController : BaseController<Client>
         return Ok(new Response<ClientViewModel>(Mapper.Map<ClientViewModel>(client)));
     }
 
-    [Authorize(Roles = "Receiver")]
+    [Authorize(Roles = "Administrator, Receiver")]
     [HttpPost]
     public async Task<IActionResult> AddClientAsync([FromBody] CreateClientModel createClientModel)
     {
@@ -50,7 +51,7 @@ public class ClientController : BaseController<Client>
         return Ok();
     }
 
-    [Authorize(Roles = "Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     [HttpPatch("{id:guid}")]
     public async Task<ActionResult> UpdateClient(Guid id, [FromBody] UpdateClientModel updateClientModel)
     {
@@ -61,6 +62,7 @@ public class ClientController : BaseController<Client>
         return Ok();
     }
 
+    [Authorize(Roles = "Administrator")]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteClientAsync(Guid id)
     {

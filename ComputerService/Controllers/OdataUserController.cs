@@ -1,39 +1,34 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
-using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace ComputerService.Controllers;
-[Route("api/v1/users")]
+[Route("api/v1/odataUsers")]
 [ApiVersion("1.0")]
 [Authorize]
 [ApiController]
-public class UserController : BaseController<User>
+public class OdataUserController : BaseController<User>
 {
-    private readonly IUserService _userService;
-    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger) : base(paginationService, mapper, logger)
+    private readonly IOdataUserService _userService;
+    public OdataUserController(IOdataUserService odataUserService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger) : base(paginationService, mapper, logger)
     {
-        _userService = userService;
+        _userService = odataUserService;
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllUsersAsync([FromQuery] ParametersModel parameters, [FromQuery] UserSortEnum? sortOrder)
+    [EnableQuery(PageSize = 2)]
+    public async Task<ActionResult<IEnumerable<UserViewModel>>> GetAllUsersAsync()
     {
-        var users = await _userService.GetPagedUsersAsync(parameters, sortOrder);
-        Logger.LogInformation("Returned {Count} users from database. ", users.Count());
-
-        var mappedUsers = PaginationService.ToPagedListViewModelAsync<User, UserViewModel>(users);
-        var pagedResponse = PaginationService.CreatePagedResponse(mappedUsers, parameters, sortOrder);
-
-        return Ok(pagedResponse);
+        var users = await _userService.GetAllUsersAsync();
+        var mappedUsers = Mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(users);
+        return Ok(mappedUsers);
     }
 
     [HttpGet("{id:guid}")]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult<Response<UserViewModel>>> GetUserAsync(Guid id)
     {
         var user = await _userService.GetUserAsync(id);
@@ -42,7 +37,6 @@ public class UserController : BaseController<User>
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> AddUserAsync([FromBody] CreateUserModel createUserModel)
     {
         var user = Mapper.Map<User>(createUserModel);
@@ -51,7 +45,6 @@ public class UserController : BaseController<User>
     }
 
     [HttpPatch("{id:guid}")]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
     {
         var user = await _userService.GetUserAsync(id);
@@ -62,7 +55,6 @@ public class UserController : BaseController<User>
     }
 
     [HttpDelete("{id:guid}")]
-    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteUserAsync(Guid id)
     {
         var user = await _userService.GetUserAsync(id);
