@@ -6,21 +6,24 @@ public class DeviceEntityConfiguration : IEntityTypeConfiguration<Device>
 {
     public void Configure(EntityTypeBuilder<Device> builder)
     {
-        builder.Property(r => r.Id).ValueGeneratedOnAdd();
-        builder.Property(r => r.CreatedAt).ValueGeneratedOnAdd();
-        builder.Property(r => r.Name).IsRequired();
-        builder.Property(r => r.HasWarranty).IsRequired();
-        builder.Property(r => r.ClientId).IsRequired();
-        builder.Property(r => r.OrderId).IsRequired();
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();
+        builder.Property(x => x.Name).IsRequired()
+            .HasMaxLength(50);
+        builder.Property(x => x.SerialNumber).HasMaxLength(50);
+        builder.Property(x => x.Condition).HasMaxLength(500);
+        builder.Property(x => x.HasWarranty).IsRequired();
+        builder.Property(x => x.ClientId).IsRequired();
+        builder.Property(x => x.OrderId).IsRequired();
 
-        builder.HasOne(o => o.Client)
-            .WithMany(o => o.Devices)
-            .HasForeignKey(o => o.ClientId)
+        builder.HasOne(x => x.Client)
+            .WithMany(x => x.Devices)
+            .HasForeignKey(x => x.ClientId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasOne(o => o.Order)
-            .WithMany(o => o.Devices)
-            .HasForeignKey(o => o.OrderId)
+        builder.HasOne(x => x.Order)
+            .WithMany(x => x.Devices)
+            .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

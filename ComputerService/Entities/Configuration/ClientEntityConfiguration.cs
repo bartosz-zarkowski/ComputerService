@@ -6,24 +6,30 @@ public class ClientEntityConfiguration : IEntityTypeConfiguration<Client>
 {
     public void Configure(EntityTypeBuilder<Client> builder)
     {
-        builder.Property(o => o.Id).ValueGeneratedOnAdd();
-        builder.Property(o => o.CreatedAt).ValueGeneratedOnAdd();
-        builder.Property(o => o.FirstName).IsRequired();
-        builder.Property(o => o.LastName).IsRequired();
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();
+        builder.Property(x => x.FirstName).IsRequired()
+            .HasMaxLength(50);
+        builder.Property(x => x.LastName).IsRequired()
+            .HasMaxLength(50);
+        builder.Property(x => x.Email).IsRequired()
+            .HasMaxLength(62);
+        builder.Property(x => x.PhoneNumber).IsRequired()
+            .HasMaxLength(15);
 
-        builder.HasOne(o => o.Address)
-            .WithOne(o => o.Client)
-            .HasForeignKey<Address>(o => o.Id)
+        builder.HasOne(x => x.Address)
+            .WithOne(x => x.Client)
+            .HasForeignKey<Address>(x => x.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(o => o.Devices)
-            .WithOne(o => o.Client)
-            .HasForeignKey(o => o.ClientId)
+        builder.HasMany(x => x.Devices)
+            .WithOne(x => x.Client)
+            .HasForeignKey(x => x.ClientId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasMany(o => o.Orders)
-            .WithOne(o => o.Client)
-            .HasForeignKey(o => o.ClientId)
+        builder.HasMany(x => x.Orders)
+            .WithOne(x => x.Client)
+            .HasForeignKey(x => x.ClientId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

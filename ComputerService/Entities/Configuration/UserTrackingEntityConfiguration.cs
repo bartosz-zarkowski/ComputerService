@@ -7,7 +7,7 @@ public class UserTrackingEntityConfiguration : IEntityTypeConfiguration<UserTrac
     public void Configure(EntityTypeBuilder<UserTracking> builder)
     {
         builder.HasNoKey();
-        builder.Property(o => o.Action).IsRequired();
-        builder.Property(o => o.Date).ValueGeneratedOnAdd();
+        builder.Property(x => x.Action).IsRequired();
+        builder.Property(x => x.Date).ValueGeneratedOnAdd();
     }
 }
