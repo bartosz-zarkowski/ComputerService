@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
@@ -11,9 +13,35 @@ public class OrderDetailsService : BaseEntityService<OrderDetails>, IOrderDetail
 {
     public OrderDetailsService(ComputerServiceContext context, IValidator<OrderDetails> validator, IMapper mapper) : base(context, validator, mapper) { }
 
-    public async Task<PagedList<OrderDetails>> GetAllOrderDetailsAsync(ParametersModel parametersModel)
+    public IQueryable<OrderDetails> GetAllOrderDetails(ParametersModel parameters, OrderDetailsSortEnum? sortOrder)
     {
-        return await PagedList<OrderDetails>.ToPagedListAsync(FindAll(), parametersModel.PageNumber, parametersModel.PageSize);
+        var orderDetails = FindAll();
+        if (sortOrder != null)
+        {
+            bool asc = (bool)parameters.asc;
+            orderDetails = Enum.IsDefined(typeof(OrderDetailsSortEnum), sortOrder)
+                ? sortOrder switch
+                {
+                    OrderDetailsSortEnum.HardwareCharges => asc
+                        ? orderDetails.OrderBy(orderDetails => orderDetails.HardwareCharges)
+                        : orderDetails.OrderByDescending(orderDetails => orderDetails.HardwareCharges),
+                    OrderDetailsSortEnum.ServiceCharges => asc
+                        ? orderDetails.OrderBy(orderDetails => orderDetails.ServiceCharges)
+                        : orderDetails.OrderByDescending(orderDetails => orderDetails.ServiceCharges),
+                }
+                : throw new ArgumentException();
+        }
+        if (!parameters.searchString.IsNullOrEmpty())
+        {
+            orderDetails = orderDetails.Where(orderDetails => orderDetails.ServiceDescription.Contains(parameters.searchString) ||
+                                                              orderDetails.AdditionalInformation.Contains(parameters.searchString));
+        }
+        return orderDetails;
+    }
+
+    public async Task<PagedList<OrderDetails>> GetPagedOrderDetailsAsync(ParametersModel parameters, OrderDetailsSortEnum? sortOrder)
+    {
+        return await PagedList<OrderDetails>.ToPagedListAsync(GetAllOrderDetails(parameters, sortOrder), parameters);
     }
 
     public async Task<OrderDetails> GetOrderDetailsAsync(Guid id)

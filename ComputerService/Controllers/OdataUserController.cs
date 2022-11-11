@@ -2,12 +2,14 @@
 using ComputerService.Entities;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 
 namespace ComputerService.Controllers;
 [Route("api/v1/odataUsers")]
 [ApiVersion("1.0")]
+[Authorize]
 [ApiController]
 public class OdataUserController : BaseController<User>
 {

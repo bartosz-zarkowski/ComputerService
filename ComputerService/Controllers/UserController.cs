@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +21,13 @@ public class UserController : BaseController<User>
 
     [HttpGet]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllUsersAsync([FromQuery] ParametersModel parameters)
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<UserViewModel>>>> GetAllUsersAsync([FromQuery] ParametersModel parameters, [FromQuery] UserSortEnum? sortOrder)
     {
-        var users = await _userService.GetAllUsersAsync(parameters);
+        var users = await _userService.GetPagedUsersAsync(parameters, sortOrder);
         Logger.LogInformation("Returned {Count} users from database. ", users.Count());
 
         var mappedUsers = PaginationService.ToPagedListViewModelAsync<User, UserViewModel>(users);
-        var pagedResponse = PaginationService.CreatePagedResponse(mappedUsers);
+        var pagedResponse = PaginationService.CreatePagedResponse(mappedUsers, parameters, sortOrder);
 
         return Ok(pagedResponse);
     }

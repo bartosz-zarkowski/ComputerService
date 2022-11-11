@@ -1,40 +1,90 @@
 ﻿using AutoMapper;
+using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ComputerService.Services;
-public class ClientService : BaseEntityService<Client>, IClientService
-{
-    public ClientService(ComputerServiceContext context, IValidator<Client> validator, IMapper mapper) : base(context, validator, mapper) { }
 
-    public async Task<PagedList<Client>> GetAllClientsAsync(ParametersModel parametersModel)
+public class AddressService : BaseEntityService<Address>, IAddressService
+{
+    public AddressService(ComputerServiceContext context, IValidator<Address> validator, IMapper mapper) : base(context, validator, mapper) { }
+
+
+    public IQueryable<Address> GetAllAddressesAsync(ParametersModel parameters, AddressSortEnum? sortOrder)
     {
-        return await PagedList<Client>.ToPagedListAsync(FindAll(), parametersModel.PageNumber, parametersModel.PageSize);
+        var addresses = FindAll();
+        if (sortOrder != null)
+        {
+            bool asc = (bool)parameters.asc;
+            addresses = Enum.IsDefined(typeof(AddressSortEnum), sortOrder)
+                ? sortOrder switch
+                {
+                    AddressSortEnum.Country => asc
+                        ? addresses.OrderBy(address => address.Country)
+                        : addresses.OrderByDescending(address => address.Country),
+                    AddressSortEnum.State => asc
+                        ? addresses.OrderBy(address => address.State)
+                        : addresses.OrderByDescending(address => address.State),
+                    AddressSortEnum.City => asc
+                        ? addresses.OrderBy(address => address.City)
+                        : addresses.OrderByDescending(address => address.City),
+                    AddressSortEnum.PostalCode => asc
+                        ? addresses.OrderBy(address => address.PostalCode)
+                        : addresses.OrderByDescending(address => address.PostalCode),
+                    AddressSortEnum.Street => asc
+                        ? addresses.OrderBy(address => address.Street)
+                        : addresses.OrderByDescending(address => address.Street),
+                    AddressSortEnum.StreetNumber => asc
+                        ? addresses.OrderBy(address => address.StreetNumber)
+                        : addresses.OrderByDescending(address => address.StreetNumber),
+                    AddressSortEnum.Apartment => asc
+                        ? addresses.OrderBy(address => address.Apartment)
+                        : addresses.OrderByDescending(address => address.Apartment),
+                }
+                : throw new ArgumentException();
+        }
+        if (!parameters.searchString.IsNullOrEmpty())
+        {
+            addresses = addresses.Where(accessory => accessory.Country.Contains(parameters.searchString) ||
+                                                            accessory.State.Contains(parameters.searchString) ||
+                                                            accessory.City.Contains(parameters.searchString) ||
+                                                            accessory.PostalCode.Contains(parameters.searchString) ||
+                                                            accessory.Street.Contains(parameters.searchString) ||
+                                                            accessory.StreetNumber.Contains(parameters.searchString) ||
+                                                            accessory.Apartment.Contains(parameters.searchString));
+        }
+        return addresses;
     }
 
-    public async Task<Client> GetClientAsync(Guid id)
+    public async Task<PagedList<Address>> GetPagedAddressesAsync(ParametersModel parameters, AddressSortEnum? sortOrder)
+    {
+        return await PagedList<Address>.ToPagedListAsync(GetAllAddressesAsync(parameters, sortOrder), parameters);
+    }
+
+    public async Task<Address> GetAddressAsync(Guid id)
     {
         return await FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task AddClientAsync(Client client)
+    public async Task AddAddressAsync(Address address)
     {
-        await ValidateEntityAsync(client);
-        await CreateAsync(client);
+        await ValidateEntityAsync(address);
+        await CreateAsync(address);
     }
 
-    public async Task UpdateClientAsync(Client client)
+    public async Task UpdateAddressAsync(Address address)
     {
-        await ValidateEntityAsync(client);
-        await UpdateAsync(client);
+        await ValidateEntityAsync(address);
+        await UpdateAsync(address);
     }
 
-    public async Task DeleteClientAsync(Client client)
+    public async Task DeleteAddressAsync(Address address)
     {
-        await DeleteAsync(client);
+        await DeleteAsync(address);
     }
 }

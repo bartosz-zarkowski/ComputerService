@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
@@ -11,9 +13,33 @@ public class AccessoryService : BaseEntityService<Accessory>, IAccessoryService
 {
     public AccessoryService(ComputerServiceContext context, IValidator<Accessory> validator, IMapper mapper) : base(context, validator, mapper) { }
 
-    public async Task<PagedList<Accessory>> GetAllAccessoriesAsync(ParametersModel parametersModel)
+    public IQueryable<Accessory> GetAllAccessoriesAsync(ParametersModel parameters, AccessorySortEnum? sortOrder)
     {
-        return await PagedList<Accessory>.ToPagedListAsync(FindAll(), parametersModel.PageNumber, parametersModel.PageSize);
+        var accessories = FindAll();
+        if (sortOrder != null)
+        {
+            bool asc = (bool)parameters.asc;
+            accessories = Enum.IsDefined(typeof(AccessorySortEnum), sortOrder)
+                ? sortOrder switch
+                {
+                    AccessorySortEnum.Name => asc
+                        ? accessories.OrderBy(accessory => accessory.Name)
+                        : accessories.OrderByDescending(accessory => accessory.Name),
+                }
+                : throw new ArgumentException();
+        }
+
+        if (!parameters.searchString.IsNullOrEmpty())
+        {
+            accessories = accessories.Where(accessory => accessory.Name.Contains(parameters.searchString));
+        }
+
+        return accessories;
+    }
+
+    public async Task<PagedList<Accessory>> GetPagedAccessoriesAsync(ParametersModel parameters, AccessorySortEnum? sortOrder)
+    {
+        return await PagedList<Accessory>.ToPagedListAsync(GetAllAccessoriesAsync(parameters, sortOrder), parameters);
     }
 
     public async Task<Accessory> GetAccessoryAsync(Guid id)

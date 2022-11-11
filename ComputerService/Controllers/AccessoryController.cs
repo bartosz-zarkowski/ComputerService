@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,13 +22,13 @@ public class AccessoryController : BaseController<Accessory>
 
     [HttpGet]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<AccessoryViewModel>>>> GetAllAccessoriesAsync([FromQuery] ParametersModel parameters)
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<AccessoryViewModel>>>> GetAllAccessoriesAsync([FromQuery] ParametersModel parameters, [FromQuery] AccessorySortEnum? sortOrder)
     {
-        var accessories = await _accessoryService.GetAllAccessoriesAsync(parameters);
+        var accessories = await _accessoryService.GetPagedAccessoriesAsync(parameters, sortOrder);
         Logger.LogInformation("Returned {Count} accessories from database. ", accessories.Count());
 
         var mappedAccessories = PaginationService.ToPagedListViewModelAsync<Accessory, AccessoryViewModel>(accessories);
-        var pagedResponse = PaginationService.CreatePagedResponse(mappedAccessories);
+        var pagedResponse = PaginationService.CreatePagedResponse(mappedAccessories, parameters, sortOrder);
 
         return Ok(pagedResponse);
     }
