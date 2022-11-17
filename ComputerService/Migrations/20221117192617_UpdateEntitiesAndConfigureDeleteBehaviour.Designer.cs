@@ -4,6 +4,7 @@ using ComputerService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComputerService.Migrations
 {
     [DbContext(typeof(ComputerServiceContext))]
-    partial class ComputerServiceContextModelSnapshot : ModelSnapshot
+    [Migration("20221117192617_UpdateEntitiesAndConfigureDeleteBehaviour")]
+    partial class UpdateEntitiesAndConfigureDeleteBehaviour
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

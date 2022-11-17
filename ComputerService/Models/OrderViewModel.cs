@@ -6,6 +6,7 @@ namespace ComputerService.Models;
 public class OrderViewModel
 {
     public Guid Id { get; set; }
+    public string Title { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? ReceivedAt { get; set; }

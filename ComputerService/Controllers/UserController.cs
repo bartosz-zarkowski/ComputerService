@@ -46,6 +46,8 @@ public class UserController : BaseController<User>
     public async Task<IActionResult> AddUserAsync([FromBody] CreateUserModel createUserModel)
     {
         var user = Mapper.Map<User>(createUserModel);
+        var salt = "password salt";
+        user.Salt = salt;
         await _userService.AddUserAsync(user);
         return Ok();
     }
