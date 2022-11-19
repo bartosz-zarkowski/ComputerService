@@ -13,17 +13,16 @@ public class DeviceEntityConfiguration : IEntityTypeConfiguration<Device>
         builder.Property(x => x.SerialNumber).HasMaxLength(50);
         builder.Property(x => x.Condition).HasMaxLength(500);
         builder.Property(x => x.HasWarranty).IsRequired();
-        builder.Property(x => x.ClientId).IsRequired();
         builder.Property(x => x.OrderId).IsRequired();
 
         builder.HasOne(x => x.Client)
             .WithMany(x => x.Devices)
             .HasForeignKey(x => x.ClientId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(x => x.Order)
             .WithMany(x => x.Devices)
             .HasForeignKey(x => x.OrderId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

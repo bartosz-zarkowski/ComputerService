@@ -22,6 +22,9 @@ public class OrderService : BaseEntityService<Order>, IOrderService
             orders = Enum.IsDefined(typeof(OrderSortEnum), sortOrder)
                 ? sortOrder switch
                 {
+                    OrderSortEnum.Title => asc
+                        ? orders.OrderBy(order => order.Title)
+                        : orders.OrderByDescending(order => order.Title),
                     OrderSortEnum.CreatedAt => asc
                         ? orders.OrderBy(order => order.CreatedAt)
                         : orders.OrderByDescending(order => order.CreatedAt),
@@ -48,7 +51,8 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         }
         if (!parameters.searchString.IsNullOrEmpty())
         {
-            orders = orders.Where(order => order.Description.Contains(parameters.searchString));
+            orders = orders.Where(order => order.Title.Contains(parameters.searchString) ||
+                                           order.Description.Contains(parameters.searchString));
         }
         return orders;
     }

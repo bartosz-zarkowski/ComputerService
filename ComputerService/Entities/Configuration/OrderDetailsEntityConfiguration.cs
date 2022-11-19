@@ -13,6 +13,7 @@ public class OrderDetailsEntityConfiguration : IEntityTypeConfiguration<OrderDet
 
         builder.HasOne(x => x.Order)
             .WithOne(x => x.Details)
-            .HasForeignKey<OrderDetails>(x => x.Id);
+            .HasForeignKey<OrderDetails>(x => x.Id)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

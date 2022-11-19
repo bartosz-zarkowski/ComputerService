@@ -23,6 +23,7 @@ public class AddressEntityConfiguration : IEntityTypeConfiguration<Address>
 
         builder.HasOne(x => x.Client)
             .WithOne(x => x.Address)
-            .HasForeignKey<Address>(x => x.Id);
+            .HasForeignKey<Address>(x => x.Id)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

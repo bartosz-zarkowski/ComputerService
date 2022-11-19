@@ -9,5 +9,7 @@ public class AccessoryEntityConfiguration : IEntityTypeConfiguration<Accessory>
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.Name).IsRequired()
             .HasMaxLength(50);
+
+        builder.HasIndex(x => x.Name).IsUnique();
     }
 }

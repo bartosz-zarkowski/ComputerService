@@ -14,6 +14,7 @@ public class OrderAccessoryEntityConfiguration : IEntityTypeConfiguration<OrderA
 
         builder.HasOne(x => x.Order)
             .WithMany(x => x.Accessories)
-            .HasForeignKey(x => x.OrderId);
+            .HasForeignKey(x => x.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

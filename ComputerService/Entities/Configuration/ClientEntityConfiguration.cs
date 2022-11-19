@@ -19,17 +19,14 @@ public class ClientEntityConfiguration : IEntityTypeConfiguration<Client>
 
         builder.HasOne(x => x.Address)
             .WithOne(x => x.Client)
-            .HasForeignKey<Address>(x => x.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey<Address>(x => x.Id);
 
         builder.HasMany(x => x.Devices)
             .WithOne(x => x.Client)
-            .HasForeignKey(x => x.ClientId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(x => x.ClientId);
 
         builder.HasMany(x => x.Orders)
             .WithOne(x => x.Client)
-            .HasForeignKey(x => x.ClientId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(x => x.ClientId);
     }
 }
