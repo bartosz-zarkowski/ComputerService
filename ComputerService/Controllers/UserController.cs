@@ -3,6 +3,7 @@ using ComputerService.Entities;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,11 @@ namespace ComputerService.Controllers;
 public class UserController : BaseController<User>
 {
     private readonly IUserService _userService;
-    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger) : base(paginationService, mapper, logger)
+    private readonly IPasswordHashingService _passwordHashingService;
+    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger, IPasswordHashingService passwordHashingService) : base(paginationService, mapper, logger)
     {
         _userService = userService;
+        _passwordHashingService = passwordHashingService;
     }
 
     [HttpGet]
@@ -46,8 +49,8 @@ public class UserController : BaseController<User>
     public async Task<IActionResult> AddUserAsync([FromBody] CreateUserModel createUserModel)
     {
         var user = Mapper.Map<User>(createUserModel);
-        var salt = "password salt";
-        user.Salt = salt;
+        user.Salt = _passwordHashingService.GetSaltAsString();
+        user.Password = _passwordHashingService.HashPassword(user.Password, user.Salt);
         await _userService.AddUserAsync(user);
         return Ok();
     }

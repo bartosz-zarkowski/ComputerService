@@ -2,6 +2,7 @@ using ComputerService.Data;
 using ComputerService.Helpers;
 using ComputerService.Interfaces;
 using ComputerService.Middleware;
+using ComputerService.Security;
 using ComputerService.Services;
 using ComputerService.Validators;
 using FluentValidation;
@@ -119,6 +120,7 @@ builder.Services
     .AddScoped<IPaginationService, PaginationService>()
     .AddScoped<IUriService, UriService>()
     .AddScoped<IAuthenticationService, AuthenticationService>()
+    .AddScoped<IPasswordHashingService, PasswordHashingService>()
     .AddScoped<IAccessoryService, AccessoryService>()
     .AddScoped<IAddressService, AddressService>()
     .AddScoped<IClientService, ClientService>()

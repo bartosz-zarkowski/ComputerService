@@ -9,7 +9,7 @@ public interface IAuthenticationService
 {
     Task<JwtUserModel> GetUserAsync(AuthenticateRequestModel loginUser);
 
-    void IsAuthenticated(string loginUserPassword, string userPassword);
+    void IsAuthenticated(string password, string savedPasswordHash, string savedSalt);
 
     void IsUserActive(bool isUserActive);
 
