@@ -3,15 +3,13 @@ using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Exceptions;
 using ComputerService.Helpers;
-using ComputerService.Interfaces;
 using ComputerService.Models;
 using ComputerService.Repository;
-using ComputerService.Security;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace ComputerService.Services;
+namespace ComputerService.Security;
 
 public class AuthenticationService : BaseRepository<User>, IAuthenticationService
 {
