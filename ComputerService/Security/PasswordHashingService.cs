@@ -28,7 +28,8 @@ public class PasswordHashingService : IPasswordHashingService
     {
         var salt = Convert.FromBase64String(saltString);
         var numberOfIterations = Convert.ToInt32(_configuration["Security:HashIterations"]);
-        var pbkdf2 = new Rfc2898DeriveBytes(password, salt, numberOfIterations);
+
+        var pbkdf2 = new Rfc2898DeriveBytes(password, salt, numberOfIterations, HashAlgorithmName.SHA256);
 
         byte[] hash = pbkdf2.GetBytes(20);
 

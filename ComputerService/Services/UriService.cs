@@ -14,8 +14,8 @@ public class UriService : IUriService
 
     public Uri GetPageUri(int pageNumber, int pageSize, string searchString, bool asc, Enum? sortOrder)
     {
-        var request = _contextAccessor.HttpContext.Request;
-        var baseUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+        var request = _contextAccessor.HttpContext?.Request;
+        var baseUri = string.Concat(request?.Scheme, "://", request.Host.ToUriComponent());
         var route = _contextAccessor.HttpContext?.Request.Path.ToString();
         var endpointUri = new Uri(string.Concat(baseUri, route));
         var modifiedUri = QueryHelpers.AddQueryString(endpointUri.ToString(), "pageNumber", pageNumber.ToString());

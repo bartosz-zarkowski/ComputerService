@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Enums;
@@ -7,6 +6,7 @@ using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace ComputerService.Services;
 public class AccessoryService : BaseEntityService<Accessory>, IAccessoryService
@@ -18,18 +18,17 @@ public class AccessoryService : BaseEntityService<Accessory>, IAccessoryService
         var accessories = FindAll();
         if (sortOrder != null)
         {
-            bool asc = (bool)parameters.asc;
-            accessories = Enum.IsDefined(typeof(AccessorySortEnum), sortOrder)
-                ? sortOrder switch
-                {
-                    AccessorySortEnum.Name => asc
-                        ? accessories.OrderBy(accessory => accessory.Name)
-                        : accessories.OrderByDescending(accessory => accessory.Name),
-                }
-                : throw new ArgumentException();
+            var asc = parameters.asc ?? true;
+            accessories = sortOrder switch
+            {
+                AccessorySortEnum.Name => asc
+                    ? accessories.OrderBy(accessory => accessory.Name)
+                    : accessories.OrderByDescending(accessory => accessory.Name),
+                _ => throw new ArgumentException()
+            };
         }
 
-        if (!parameters.searchString.IsNullOrEmpty())
+        if (!IsNullOrEmpty(parameters.searchString))
         {
             accessories = accessories.Where(accessory => accessory.Name.Contains(parameters.searchString));
         }
