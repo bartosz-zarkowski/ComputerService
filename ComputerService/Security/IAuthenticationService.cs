@@ -3,7 +3,7 @@ using ComputerService.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace ComputerService.Interfaces;
+namespace ComputerService.Security;
 
 public interface IAuthenticationService
 {

@@ -121,6 +121,8 @@ builder.Services
     .AddScoped<IUriService, UriService>()
     .AddScoped<IAuthenticationService, AuthenticationService>()
     .AddScoped<IPasswordHashingService, PasswordHashingService>()
+    .AddScoped<TokenManagerMiddleware>()
+    .AddScoped<ITokenManager, TokenManager>()
     .AddScoped<IAccessoryService, AccessoryService>()
     .AddScoped<IAddressService, AddressService>()
     .AddScoped<IClientService, ClientService>()
@@ -165,6 +167,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseMiddleware<TokenManagerMiddleware>();
 
 app.MapControllers();
 
