@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Enums;
@@ -7,6 +6,7 @@ using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace ComputerService.Services;
 public class OrderService : BaseEntityService<Order>, IOrderService
@@ -18,38 +18,38 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         var orders = FindAll();
         if (sortOrder != null)
         {
-            bool asc = (bool)parameters.asc;
-            orders = Enum.IsDefined(typeof(OrderSortEnum), sortOrder)
-                ? sortOrder switch
-                {
-                    OrderSortEnum.Title => asc
-                        ? orders.OrderBy(order => order.Title)
-                        : orders.OrderByDescending(order => order.Title),
-                    OrderSortEnum.CreatedAt => asc
-                        ? orders.OrderBy(order => order.CreatedAt)
-                        : orders.OrderByDescending(order => order.CreatedAt),
-                    OrderSortEnum.UpdatedAt => asc
-                        ? orders.OrderBy(order => order.UpdatedAt)
-                        : orders.OrderByDescending(order => order.UpdatedAt),
-                    OrderSortEnum.ReceivedAt => asc
-                        ? orders.OrderBy(order => order.ReceivedAt)
-                        : orders.OrderByDescending(order => order.ReceivedAt),
-                    OrderSortEnum.Status => asc
-                        ? orders.OrderBy(order => order.Status)
-                        : orders.OrderByDescending(order => order.Status),
-                    OrderSortEnum.CreatedBy => asc
-                        ? orders.OrderBy(order => order.CreatedBy)
-                        : orders.OrderByDescending(order => order.CreatedBy),
-                    OrderSortEnum.ServicedBy => asc
-                        ? orders.OrderBy(order => order.ServicedBy)
-                        : orders.OrderByDescending(order => order.ServicedBy),
-                    OrderSortEnum.CompletedBy => asc
-                        ? orders.OrderBy(order => order.CompletedBy)
-                        : orders.OrderByDescending(order => order.CompletedBy),
-                }
-                : throw new ArgumentException();
+            var asc = parameters.asc ?? true;
+
+            orders = sortOrder switch
+            {
+                OrderSortEnum.Title => asc
+                    ? orders.OrderBy(order => order.Title)
+                    : orders.OrderByDescending(order => order.Title),
+                OrderSortEnum.CreatedAt => asc
+                    ? orders.OrderBy(order => order.CreatedAt)
+                    : orders.OrderByDescending(order => order.CreatedAt),
+                OrderSortEnum.UpdatedAt => asc
+                    ? orders.OrderBy(order => order.UpdatedAt)
+                    : orders.OrderByDescending(order => order.UpdatedAt),
+                OrderSortEnum.ReceivedAt => asc
+                    ? orders.OrderBy(order => order.ReceivedAt)
+                    : orders.OrderByDescending(order => order.ReceivedAt),
+                OrderSortEnum.Status => asc
+                    ? orders.OrderBy(order => order.Status)
+                    : orders.OrderByDescending(order => order.Status),
+                OrderSortEnum.CreatedBy => asc
+                    ? orders.OrderBy(order => order.CreatedBy)
+                    : orders.OrderByDescending(order => order.CreatedBy),
+                OrderSortEnum.ServicedBy => asc
+                    ? orders.OrderBy(order => order.ServicedBy)
+                    : orders.OrderByDescending(order => order.ServicedBy),
+                OrderSortEnum.CompletedBy => asc
+                    ? orders.OrderBy(order => order.CompletedBy)
+                    : orders.OrderByDescending(order => order.CompletedBy),
+                _ => throw new ArgumentException()
+            };
         }
-        if (!parameters.searchString.IsNullOrEmpty())
+        if (!IsNullOrEmpty(parameters.searchString))
         {
             orders = orders.Where(order => order.Title.Contains(parameters.searchString) ||
                                            order.Description.Contains(parameters.searchString));

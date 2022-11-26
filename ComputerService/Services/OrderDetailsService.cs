@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Enums;
@@ -7,6 +6,7 @@ using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace ComputerService.Services;
 public class OrderDetailsService : BaseEntityService<OrderDetails>, IOrderDetailsService
@@ -18,23 +18,22 @@ public class OrderDetailsService : BaseEntityService<OrderDetails>, IOrderDetail
         var orderDetails = FindAll();
         if (sortOrder != null)
         {
-            bool asc = (bool)parameters.asc;
-            orderDetails = Enum.IsDefined(typeof(OrderDetailsSortEnum), sortOrder)
-                ? sortOrder switch
-                {
-                    OrderDetailsSortEnum.HardwareCharges => asc
-                        ? orderDetails.OrderBy(orderDetails => orderDetails.HardwareCharges)
-                        : orderDetails.OrderByDescending(orderDetails => orderDetails.HardwareCharges),
-                    OrderDetailsSortEnum.ServiceCharges => asc
-                        ? orderDetails.OrderBy(orderDetails => orderDetails.ServiceCharges)
-                        : orderDetails.OrderByDescending(orderDetails => orderDetails.ServiceCharges),
-                }
-                : throw new ArgumentException();
+            var asc = parameters.asc ?? true;
+            orderDetails = sortOrder switch
+            {
+                OrderDetailsSortEnum.HardwareCharges => asc
+                    ? orderDetails.OrderBy(details => details.HardwareCharges)
+                    : orderDetails.OrderByDescending(details => details.HardwareCharges),
+                OrderDetailsSortEnum.ServiceCharges => asc
+                    ? orderDetails.OrderBy(details => details.ServiceCharges)
+                    : orderDetails.OrderByDescending(details => details.ServiceCharges),
+                _ => throw new ArgumentException()
+            };
         }
-        if (!parameters.searchString.IsNullOrEmpty())
+        if (!IsNullOrEmpty(parameters.searchString))
         {
-            orderDetails = orderDetails.Where(orderDetails => orderDetails.ServiceDescription.Contains(parameters.searchString) ||
-                                                              orderDetails.AdditionalInformation.Contains(parameters.searchString));
+            orderDetails = orderDetails.Where(details => details.ServiceDescription.Contains(parameters.searchString) ||
+                                                         details.AdditionalInformation.Contains(parameters.searchString));
         }
         return orderDetails;
     }

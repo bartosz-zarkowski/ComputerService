@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Enums;
@@ -7,6 +6,7 @@ using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace ComputerService.Services;
 
@@ -19,32 +19,31 @@ public class ClientService : BaseEntityService<Client>, IClientService
         var clients = FindAll();
         if (sortOrder != null)
         {
-            bool asc = (bool)parameters.asc;
-            clients = Enum.IsDefined(typeof(ClientSortEnum), sortOrder)
-                ? sortOrder switch
-                {
-                    ClientSortEnum.CreatedAt => asc
-                        ? clients.OrderBy(client => client.CreatedAt)
-                        : clients.OrderByDescending(client => client.CreatedAt),
-                    ClientSortEnum.UpdatedAt => asc
-                        ? clients.OrderBy(client => client.UpdatedAt)
-                        : clients.OrderByDescending(client => client.UpdatedAt),
-                    ClientSortEnum.FirstName => asc
-                        ? clients.OrderBy(client => client.FirstName)
-                        : clients.OrderByDescending(client => client.FirstName),
-                    ClientSortEnum.LastName => asc
-                        ? clients.OrderBy(client => client.LastName)
-                        : clients.OrderByDescending(client => client.LastName),
-                    ClientSortEnum.Email => asc
-                        ? clients.OrderBy(client => client.Email)
-                        : clients.OrderByDescending(client => client.Email),
-                    ClientSortEnum.PhoneNumber => asc
-                        ? clients.OrderBy(client => client.PhoneNumber)
-                        : clients.OrderByDescending(client => client.PhoneNumber),
-                }
-                : throw new ArgumentException();
+            var asc = parameters.asc ?? true;
+            clients = sortOrder switch
+            {
+                ClientSortEnum.CreatedAt => asc
+                    ? clients.OrderBy(client => client.CreatedAt)
+                    : clients.OrderByDescending(client => client.CreatedAt),
+                ClientSortEnum.UpdatedAt => asc
+                    ? clients.OrderBy(client => client.UpdatedAt)
+                    : clients.OrderByDescending(client => client.UpdatedAt),
+                ClientSortEnum.FirstName => asc
+                    ? clients.OrderBy(client => client.FirstName)
+                    : clients.OrderByDescending(client => client.FirstName),
+                ClientSortEnum.LastName => asc
+                    ? clients.OrderBy(client => client.LastName)
+                    : clients.OrderByDescending(client => client.LastName),
+                ClientSortEnum.Email => asc
+                    ? clients.OrderBy(client => client.Email)
+                    : clients.OrderByDescending(client => client.Email),
+                ClientSortEnum.PhoneNumber => asc
+                    ? clients.OrderBy(client => client.PhoneNumber)
+                    : clients.OrderByDescending(client => client.PhoneNumber),
+                _ => throw new ArgumentException()
+            };
         }
-        if (!parameters.searchString.IsNullOrEmpty())
+        if (!IsNullOrEmpty(parameters.searchString))
         {
             clients = clients.Where(client => client.FirstName.Contains(parameters.searchString) ||
                                               client.LastName.Contains(parameters.searchString) ||

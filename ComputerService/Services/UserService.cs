@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Enums;
@@ -7,6 +6,7 @@ using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace ComputerService.Services;
 public class UserService : BaseEntityService<User>, IUserService
@@ -18,38 +18,37 @@ public class UserService : BaseEntityService<User>, IUserService
         var users = FindAll();
         if (sortOrder != null)
         {
-            bool asc = (bool)parameters.asc;
-            users = Enum.IsDefined(typeof(UserSortEnum), sortOrder)
-                ? sortOrder switch
-                {
-                    UserSortEnum.CreatedAt => asc
-                        ? users.OrderBy(user => user.CreatedAt)
-                        : users.OrderByDescending(user => user.CreatedAt),
-                    UserSortEnum.UpdatedAt => asc
-                        ? users.OrderBy(user => user.UpdatedAt)
-                        : users.OrderByDescending(user => user.UpdatedAt),
-                    UserSortEnum.FirstName => asc
-                        ? users.OrderBy(user => user.FirstName)
-                        : users.OrderByDescending(user => user.FirstName),
-                    UserSortEnum.LastName => asc
-                        ? users.OrderBy(user => user.LastName)
-                        : users.OrderByDescending(user => user.LastName),
-                    UserSortEnum.Email => asc
-                        ? users.OrderBy(user => user.Email)
-                        : users.OrderByDescending(user => user.Email),
-                    UserSortEnum.PhoneNumber => asc
-                        ? users.OrderBy(user => user.PhoneNumber)
-                        : users.OrderByDescending(user => user.PhoneNumber),
-                    UserSortEnum.IsActive => asc
-                        ? users.OrderBy(user => user.IsActive)
-                        : users.OrderByDescending(user => user.IsActive),
-                    UserSortEnum.Role => asc
-                        ? users.OrderBy(user => user.Role)
-                        : users.OrderByDescending(user => user.Role),
-                }
-                : throw new ArgumentException();
+            var asc = parameters.asc ?? true;
+            users = sortOrder switch
+            {
+                UserSortEnum.CreatedAt => asc
+                    ? users.OrderBy(user => user.CreatedAt)
+                    : users.OrderByDescending(user => user.CreatedAt),
+                UserSortEnum.UpdatedAt => asc
+                    ? users.OrderBy(user => user.UpdatedAt)
+                    : users.OrderByDescending(user => user.UpdatedAt),
+                UserSortEnum.FirstName => asc
+                    ? users.OrderBy(user => user.FirstName)
+                    : users.OrderByDescending(user => user.FirstName),
+                UserSortEnum.LastName => asc
+                    ? users.OrderBy(user => user.LastName)
+                    : users.OrderByDescending(user => user.LastName),
+                UserSortEnum.Email => asc
+                    ? users.OrderBy(user => user.Email)
+                    : users.OrderByDescending(user => user.Email),
+                UserSortEnum.PhoneNumber => asc
+                    ? users.OrderBy(user => user.PhoneNumber)
+                    : users.OrderByDescending(user => user.PhoneNumber),
+                UserSortEnum.IsActive => asc
+                    ? users.OrderBy(user => user.IsActive)
+                    : users.OrderByDescending(user => user.IsActive),
+                UserSortEnum.Role => asc
+                    ? users.OrderBy(user => user.Role)
+                    : users.OrderByDescending(user => user.Role),
+                _ => throw new ArgumentException()
+            };
         }
-        if (!parameters.searchString.IsNullOrEmpty())
+        if (!IsNullOrEmpty(parameters.searchString))
         {
             users = users.Where(user => user.FirstName.Contains(parameters.searchString) ||
                                         user.LastName.Contains(parameters.searchString) ||
