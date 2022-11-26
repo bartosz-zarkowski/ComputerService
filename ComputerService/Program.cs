@@ -1,5 +1,4 @@
 using ComputerService.Data;
-using ComputerService.Helpers;
 using ComputerService.Interfaces;
 using ComputerService.Middleware;
 using ComputerService.Security;
@@ -10,7 +9,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -34,11 +32,6 @@ builder.Services
 builder.Services.AddMvc();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddAutoMapper(typeof(Program));
-
-builder.Services.AddControllers().AddOData(opt =>
-    opt.EnableQueryFeatures()
-        .SetMaxTop(25).SkipToken()
-);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -71,7 +64,7 @@ builder.Services.AddAuthentication(options =>
             ValidAudience = builder.Configuration["Jwt:Audience"],
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey
-                (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException())),
         };
     });
 builder.Services.AddAuthorization();
@@ -102,7 +95,6 @@ builder.Services.AddSwaggerGen(opt =>
             new string[]{}
         }
     });
-    opt.OperationFilter<EnableQueryFiler>();
 });
 
 builder.Services.AddDbContext<ComputerServiceContext>(options =>
@@ -130,10 +122,7 @@ builder.Services
     .AddScoped<IOrderService, OrderService>()
     .AddScoped<IOrderAccessoryService, OrderAccessoryService>()
     .AddScoped<IOrderDetailsService, OrderDetailsService>()
-    .AddScoped<IUserService, UserService>()
-
-    .AddScoped<IOdataUserService, OdataUserService>();
-
+    .AddScoped<IUserService, UserService>();
 
 // Add validators
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
