@@ -10,5 +10,6 @@ public class AddressProfile : Profile
         CreateMap<Address, AddressViewModel>();
         CreateMap<CreateAddressModel, Address>();
         CreateMap<UpdateAddressModel, Address>();
+        CreateMap<Address, UpdateAddressModel>();
     }
 }

@@ -4,6 +4,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -53,12 +54,11 @@ public class AccessoryController : BaseController<Accessory>
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateAccessory(Guid id, [FromBody] UpdateAccessoryModel updateAccessoryModel)
+    public async Task<ActionResult> UpdateAccessory(Guid id, [FromBody] JsonPatchDocument<UpdateAccessoryModel> updateAccessoryModelJpd)
     {
         var accessory = await _accessoryService.GetAccessoryAsync(id);
         CheckIfEntityExists(accessory, "Given accessory does not exist");
-        var updatedAccessory = Mapper.Map(updateAccessoryModel, accessory);
-        await _accessoryService.UpdateAccessoryAsync(updatedAccessory);
+        await _accessoryService.UpdateAccessoryAsync(accessory, updateAccessoryModelJpd);
         return Ok();
     }
 

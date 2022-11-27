@@ -4,6 +4,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -53,12 +54,11 @@ public class ClientController : BaseController<Client>
 
     [Authorize(Roles = "Administrator, Receiver, Technician")]
     [HttpPatch("{id:guid}")]
-    public async Task<ActionResult> UpdateClient(Guid id, [FromBody] UpdateClientModel updateClientModel)
+    public async Task<ActionResult> UpdateClient(Guid id, [FromBody] JsonPatchDocument<UpdateClientModel> updateClientModelJpd)
     {
         var client = await _clientService.GetClientAsync(id);
         CheckIfEntityExists(client, "Given client does not exist");
-        var updatedClient = Mapper.Map(updateClientModel, client);
-        await _clientService.UpdateClientAsync(updatedClient);
+        await _clientService.UpdateClientAsync(client, updateClientModelJpd);
         return Ok();
     }
 

@@ -10,5 +10,6 @@ public class OrderDetailsProfile : Profile
         CreateMap<OrderDetails, OrderDetailsViewModel>();
         CreateMap<CreateOrderDetailsModel, OrderDetails>();
         CreateMap<UpdateOrderDetailsModel, OrderDetails>();
+        CreateMap<OrderDetails, UpdateOrderDetailsModel>();
     }
 }

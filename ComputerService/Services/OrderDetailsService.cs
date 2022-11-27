@@ -5,6 +5,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using static System.String;
 
@@ -54,8 +55,11 @@ public class OrderDetailsService : BaseEntityService<OrderDetails>, IOrderDetail
         await CreateAsync(orderDetails);
     }
 
-    public async Task UpdateOrderDetailsAsync(OrderDetails orderDetails)
+    public async Task UpdateOrderDetailsAsync(OrderDetails orderDetails, JsonPatchDocument<UpdateOrderDetailsModel> updateOrderDetailsModelJpd)
     {
+        var mappedOrderDetails = Mapper.Map<UpdateOrderDetailsModel>(orderDetails);
+        updateOrderDetailsModelJpd.ApplyTo(mappedOrderDetails);
+        Mapper.Map(mappedOrderDetails, orderDetails);
         await ValidateEntityAsync(orderDetails);
         await UpdateAsync(orderDetails);
     }

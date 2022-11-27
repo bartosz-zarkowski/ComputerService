@@ -5,6 +5,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using static System.String;
 
@@ -67,20 +68,23 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         return await FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task AddOrderAsync(Order Order)
+    public async Task AddOrderAsync(Order order)
     {
-        await ValidateEntityAsync(Order);
-        await CreateAsync(Order);
+        await ValidateEntityAsync(order);
+        await CreateAsync(order);
     }
 
-    public async Task UpdateOrderAsync(Order Order)
+    public async Task UpdateOrderAsync(Order order, JsonPatchDocument<UpdateOrderModel> updateOrderModelJpd)
     {
-        await ValidateEntityAsync(Order);
-        await UpdateAsync(Order);
+        var mappedOrder = Mapper.Map<UpdateOrderModel>(order);
+        updateOrderModelJpd.ApplyTo(mappedOrder);
+        Mapper.Map(mappedOrder, order);
+        await ValidateEntityAsync(order);
+        await UpdateAsync(order);
     }
 
-    public async Task DeleteOrderAsync(Order Order)
+    public async Task DeleteOrderAsync(Order order)
     {
-        await DeleteAsync(Order);
+        await DeleteAsync(order);
     }
 }

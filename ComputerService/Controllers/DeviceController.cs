@@ -4,6 +4,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -53,12 +54,11 @@ public class DeviceController : BaseController<Device>
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateDevice(Guid id, [FromBody] UpdateDeviceModel updateDeviceModel)
+    public async Task<ActionResult> UpdateDevice(Guid id, [FromBody] JsonPatchDocument<UpdateDeviceModel> updateDeviceModelJpd)
     {
         var device = await _deviceService.GetDeviceAsync(id);
         CheckIfEntityExists(device, "Given device does not exist");
-        var updatedDevice = Mapper.Map(updateDeviceModel, device);
-        await _deviceService.UpdateDeviceAsync(updatedDevice);
+        await _deviceService.UpdateDeviceAsync(device, updateDeviceModelJpd);
         return Ok();
     }
 
