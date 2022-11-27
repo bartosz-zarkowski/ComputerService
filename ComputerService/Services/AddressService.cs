@@ -5,6 +5,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using static System.String;
 
@@ -76,8 +77,11 @@ public class AddressService : BaseEntityService<Address>, IAddressService
         await CreateAsync(address);
     }
 
-    public async Task UpdateAddressAsync(Address address)
+    public async Task UpdateAddressAsync(Address address, JsonPatchDocument<UpdateAddressModel> updateAddressModelJpd)
     {
+        var mappedAddress = Mapper.Map<UpdateAddressModel>(address);
+        updateAddressModelJpd.ApplyTo(mappedAddress);
+        Mapper.Map(mappedAddress, address);
         await ValidateEntityAsync(address);
         await UpdateAsync(address);
     }

@@ -10,5 +10,6 @@ public class AccessoryProfile : Profile
         CreateMap<Accessory, AccessoryViewModel>();
         CreateMap<CreateAccessoryModel, Accessory>();
         CreateMap<UpdateAccessoryModel, Accessory>();
+        CreateMap<Accessory, UpdateAccessoryModel>();
     }
 }

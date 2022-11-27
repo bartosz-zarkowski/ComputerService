@@ -18,6 +18,8 @@ public class UserProfile : Profile
         CreateMap<UpdateUserModel, User>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTimeOffset.Now));
 
+        CreateMap<User, UpdateUserModel>();
+
         CreateMap<User, AuthenticateRequestModel>();
 
         CreateMap<User, JwtUserModel>();

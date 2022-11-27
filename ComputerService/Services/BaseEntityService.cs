@@ -9,13 +9,11 @@ namespace ComputerService.Services;
 
 public class BaseEntityService<T> : BaseRepository<T>, IBaseEntityService<T> where T : class
 {
-    private ComputerServiceContext Context { get; set; }
     private IValidator<T> Validator { get; set; }
-    private IMapper Mapper { get; set; }
+    protected IMapper Mapper;
 
     public BaseEntityService(ComputerServiceContext context, IValidator<T> validator, IMapper mapper) : base(context)
     {
-        Context = context;
         Validator = validator;
         Mapper = mapper;
     }

@@ -4,6 +4,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -53,12 +54,11 @@ public class OrderController : BaseController<Order>
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateOrder(Guid id, [FromBody] UpdateOrderModel updateOrderModel)
+    public async Task<ActionResult> UpdateOrder(Guid id, [FromBody] JsonPatchDocument<UpdateOrderModel> updateOrderModelJpd)
     {
         var order = await _orderService.GetOrderAsync(id);
         CheckIfEntityExists(order, "Given order does not exist");
-        var updatedOrder = Mapper.Map(updateOrderModel, order);
-        await _orderService.UpdateOrderAsync(updatedOrder);
+        await _orderService.UpdateOrderAsync(order, updateOrderModelJpd);
         return Ok();
     }
 

@@ -5,6 +5,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using static System.String;
 
@@ -71,8 +72,11 @@ public class DeviceService : BaseEntityService<Device>, IDeviceService
         await CreateAsync(device);
     }
 
-    public async Task UpdateDeviceAsync(Device device)
+    public async Task UpdateDeviceAsync(Device device, JsonPatchDocument<UpdateDeviceModel> updateDeviceModelJpd)
     {
+        var mappedDevice = Mapper.Map<UpdateDeviceModel>(device);
+        updateDeviceModelJpd.ApplyTo(mappedDevice);
+        Mapper.Map(mappedDevice, device);
         await ValidateEntityAsync(device);
         await UpdateAsync(device);
     }

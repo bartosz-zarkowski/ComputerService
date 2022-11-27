@@ -4,6 +4,7 @@ using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -53,12 +54,11 @@ public class AddressController : BaseController<Address>
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateAddress(Guid id, [FromBody] UpdateAddressModel updateAddressModel)
+    public async Task<ActionResult> UpdateAddress(Guid id, [FromBody] JsonPatchDocument<UpdateAddressModel> updateAddressModelJpd)
     {
         var address = await _addressService.GetAddressAsync(id);
         CheckIfEntityExists(address, "Given address does not exist");
-        var updatedAddress = Mapper.Map(updateAddressModel, address);
-        await _addressService.UpdateAddressAsync(updatedAddress);
+        await _addressService.UpdateAddressAsync(address, updateAddressModelJpd);
         return Ok();
     }
 

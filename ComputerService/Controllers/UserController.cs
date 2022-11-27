@@ -5,6 +5,7 @@ using ComputerService.Interfaces;
 using ComputerService.Models;
 using ComputerService.Security;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -57,12 +58,11 @@ public class UserController : BaseController<User>
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
+    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] JsonPatchDocument<UpdateUserModel> updateUserModelJpd)
     {
         var user = await _userService.GetUserAsync(id);
         CheckIfEntityExists(user, "Given user does not exist");
-        var updatedUser = Mapper.Map(updateUserModel, user);
-        await _userService.UpdateUserAsync(updatedUser);
+        await _userService.UpdateUserAsync(user, updateUserModelJpd);
         return Ok();
     }
 
