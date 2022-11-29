@@ -7,7 +7,7 @@ public class Order : IEntity
     public string Title { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    public DateTimeOffset? ReceivedAt { get; set; }
+    public DateTimeOffset? CompletedAt { get; set; }
 
     public Guid? ClientId { get; set; }
     public virtual Client? Client { get; set; }
