@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ComputerService.Data;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
@@ -37,9 +38,9 @@ public class OrderService : BaseEntityService<Order>, IOrderService
                 OrderSortEnum.UpdatedAt => asc
                     ? orders.OrderBy(order => order.UpdatedAt)
                     : orders.OrderByDescending(order => order.UpdatedAt),
-                OrderSortEnum.ReceivedAt => asc
-                    ? orders.OrderBy(order => order.ReceivedAt)
-                    : orders.OrderByDescending(order => order.ReceivedAt),
+                OrderSortEnum.CompletedAt => asc
+                    ? orders.OrderBy(order => order.CompletedAt)
+                    : orders.OrderByDescending(order => order.CompletedAt),
                 OrderSortEnum.Status => asc
                     ? orders.OrderBy(order => order.Status)
                     : orders.OrderByDescending(order => order.Status),
@@ -93,7 +94,8 @@ public class OrderService : BaseEntityService<Order>, IOrderService
     {
         var order = await GetOrderAsync(id);
         order.CompletedBy = isCompleted ? _tokenManager.GetCurrentUserId() : null;
-        order.ReceivedAt = DateTimeOffset.Now;
+        order.CompletedAt = isCompleted ? DateTimeOffset.Now : null;
+        order.Status = isCompleted ? OrderStatusEnum.Completed : OrderStatusEnum.ToCollect;
         await UpdateAsync(order);
     }
 

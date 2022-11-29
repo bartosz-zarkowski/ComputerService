@@ -4,6 +4,6 @@ public enum OrderStatusEnum
     Pending,
     InProgress,
     ToCollect,
-    Collected,
+    Completed,
     Deleted
 }
