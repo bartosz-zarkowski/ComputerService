@@ -62,6 +62,14 @@ public class OrderController : BaseController<Order>
         return Ok();
     }
 
+    [HttpPatch("/complete/{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver")]
+    public async Task<ActionResult> SetOrderAsCompleted(Guid id, [FromQuery] bool? isCompleted)
+    {
+        await _orderService.SetOrderAsCompleted(id, isCompleted ?? true);
+        return Ok();
+    }
+
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteOrderAsync(Guid id)

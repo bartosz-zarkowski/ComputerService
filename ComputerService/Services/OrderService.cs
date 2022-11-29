@@ -4,6 +4,7 @@ using ComputerService.Entities;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.Security;
 using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,11 @@ using static System.String;
 namespace ComputerService.Services;
 public class OrderService : BaseEntityService<Order>, IOrderService
 {
-    public OrderService(ComputerServiceContext context, IValidator<Order> validator, IMapper mapper) : base(context, validator, mapper) { }
+    private readonly ITokenManager _tokenManager;
+    public OrderService(ComputerServiceContext context, IValidator<Order> validator, IMapper mapper, ITokenManager tokenManager) : base(context, validator, mapper)
+    {
+        _tokenManager = tokenManager;
+    }
 
     public IQueryable<Order> GetAllOrders(ParametersModel parameters, OrderSortEnum? sortOrder)
     {
@@ -70,6 +75,7 @@ public class OrderService : BaseEntityService<Order>, IOrderService
 
     public async Task AddOrderAsync(Order order)
     {
+        order.CreatedBy = _tokenManager.GetCurrentUserId();
         await ValidateEntityAsync(order);
         await CreateAsync(order);
     }
@@ -80,6 +86,14 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         updateOrderModelJpd.ApplyTo(mappedOrder);
         Mapper.Map(mappedOrder, order);
         await ValidateEntityAsync(order);
+        await UpdateAsync(order);
+    }
+
+    public async Task SetOrderAsCompleted(Guid id, bool isCompleted)
+    {
+        var order = await GetOrderAsync(id);
+        order.CompletedBy = isCompleted ? _tokenManager.GetCurrentUserId() : null;
+        order.ReceivedAt = DateTimeOffset.Now;
         await UpdateAsync(order);
     }
 
