@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Primitives;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ComputerService.Security;
 
@@ -39,6 +40,9 @@ public class TokenManager : ITokenManager
             ? String.Empty
             : authorizationHeader.Single().Split(" ").Last();
     }
+
+    public Guid GetCurrentUserId() => new(new JwtSecurityTokenHandler().ReadJwtToken(GetCurrentAsync()).Claims
+        .First(c => c.Type == "id").Value);
 
     private static string GetKey(string token) => $"tokens:{token}: deactivated";
 }

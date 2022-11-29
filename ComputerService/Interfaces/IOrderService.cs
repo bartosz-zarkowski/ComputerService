@@ -12,5 +12,6 @@ public interface IOrderService
     Task<Order> GetOrderAsync(Guid id);
     Task AddOrderAsync(Order order);
     Task UpdateOrderAsync(Order order, JsonPatchDocument<UpdateOrderModel> updateOrderModelJpd);
+    Task SetOrderAsCompleted(Guid id, bool isCompleted);
     Task DeleteOrderAsync(Order order);
 }
