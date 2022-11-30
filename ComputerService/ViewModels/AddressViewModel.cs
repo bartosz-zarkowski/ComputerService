@@ -1,11 +1,9 @@
-﻿using ComputerService.Entities;
-
-namespace ComputerService.Models;
+﻿namespace ComputerService.ViewModels;
 
 public class AddressViewModel
 {
     public Guid Id { get; set; }
-    public virtual Customer Customer { get; set; }
+    public virtual CustomerViewModel Customer { get; set; }
     public string Country { get; set; }
     public string State { get; set; }
     public string City { get; set; }
@@ -14,4 +12,3 @@ public class AddressViewModel
     public string StreetNumber { get; set; }
     public string? Apartment { get; set; }
 }
-

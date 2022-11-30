@@ -1,6 +1,6 @@
 ﻿using ComputerService.Entities.Enums;
 
-namespace ComputerService.Models;
+namespace ComputerService.ViewModels;
 
 public class UserTrackingViewModel
 {

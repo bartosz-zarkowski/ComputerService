@@ -1,4 +1,4 @@
-﻿namespace ComputerService.Models;
+﻿namespace ComputerService.ViewModels;
 
 public class DeviceViewModel
 {
@@ -13,4 +13,3 @@ public class DeviceViewModel
     public Guid CustomerId { get; set; }
     public Guid OrderId { get; set; }
 }
-

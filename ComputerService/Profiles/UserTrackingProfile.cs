@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
-using ComputerService.Models;
+using ComputerService.ViewModels;
 
 namespace ComputerService.Profiles;
 public class UserTrackingProfile : Profile

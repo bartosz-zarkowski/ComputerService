@@ -1,4 +1,4 @@
-﻿namespace ComputerService.Models;
+﻿namespace ComputerService.ViewModels;
 
 public class PagedListViewModel<T> : List<T>
 {

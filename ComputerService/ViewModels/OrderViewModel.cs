@@ -1,7 +1,6 @@
-﻿using ComputerService.Entities;
-using ComputerService.Entities.Enums;
+﻿using ComputerService.Entities.Enums;
 
-namespace ComputerService.Models;
+namespace ComputerService.ViewModels;
 
 public class OrderViewModel
 {
@@ -13,11 +12,10 @@ public class OrderViewModel
     public Guid CustomerId { get; set; }
     public OrderStatusEnum Status { get; set; }
     public string? Description { get; set; }
-    public virtual OrderDetails Details { get; set; }
+    public virtual OrderDetailsViewModel Details { get; set; }
     public Guid CreatedBy { get; set; }
     public Guid? ServicedBy { get; set; }
     public Guid? CompletedBy { get; set; }
-    public virtual IEnumerable<Device>? Devices { get; set; }
-    public virtual IEnumerable<OrderAccessory>? Accessories { get; set; }
+    public virtual IEnumerable<DeviceViewModel>? Devices { get; set; }
+    public virtual IEnumerable<OrderAccessoryViewModel>? Accessories { get; set; }
 }
-
