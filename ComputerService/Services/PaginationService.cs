@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 
 namespace ComputerService.Services;
 

@@ -1,4 +1,4 @@
-﻿namespace ComputerService.Models;
+﻿namespace ComputerService.ViewModels;
 
 public class OrderAccessoryViewModel
 {
@@ -8,4 +8,3 @@ public class OrderAccessoryViewModel
     public string Name { get; set; }
     public Guid OrderId { get; set; }
 }
-

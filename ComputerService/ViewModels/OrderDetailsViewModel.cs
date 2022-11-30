@@ -1,4 +1,4 @@
-﻿namespace ComputerService.Models;
+﻿namespace ComputerService.ViewModels;
 
 public class OrderDetailsViewModel
 {
@@ -8,4 +8,3 @@ public class OrderDetailsViewModel
     public decimal? HardwareCharges { get; set; }
     public decimal? ServiceCharges { get; set; }
 }
-

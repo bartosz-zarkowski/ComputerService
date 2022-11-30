@@ -1,7 +1,6 @@
-﻿using ComputerService.Entities;
-using ComputerService.Entities.Enums;
+﻿using ComputerService.Entities.Enums;
 
-namespace ComputerService.Models;
+namespace ComputerService.ViewModels;
 
 public class UserViewModel
 {
@@ -15,8 +14,7 @@ public class UserViewModel
     public bool IsActive { get; set; }
     public UserRoleEnum Role { get; set; }
 
-    public virtual IEnumerable<Order>? CreatedOrders { get; set; }
-    public virtual IEnumerable<Order>? ServicedOrders { get; set; }
-    public virtual IEnumerable<Order>? CompletedOrders { get; set; }
+    public virtual IEnumerable<OrderViewModel>? CreatedOrders { get; set; }
+    public virtual IEnumerable<OrderViewModel>? ServicedOrders { get; set; }
+    public virtual IEnumerable<OrderViewModel>? CompletedOrders { get; set; }
 }
-

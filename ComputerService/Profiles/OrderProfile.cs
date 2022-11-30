@@ -2,6 +2,7 @@
 using ComputerService.Entities;
 using ComputerService.Entities.Enums;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 
 namespace ComputerService.Profiles;
 public class OrderProfile : Profile
