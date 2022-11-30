@@ -10,7 +10,7 @@ public class OrderViewModel
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? ReceivedAt { get; set; }
-    public Guid ClientId { get; set; }
+    public Guid CustomerId { get; set; }
     public OrderStatusEnum Status { get; set; }
     public string? Description { get; set; }
     public virtual OrderDetails Details { get; set; }

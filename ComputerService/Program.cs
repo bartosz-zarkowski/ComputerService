@@ -124,12 +124,13 @@ builder.Services
     .AddScoped<ITokenManager, TokenManager>()
     .AddScoped<IAccessoryService, AccessoryService>()
     .AddScoped<IAddressService, AddressService>()
-    .AddScoped<IClientService, ClientService>()
+    .AddScoped<ICustomerService, CustomerService>()
     .AddScoped<IDeviceService, DeviceService>()
     .AddScoped<IOrderService, OrderService>()
     .AddScoped<IOrderAccessoryService, OrderAccessoryService>()
     .AddScoped<IOrderDetailsService, OrderDetailsService>()
-    .AddScoped<IUserService, UserService>();
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<IUserTrackingService, UserTrackingService>();
 
 // Add validators
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();

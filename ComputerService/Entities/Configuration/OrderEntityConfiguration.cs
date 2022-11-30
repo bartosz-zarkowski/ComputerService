@@ -16,9 +16,9 @@ public class OrderEntityConfiguration : IEntityTypeConfiguration<Order>
                 v => (OrderStatusEnum)Enum.Parse(typeof(OrderStatusEnum), v));
         builder.Property(x => x.Description).HasMaxLength(500);
 
-        builder.HasOne(x => x.Client)
+        builder.HasOne(x => x.Customer)
             .WithMany(x => x.Orders)
-            .HasForeignKey(x => x.ClientId)
+            .HasForeignKey(x => x.CustomerId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(x => x.Accessories)

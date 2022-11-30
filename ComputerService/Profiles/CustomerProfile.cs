@@ -3,16 +3,16 @@ using ComputerService.Entities;
 using ComputerService.Models;
 
 namespace ComputerService.Profiles;
-public class ClientProfile : Profile
+public class CustomerProfile : Profile
 {
-    public ClientProfile()
+    public CustomerProfile()
     {
-        CreateMap<Client, ClientViewModel>();
-        CreateMap<CreateClientModel, Client>()
+        CreateMap<Customer, CustomerViewModel>();
+        CreateMap<CreateCustomerModel, Customer>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTimeOffset.Now));
-        CreateMap<UpdateClientModel, Client>()
+        CreateMap<UpdateCustomerModel, Customer>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTimeOffset.Now));
-        CreateMap<Client, UpdateClientModel>();
+        CreateMap<Customer, UpdateCustomerModel>();
     }
 }

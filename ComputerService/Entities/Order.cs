@@ -9,8 +9,8 @@ public class Order : IEntity
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? CompletedAt { get; set; }
 
-    public Guid? ClientId { get; set; }
-    public virtual Client? Client { get; set; }
+    public Guid? CustomerId { get; set; }
+    public virtual Customer? Customer { get; set; }
 
     public OrderStatusEnum Status { get; set; }
     public string? Description { get; set; }

@@ -5,7 +5,7 @@ namespace ComputerService.Models;
 public class AddressViewModel
 {
     public Guid Id { get; set; }
-    public virtual Client Client { get; set; }
+    public virtual Customer Customer { get; set; }
     public string Country { get; set; }
     public string State { get; set; }
     public string City { get; set; }

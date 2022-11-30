@@ -7,7 +7,7 @@ public class ParametersValidator : AbstractValidator<ParametersModel>
 {
     public ParametersValidator()
     {
-        int[] pageSizes = { 10, 25, 50 };
+        int[] pageSizes = { 5, 10, 25 };
         RuleFor(o => o.PageSize)
             .Must(x => pageSizes.Contains(x))
             .WithMessage("Page Size must be in [" + String.Join(", ", pageSizes) + "].");

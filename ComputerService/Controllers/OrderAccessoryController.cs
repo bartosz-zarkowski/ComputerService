@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
@@ -16,7 +17,7 @@ namespace ComputerService.Controllers;
 public class OrderAccessoryController : BaseController<OrderAccessory>
 {
     private readonly IOrderAccessoryService _orderAccessoryService;
-    public OrderAccessoryController(IOrderAccessoryService orderAccessoryService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<OrderAccessory>> logger) : base(paginationService, mapper, logger)
+    public OrderAccessoryController(IOrderAccessoryService orderAccessoryService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<OrderAccessory>> logger, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _orderAccessoryService = orderAccessoryService;
     }
@@ -49,6 +50,8 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
     {
         var orderAccessory = Mapper.Map<OrderAccessory>(createOrderAccessoryModel);
         await _orderAccessoryService.AddOrderAccessoryAsync(orderAccessory);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateOrderAccessory, orderAccessory.Id.ToString()
+            , $"Added accessory '{orderAccessory.Name}' to order with id '{orderAccessory.OrderId}'")!;
         return Ok();
     }
 
@@ -59,6 +62,8 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
         var orderAccessory = await _orderAccessoryService.GetOrderAccessoryAsync(id);
         CheckIfEntityExists(orderAccessory, "Given orderAccessory does not exist");
         await _orderAccessoryService.UpdateOrderAccessoryAsync(orderAccessory, updateOrderAccessoryModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateOrderAccessory, orderAccessory.Id.ToString()
+            , $"Updated accessory '{orderAccessory.Name}' in order with id '{orderAccessory.OrderId}'")!;
         return Ok();
     }
 
@@ -69,6 +74,8 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
         var orderAccessory = await _orderAccessoryService.GetOrderAccessoryAsync(id);
         CheckIfEntityExists(orderAccessory, "Given orderAccessory does not exist");
         await _orderAccessoryService.DeleteOrderAccessoryAsync(orderAccessory);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteOrderAccessory, orderAccessory.Id.ToString()
+            , $"Deleted accessory '{orderAccessory.Name}' from order with id '{orderAccessory.OrderId}'")!;
         return Ok();
     }
 }

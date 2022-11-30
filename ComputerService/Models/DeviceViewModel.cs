@@ -10,7 +10,7 @@ public class DeviceViewModel
     public string? Password { get; set; }
     public string? Condition { get; set; }
     public bool HasWarranty { get; set; }
-    public Guid ClientId { get; set; }
+    public Guid CustomerId { get; set; }
     public Guid OrderId { get; set; }
 }
 

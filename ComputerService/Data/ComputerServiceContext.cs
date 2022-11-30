@@ -17,7 +17,7 @@ public class ComputerServiceContext : DbContext
 
     public DbSet<Accessory> Accessories { get; set; }
     public DbSet<Address> Addresses { get; set; }
-    public DbSet<Client> Clients { get; set; }
+    public DbSet<Customer> Customers { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderAccessory> OrderAccessories { get; set; }

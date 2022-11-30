@@ -2,7 +2,7 @@
 
 namespace ComputerService.Models;
 
-public class ClientViewModel
+public class CustomerViewModel
 {
     public Guid Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }

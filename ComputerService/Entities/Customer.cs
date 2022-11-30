@@ -1,6 +1,6 @@
 ﻿namespace ComputerService.Entities;
 
-public class Client : IEntity
+public class Customer : IEntity
 {
     public Guid Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
