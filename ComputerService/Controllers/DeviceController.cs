@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
@@ -16,7 +17,7 @@ namespace ComputerService.Controllers;
 public class DeviceController : BaseController<Device>
 {
     private readonly IDeviceService _deviceService;
-    public DeviceController(IDeviceService deviceService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Device>> logger) : base(paginationService, mapper, logger)
+    public DeviceController(IDeviceService deviceService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Device>> logger, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _deviceService = deviceService;
     }
@@ -49,6 +50,7 @@ public class DeviceController : BaseController<Device>
     {
         var device = Mapper.Map<Device>(createDeviceModel);
         await _deviceService.AddDeviceAsync(device);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateDevice, device.Id.ToString(), $"Added device '{device.Name}' to order with id '{device.OrderId}'")!;
         return Ok();
     }
 
@@ -59,6 +61,7 @@ public class DeviceController : BaseController<Device>
         var device = await _deviceService.GetDeviceAsync(id);
         CheckIfEntityExists(device, "Given device does not exist");
         await _deviceService.UpdateDeviceAsync(device, updateDeviceModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateDevice, device.Id.ToString(), $"Updated device '{device.Name}' in order with id '{device.OrderId}'")!;
         return Ok();
     }
 
@@ -68,6 +71,7 @@ public class DeviceController : BaseController<Device>
         var device = await _deviceService.GetDeviceAsync(id);
         CheckIfEntityExists(device, "Given device does not exist");
         await _deviceService.DeleteDeviceAsync(device);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteDevice, device.Id.ToString(), $"Deleted device '{device.Name}' from order with id '{device.OrderId}'")!;
         return Ok();
     }
 }

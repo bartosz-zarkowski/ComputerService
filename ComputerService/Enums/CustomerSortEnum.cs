@@ -1,5 +1,5 @@
 ﻿namespace ComputerService.Enums;
-public enum ClientSortEnum
+public enum CustomerSortEnum
 {
     CreatedAt,
     UpdatedAt,

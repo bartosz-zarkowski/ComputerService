@@ -1,5 +1,5 @@
 ﻿namespace ComputerService.Models;
-public class UpdateClientModel
+public class CreateCustomerModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

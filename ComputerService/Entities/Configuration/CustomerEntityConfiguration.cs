@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ComputerService.Entities.Configuration;
-public class ClientEntityConfiguration : IEntityTypeConfiguration<Client>
+public class CustomerEntityConfiguration : IEntityTypeConfiguration<Customer>
 {
-    public void Configure(EntityTypeBuilder<Client> builder)
+    public void Configure(EntityTypeBuilder<Customer> builder)
     {
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();
@@ -18,15 +18,15 @@ public class ClientEntityConfiguration : IEntityTypeConfiguration<Client>
             .HasMaxLength(15);
 
         builder.HasOne(x => x.Address)
-            .WithOne(x => x.Client)
+            .WithOne(x => x.Customer)
             .HasForeignKey<Address>(x => x.Id);
 
         builder.HasMany(x => x.Devices)
-            .WithOne(x => x.Client)
-            .HasForeignKey(x => x.ClientId);
+            .WithOne(x => x.Customer)
+            .HasForeignKey(x => x.CustomerId);
 
         builder.HasMany(x => x.Orders)
-            .WithOne(x => x.Client)
-            .HasForeignKey(x => x.ClientId);
+            .WithOne(x => x.Customer)
+            .HasForeignKey(x => x.CustomerId);
     }
 }

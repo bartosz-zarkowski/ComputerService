@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
@@ -17,7 +18,7 @@ public class UserController : BaseController<User>
 {
     private readonly IUserService _userService;
     private readonly IPasswordHashingService _passwordHashingService;
-    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger, IPasswordHashingService passwordHashingService) : base(paginationService, mapper, logger)
+    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger, IPasswordHashingService passwordHashingService, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _userService = userService;
         _passwordHashingService = passwordHashingService;
@@ -53,6 +54,8 @@ public class UserController : BaseController<User>
         user.Salt = _passwordHashingService.GetSaltAsString();
         user.Password = _passwordHashingService.HashPassword(user.Password, user.Salt);
         await _userService.AddUserAsync(user);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateUser, user.Id.ToString()
+            , $"Created user: {user.FirstName} {user.LastName}")!;
         return Ok();
     }
 
@@ -63,6 +66,8 @@ public class UserController : BaseController<User>
         var user = await _userService.GetUserAsync(id);
         CheckIfEntityExists(user, "Given user does not exist");
         await _userService.UpdateUserAsync(user, updateUserModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateUser, user.Id.ToString()
+            , $"Updated user: {user.FirstName} {user.LastName}")!;
         return Ok();
     }
 
@@ -73,6 +78,8 @@ public class UserController : BaseController<User>
         var user = await _userService.GetUserAsync(id);
         CheckIfEntityExists(user, "Given user does not exist");
         await _userService.DeleteUserAsync(user);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteUser, user.Id.ToString()
+            , $"Deleted user: {user.FirstName} {user.LastName}")!;
         return Ok();
     }
 }

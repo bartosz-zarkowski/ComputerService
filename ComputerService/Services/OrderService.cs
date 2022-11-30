@@ -90,9 +90,8 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         await UpdateAsync(order);
     }
 
-    public async Task SetOrderAsCompleted(Guid id, bool isCompleted)
+    public async Task SetOrderAsCompleted(Order order, bool isCompleted)
     {
-        var order = await GetOrderAsync(id);
         order.CompletedBy = isCompleted ? _tokenManager.GetCurrentUserId() : null;
         order.CompletedAt = isCompleted ? DateTimeOffset.Now : null;
         order.Status = isCompleted ? OrderStatusEnum.Completed : OrderStatusEnum.ToCollect;

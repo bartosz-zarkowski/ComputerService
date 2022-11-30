@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace ComputerService.Validators;
 
-public class ClientValidator : AbstractValidator<Client>
+public class CustomerValidator : AbstractValidator<Customer>
 {
-    public ClientValidator()
+    public CustomerValidator()
     {
         RuleFor(x => x.FirstName).NotNull()
             .MaximumLength(50);

@@ -21,7 +21,7 @@ public class AddressEntityConfiguration : IEntityTypeConfiguration<Address>
             .HasMaxLength(90);
         builder.Property(x => x.Apartment).HasMaxLength(90);
 
-        builder.HasOne(x => x.Client)
+        builder.HasOne(x => x.Customer)
             .WithOne(x => x.Address)
             .HasForeignKey<Address>(x => x.Id)
             .OnDelete(DeleteBehavior.Cascade);

@@ -1,0 +1,29 @@
+﻿namespace ComputerService.Entities.Enums;
+public enum TrackingActionTypeEnum
+{
+    CreateAccessory,
+    UpdateAccessory,
+    DeleteAccessory,
+    CreateAddress,
+    UpdateAddress,
+    DeleteAddress,
+    CreateCustomer,
+    UpdateCustomer,
+    DeleteCustomer,
+    CreateDevice,
+    UpdateDevice,
+    DeleteDevice,
+    CreateOrder,
+    UpdateOrder,
+    SetOrderAsCompleted,
+    DeleteOrder,
+    CreateOrderAccessory,
+    UpdateOrderAccessory,
+    DeleteOrderAccessory,
+    CreateOrderDetails,
+    UpdateOrderDetails,
+    DeleteOrderDetails,
+    CreateUser,
+    UpdateUser,
+    DeleteUser
+}

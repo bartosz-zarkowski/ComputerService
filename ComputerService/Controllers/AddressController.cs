@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
@@ -16,7 +17,7 @@ namespace ComputerService.Controllers;
 public class AddressController : BaseController<Address>
 {
     private readonly IAddressService _addressService;
-    public AddressController(IAddressService addressService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Address>> logger) : base(paginationService, mapper, logger)
+    public AddressController(IAddressService addressService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Address>> logger, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _addressService = addressService;
     }
@@ -49,6 +50,7 @@ public class AddressController : BaseController<Address>
     {
         var address = Mapper.Map<Address>(createAddressModel);
         await _addressService.AddAddressAsync(address);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateAddress, address.Id.ToString(), $"Created address to user with id '{address.Id}'")!;
         return Ok();
     }
 
@@ -59,6 +61,7 @@ public class AddressController : BaseController<Address>
         var address = await _addressService.GetAddressAsync(id);
         CheckIfEntityExists(address, "Given address does not exist");
         await _addressService.UpdateAddressAsync(address, updateAddressModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateAddress, address.Id.ToString(), $"Updated address of user with id '{address.Id}'")!;
         return Ok();
     }
 
@@ -69,6 +72,7 @@ public class AddressController : BaseController<Address>
         var address = await _addressService.GetAddressAsync(id);
         CheckIfEntityExists(address, "Given address does not exist");
         await _addressService.DeleteAddressAsync(address);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteAddress, address.Id.ToString(), $"Deleted address from user with id '{address.Id}'")!;
         return Ok();
     }
 }
