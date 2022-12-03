@@ -53,7 +53,7 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
         await _orderAccessoryService.AddOrderAccessoryAsync(orderAccessory);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateOrderAccessory, orderAccessory.Id.ToString()
             , $"Added accessory '{orderAccessory.Name}' to order with id '{orderAccessory.OrderId}'")!;
-        return Ok();
+        return Ok(new { orderAccessoryId = orderAccessory.Id });
     }
 
     [HttpPatch("{id:guid}")]
