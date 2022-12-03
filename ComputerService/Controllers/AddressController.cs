@@ -52,7 +52,7 @@ public class AddressController : BaseController<Address>
         var address = Mapper.Map<Address>(createAddressModel);
         await _addressService.AddAddressAsync(address);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateAddress, address.Id.ToString(), $"Created address to user with id '{address.Id}'")!;
-        return Ok();
+        return Ok(new { addressId = address.Id });
     }
 
     [HttpPatch("{id:guid}")]

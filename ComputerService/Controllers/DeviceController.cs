@@ -52,7 +52,7 @@ public class DeviceController : BaseController<Device>
         var device = Mapper.Map<Device>(createDeviceModel);
         await _deviceService.AddDeviceAsync(device);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateDevice, device.Id.ToString(), $"Added device '{device.Name}' to order with id '{device.OrderId}'")!;
-        return Ok();
+        return Ok(new { deviceId = device.Id });
     }
 
     [HttpPatch("{id:guid}")]

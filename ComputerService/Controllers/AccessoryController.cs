@@ -52,7 +52,7 @@ public class AccessoryController : BaseController<Accessory>
         var accessory = Mapper.Map<Accessory>(createAccessoryModel);
         await _accessoryService.AddAccessoryAsync(accessory);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateAccessory, accessory.Id.ToString(), $"Created accessory '{accessory.Name}'")!;
-        return Ok();
+        return Ok(new { accessoryId = accessory.Id });
     }
 
     [HttpPatch("{id:guid}")]

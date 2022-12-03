@@ -57,7 +57,7 @@ public class UserController : BaseController<User>
         await _userService.AddUserAsync(user);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateUser, user.Id.ToString()
             , $"Created user: {user.FirstName} {user.LastName}")!;
-        return Ok();
+        return Ok(new { userId = user.Id });
     }
 
     [HttpPatch("{id:guid}")]
