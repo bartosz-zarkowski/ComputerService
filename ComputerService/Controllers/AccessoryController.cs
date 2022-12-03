@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -15,7 +18,7 @@ namespace ComputerService.Controllers;
 public class AccessoryController : BaseController<Accessory>
 {
     private readonly IAccessoryService _accessoryService;
-    public AccessoryController(IAccessoryService accessoryService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Accessory>> logger) : base(paginationService, mapper, logger)
+    public AccessoryController(IAccessoryService accessoryService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Accessory>> logger, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _accessoryService = accessoryService;
     }
@@ -48,17 +51,18 @@ public class AccessoryController : BaseController<Accessory>
     {
         var accessory = Mapper.Map<Accessory>(createAccessoryModel);
         await _accessoryService.AddAccessoryAsync(accessory);
-        return Ok();
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateAccessory, accessory.Id.ToString(), $"Created accessory '{accessory.Name}'")!;
+        return Ok(new { accessoryId = accessory.Id });
     }
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateAccessory(Guid id, [FromBody] UpdateAccessoryModel updateAccessoryModel)
+    public async Task<ActionResult> UpdateAccessory(Guid id, [FromBody] JsonPatchDocument<UpdateAccessoryModel> updateAccessoryModelJpd)
     {
         var accessory = await _accessoryService.GetAccessoryAsync(id);
         CheckIfEntityExists(accessory, "Given accessory does not exist");
-        var updatedAccessory = Mapper.Map(updateAccessoryModel, accessory);
-        await _accessoryService.UpdateAccessoryAsync(updatedAccessory);
+        await _accessoryService.UpdateAccessoryAsync(accessory, updateAccessoryModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateAccessory, accessory.Id.ToString(), $"Updated accessory '{accessory.Name}'")!;
         return Ok();
     }
 
@@ -69,6 +73,7 @@ public class AccessoryController : BaseController<Accessory>
         var accessory = await _accessoryService.GetAccessoryAsync(id);
         CheckIfEntityExists(accessory, "Given accessory does not exist");
         await _accessoryService.DeleteAccessoryAsync(accessory);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteAccessory, accessory.Id.ToString(), $"Deleted accessory '{accessory.Name}'")!;
         return Ok();
     }
 }

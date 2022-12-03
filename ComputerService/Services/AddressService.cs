@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace ComputerService.Services;
 
@@ -20,35 +21,34 @@ public class AddressService : BaseEntityService<Address>, IAddressService
         var addresses = FindAll();
         if (sortOrder != null)
         {
-            bool asc = (bool)parameters.asc;
-            addresses = Enum.IsDefined(typeof(AddressSortEnum), sortOrder)
-                ? sortOrder switch
-                {
-                    AddressSortEnum.Country => asc
-                        ? addresses.OrderBy(address => address.Country)
-                        : addresses.OrderByDescending(address => address.Country),
-                    AddressSortEnum.State => asc
-                        ? addresses.OrderBy(address => address.State)
-                        : addresses.OrderByDescending(address => address.State),
-                    AddressSortEnum.City => asc
-                        ? addresses.OrderBy(address => address.City)
-                        : addresses.OrderByDescending(address => address.City),
-                    AddressSortEnum.PostalCode => asc
-                        ? addresses.OrderBy(address => address.PostalCode)
-                        : addresses.OrderByDescending(address => address.PostalCode),
-                    AddressSortEnum.Street => asc
-                        ? addresses.OrderBy(address => address.Street)
-                        : addresses.OrderByDescending(address => address.Street),
-                    AddressSortEnum.StreetNumber => asc
-                        ? addresses.OrderBy(address => address.StreetNumber)
-                        : addresses.OrderByDescending(address => address.StreetNumber),
-                    AddressSortEnum.Apartment => asc
-                        ? addresses.OrderBy(address => address.Apartment)
-                        : addresses.OrderByDescending(address => address.Apartment),
-                }
-                : throw new ArgumentException();
+            var asc = parameters.asc ?? true;
+            addresses = sortOrder switch
+            {
+                AddressSortEnum.Country => asc
+                    ? addresses.OrderBy(address => address.Country)
+                    : addresses.OrderByDescending(address => address.Country),
+                AddressSortEnum.State => asc
+                    ? addresses.OrderBy(address => address.State)
+                    : addresses.OrderByDescending(address => address.State),
+                AddressSortEnum.City => asc
+                    ? addresses.OrderBy(address => address.City)
+                    : addresses.OrderByDescending(address => address.City),
+                AddressSortEnum.PostalCode => asc
+                    ? addresses.OrderBy(address => address.PostalCode)
+                    : addresses.OrderByDescending(address => address.PostalCode),
+                AddressSortEnum.Street => asc
+                    ? addresses.OrderBy(address => address.Street)
+                    : addresses.OrderByDescending(address => address.Street),
+                AddressSortEnum.StreetNumber => asc
+                    ? addresses.OrderBy(address => address.StreetNumber)
+                    : addresses.OrderByDescending(address => address.StreetNumber),
+                AddressSortEnum.Apartment => asc
+                    ? addresses.OrderBy(address => address.Apartment)
+                    : addresses.OrderByDescending(address => address.Apartment),
+                _ => throw new ArgumentException()
+            };
         }
-        if (!parameters.searchString.IsNullOrEmpty())
+        if (!IsNullOrEmpty(parameters.searchString))
         {
             addresses = addresses.Where(accessory => accessory.Country.Contains(parameters.searchString) ||
                                                             accessory.State.Contains(parameters.searchString) ||
@@ -77,8 +77,11 @@ public class AddressService : BaseEntityService<Address>, IAddressService
         await CreateAsync(address);
     }
 
-    public async Task UpdateAddressAsync(Address address)
+    public async Task UpdateAddressAsync(Address address, JsonPatchDocument<UpdateAddressModel> updateAddressModelJpd)
     {
+        var mappedAddress = Mapper.Map<UpdateAddressModel>(address);
+        updateAddressModelJpd.ApplyTo(mappedAddress);
+        Mapper.Map(mappedAddress, address);
         await ValidateEntityAsync(address);
         await UpdateAsync(address);
     }

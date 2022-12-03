@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 
 namespace ComputerService.Services;
 
@@ -17,13 +18,13 @@ public class PaginationService : IPaginationService
     public PagedResponse<PagedListViewModel<T>> CreatePagedResponse<T>(PagedListViewModel<T> pagedData, ParametersModel? parameters, Enum? sortOrder)
     {
         var nextPage = pagedData.HasNext && pagedData.CurrentPage < pagedData.TotalPages
-            ? _uriService.GetPageUri(pagedData.CurrentPage + 1, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder)
+            ? _uriService.GetPageUri(pagedData.CurrentPage + 1, pagedData.PageSize, parameters?.searchString, parameters?.asc ?? true, sortOrder)
             : null;
         var previousPage = pagedData.HasPrevious && pagedData.CurrentPage <= pagedData.TotalPages
-            ? _uriService.GetPageUri(pagedData.CurrentPage - 1, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder)
+            ? _uriService.GetPageUri(pagedData.CurrentPage - 1, pagedData.PageSize, parameters?.searchString, parameters?.asc ?? true, sortOrder)
             : null;
-        var firstPage = _uriService.GetPageUri(1, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder);
-        var lastPage = _uriService.GetPageUri(pagedData.TotalPages, pagedData.PageSize, parameters.searchString, (bool)parameters.asc, sortOrder);
+        var firstPage = _uriService.GetPageUri(1, pagedData.PageSize, parameters?.searchString, parameters?.asc ?? true, sortOrder);
+        var lastPage = _uriService.GetPageUri(pagedData.TotalPages, pagedData.PageSize, parameters?.searchString, parameters?.asc ?? true, sortOrder);
 
         var links = new List<Link>()
         {

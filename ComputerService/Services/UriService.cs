@@ -12,16 +12,16 @@ public class UriService : IUriService
         _contextAccessor = contextAccessor;
     }
 
-    public Uri GetPageUri(int pageNumber, int pageSize, string searchString, bool asc, Enum? sortOrder)
+    public Uri GetPageUri(int pageNumber, int pageSize, string? searchString, bool asc, Enum? sortOrder)
     {
-        var request = _contextAccessor.HttpContext.Request;
-        var baseUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+        var request = _contextAccessor.HttpContext?.Request;
+        var baseUri = string.Concat(request?.Scheme, "://", request?.Host.ToUriComponent());
         var route = _contextAccessor.HttpContext?.Request.Path.ToString();
         var endpointUri = new Uri(string.Concat(baseUri, route));
         var modifiedUri = QueryHelpers.AddQueryString(endpointUri.ToString(), "pageNumber", pageNumber.ToString());
         modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "pageSize", pageSize.ToString());
         if (sortOrder != null) modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "sortOrder", sortOrder.ToString());
-        if (asc != null) modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "asc", asc.ToString());
+        modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "asc", asc.ToString());
         if (searchString != null) modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "searchString", searchString);
         return new Uri(modifiedUri);
     }

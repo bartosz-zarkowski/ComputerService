@@ -16,7 +16,7 @@ public class DeviceValidator : AbstractValidator<Device>
         RuleFor(x => x.Condition)
             .MaximumLength(500);
         RuleFor(x => x.HasWarranty).NotNull();
-        RuleFor(x => x.ClientId).NotNull();
+        RuleFor(x => x.CustomerId).NotNull();
         RuleFor(x => x.OrderId).NotNull();
     }
 }

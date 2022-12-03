@@ -10,8 +10,8 @@ public class Device : IEntity
     public string? Condition { get; set; }
     public bool HasWarranty { get; set; }
 
-    public Guid ClientId { get; set; }
-    public virtual Client Client { get; set; }
+    public Guid? CustomerId { get; set; }
+    public virtual Customer? Customer { get; set; }
     public Guid OrderId { get; set; }
     public virtual Order Order { get; set; }
 }

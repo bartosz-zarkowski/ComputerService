@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using ComputerService.Data;
 using ComputerService.Entities;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using static System.String;
 
 namespace ComputerService.Services;
 public class OrderAccessoryService : BaseEntityService<OrderAccessory>, IOrderAccessoryService
@@ -18,23 +19,22 @@ public class OrderAccessoryService : BaseEntityService<OrderAccessory>, IOrderAc
         var orderAccessories = FindAll();
         if (sortOrder != null)
         {
-            bool asc = (bool)parameters.asc;
-            orderAccessories = Enum.IsDefined(typeof(OrderAccessorySortEnum), sortOrder)
-                ? sortOrder switch
-                {
-                    OrderAccessorySortEnum.CreatedAt => asc
-                        ? orderAccessories.OrderBy(orderAccessory => orderAccessory.CreatedAt)
-                        : orderAccessories.OrderByDescending(orderAccessory => orderAccessory.CreatedAt),
-                    OrderAccessorySortEnum.UpdatedAt => asc
-                        ? orderAccessories.OrderBy(orderAccessory => orderAccessory.UpdatedAt)
-                        : orderAccessories.OrderByDescending(orderAccessory => orderAccessory.UpdatedAt),
-                    OrderAccessorySortEnum.Name => asc
-                        ? orderAccessories.OrderBy(orderAccessory => orderAccessory.Name)
-                        : orderAccessories.OrderByDescending(orderAccessory => orderAccessory.Name),
-                }
-                : throw new ArgumentException();
+            var asc = parameters.asc ?? true;
+            orderAccessories = sortOrder switch
+            {
+                OrderAccessorySortEnum.CreatedAt => asc
+                    ? orderAccessories.OrderBy(orderAccessory => orderAccessory.CreatedAt)
+                    : orderAccessories.OrderByDescending(orderAccessory => orderAccessory.CreatedAt),
+                OrderAccessorySortEnum.UpdatedAt => asc
+                    ? orderAccessories.OrderBy(orderAccessory => orderAccessory.UpdatedAt)
+                    : orderAccessories.OrderByDescending(orderAccessory => orderAccessory.UpdatedAt),
+                OrderAccessorySortEnum.Name => asc
+                    ? orderAccessories.OrderBy(orderAccessory => orderAccessory.Name)
+                    : orderAccessories.OrderByDescending(orderAccessory => orderAccessory.Name),
+                _ => throw new ArgumentException()
+            };
         }
-        if (!parameters.searchString.IsNullOrEmpty())
+        if (!IsNullOrEmpty(parameters.searchString))
         {
             orderAccessories = orderAccessories.Where(orderAccessory =>
                 orderAccessory.Name.Contains(parameters.searchString));
@@ -58,8 +58,11 @@ public class OrderAccessoryService : BaseEntityService<OrderAccessory>, IOrderAc
         await CreateAsync(orderAccessory);
     }
 
-    public async Task UpdateOrderAccessoryAsync(OrderAccessory orderAccessory)
+    public async Task UpdateOrderAccessoryAsync(OrderAccessory orderAccessory, JsonPatchDocument<UpdateOrderAccessoryModel> updateOrderAccessoryModelJpd)
     {
+        var mappedOrderAccessory = Mapper.Map<UpdateOrderAccessoryModel>(orderAccessory);
+        updateOrderAccessoryModelJpd.ApplyTo(mappedOrderAccessory);
+        Mapper.Map(mappedOrderAccessory, orderAccessory);
         await ValidateEntityAsync(orderAccessory);
         await UpdateAsync(orderAccessory);
     }

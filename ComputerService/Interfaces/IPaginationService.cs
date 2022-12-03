@@ -1,4 +1,5 @@
 ﻿using ComputerService.Models;
+using ComputerService.ViewModels;
 
 namespace ComputerService.Interfaces;
 

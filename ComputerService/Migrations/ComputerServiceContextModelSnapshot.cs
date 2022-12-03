@@ -17,10 +17,13 @@ namespace ComputerService.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ComputerService.Entities.Accessory", b =>
                 {
@@ -34,6 +37,9 @@ namespace ComputerService.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Accessories");
                 });
@@ -82,7 +88,7 @@ namespace ComputerService.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("ComputerService.Entities.Client", b =>
+            modelBuilder.Entity("ComputerService.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,16 +123,13 @@ namespace ComputerService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("ComputerService.Entities.Device", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Condition")
@@ -136,6 +139,9 @@ namespace ComputerService.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("HasWarranty")
                         .HasColumnType("bit");
@@ -160,7 +166,7 @@ namespace ComputerService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("OrderId");
 
@@ -173,8 +179,8 @@ namespace ComputerService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTimeOffset?>("CompletedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("CompletedBy")
                         .HasColumnType("uniqueidentifier");
@@ -183,34 +189,39 @@ namespace ComputerService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTimeOffset?>("ReceivedAt")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<Guid?>("ServicedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Pending");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("CompletedBy");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("ServicedBy");
 
@@ -309,91 +320,114 @@ namespace ComputerService.Migrations
                         .HasMaxLength(18)
                         .HasColumnType("nvarchar(18)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ComputerService.Entities.UserTracking", b =>
                 {
-                    b.Property<string>("Action")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ActionTargetId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("UserId");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrackingActionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("UserTrackings");
                 });
 
             modelBuilder.Entity("ComputerService.Entities.Address", b =>
                 {
-                    b.HasOne("ComputerService.Entities.Client", "Client")
+                    b.HasOne("ComputerService.Entities.Customer", "Customer")
                         .WithOne("Address")
                         .HasForeignKey("ComputerService.Entities.Address", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("ComputerService.Entities.Device", b =>
                 {
-                    b.HasOne("ComputerService.Entities.Client", "Client")
+                    b.HasOne("ComputerService.Entities.Customer", "Customer")
                         .WithMany("Devices")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("ComputerService.Entities.Order", "Order")
                         .WithMany("Devices")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("Customer");
 
                     b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ComputerService.Entities.Order", b =>
                 {
-                    b.HasOne("ComputerService.Entities.Client", "Client")
-                        .WithMany("Orders")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("ComputerService.Entities.User", "CompleteUser")
                         .WithMany("CompletedOrders")
                         .HasForeignKey("CompletedBy");
 
                     b.HasOne("ComputerService.Entities.User", "CreateUser")
                         .WithMany("CreatedOrders")
-                        .HasForeignKey("CreatedBy")
-                        .IsRequired();
+                        .HasForeignKey("CreatedBy");
+
+                    b.HasOne("ComputerService.Entities.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("ComputerService.Entities.User", "ServiceUser")
                         .WithMany("ServicedOrders")
                         .HasForeignKey("ServicedBy");
 
-                    b.Navigation("Client");
-
                     b.Navigation("CompleteUser");
 
                     b.Navigation("CreateUser");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("ServiceUser");
                 });
@@ -420,18 +454,7 @@ namespace ComputerService.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("ComputerService.Entities.UserTracking", b =>
-                {
-                    b.HasOne("ComputerService.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ComputerService.Entities.Client", b =>
+            modelBuilder.Entity("ComputerService.Entities.Customer", b =>
                 {
                     b.Navigation("Address");
 

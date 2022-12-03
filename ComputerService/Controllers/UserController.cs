@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.Security;
+using ComputerService.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -14,9 +18,11 @@ namespace ComputerService.Controllers;
 public class UserController : BaseController<User>
 {
     private readonly IUserService _userService;
-    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger) : base(paginationService, mapper, logger)
+    private readonly IPasswordHashingService _passwordHashingService;
+    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger, IPasswordHashingService passwordHashingService, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _userService = userService;
+        _passwordHashingService = passwordHashingService;
     }
 
     [HttpGet]
@@ -46,18 +52,23 @@ public class UserController : BaseController<User>
     public async Task<IActionResult> AddUserAsync([FromBody] CreateUserModel createUserModel)
     {
         var user = Mapper.Map<User>(createUserModel);
+        user.Salt = _passwordHashingService.GetSaltAsString();
+        user.Password = _passwordHashingService.HashPassword(user.Password, user.Salt);
         await _userService.AddUserAsync(user);
-        return Ok();
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateUser, user.Id.ToString()
+            , $"Created user: {user.FirstName} {user.LastName}")!;
+        return Ok(new { userId = user.Id });
     }
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UpdateUserModel updateUserModel)
+    public async Task<ActionResult> UpdateUser(Guid id, [FromBody] JsonPatchDocument<UpdateUserModel> updateUserModelJpd)
     {
         var user = await _userService.GetUserAsync(id);
         CheckIfEntityExists(user, "Given user does not exist");
-        var updatedUser = Mapper.Map(updateUserModel, user);
-        await _userService.UpdateUserAsync(updatedUser);
+        await _userService.UpdateUserAsync(user, updateUserModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateUser, user.Id.ToString()
+            , $"Updated user: {user.FirstName} {user.LastName}")!;
         return Ok();
     }
 
@@ -68,6 +79,8 @@ public class UserController : BaseController<User>
         var user = await _userService.GetUserAsync(id);
         CheckIfEntityExists(user, "Given user does not exist");
         await _userService.DeleteUserAsync(user);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteUser, user.Id.ToString()
+            , $"Deleted user: {user.FirstName} {user.LastName}")!;
         return Ok();
     }
 }

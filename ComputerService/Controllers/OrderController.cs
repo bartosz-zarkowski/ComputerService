@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -15,7 +18,7 @@ namespace ComputerService.Controllers;
 public class OrderController : BaseController<Order>
 {
     private readonly IOrderService _orderService;
-    public OrderController(IOrderService orderService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Order>> logger) : base(paginationService, mapper, logger)
+    public OrderController(IOrderService orderService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Order>> logger, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _orderService = orderService;
     }
@@ -48,17 +51,31 @@ public class OrderController : BaseController<Order>
     {
         var order = Mapper.Map<Order>(createOrderModel);
         await _orderService.AddOrderAsync(order);
-        return Ok();
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateOrder, order.Id.ToString()
+            , $"Created order '{order.Title}' for customer with id '{order.CustomerId}'")!;
+        return Ok(new { orderId = order.Id });
     }
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateOrder(Guid id, [FromBody] UpdateOrderModel updateOrderModel)
+    public async Task<ActionResult> UpdateOrder(Guid id, [FromBody] JsonPatchDocument<UpdateOrderModel> updateOrderModelJpd)
     {
         var order = await _orderService.GetOrderAsync(id);
         CheckIfEntityExists(order, "Given order does not exist");
-        var updatedOrder = Mapper.Map(updateOrderModel, order);
-        await _orderService.UpdateOrderAsync(updatedOrder);
+        await _orderService.UpdateOrderAsync(order, updateOrderModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateOrder, order.Id.ToString()
+            , $"Updated order '{order.Title}' of customer with id '{order.CustomerId}'")!;
+        return Ok();
+    }
+
+    [HttpPatch("/complete/{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver")]
+    public async Task<ActionResult> SetOrderAsCompleted(Guid id, [FromQuery] bool? isCompleted)
+    {
+        var order = await _orderService.GetOrderAsync(id);
+        await _orderService.SetOrderAsCompleted(order, isCompleted ?? true);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.SetOrderAsCompleted, order.Id.ToString()
+            , $"Completed order '{order.Title}' of customer with id '{order.CustomerId}'")!;
         return Ok();
     }
 
@@ -69,6 +86,8 @@ public class OrderController : BaseController<Order>
         var order = await _orderService.GetOrderAsync(id);
         CheckIfEntityExists(order, "Given order does not exist");
         await _orderService.DeleteOrderAsync(order);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteOrder, order.Id.ToString()
+            , $"Deleted order '{order.Title}' of customer with id '{order.CustomerId}'")!;
         return Ok();
     }
 }

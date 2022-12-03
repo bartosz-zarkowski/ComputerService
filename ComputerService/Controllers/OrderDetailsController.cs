@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -14,7 +17,7 @@ namespace ComputerService.Controllers;
 public class OrderDetailsController : BaseController<OrderDetails>
 {
     private readonly IOrderDetailsService _orderDetailsService;
-    public OrderDetailsController(IOrderDetailsService orderDetailsService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<OrderDetails>> logger) : base(paginationService, mapper, logger)
+    public OrderDetailsController(IOrderDetailsService orderDetailsService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<OrderDetails>> logger, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _orderDetailsService = orderDetailsService;
     }
@@ -47,17 +50,20 @@ public class OrderDetailsController : BaseController<OrderDetails>
     {
         var orderDetails = Mapper.Map<OrderDetails>(createOrderDetailsModel);
         await _orderDetailsService.AddOrderDetailsAsync(orderDetails);
-        return Ok();
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateOrderDetails, orderDetails.Id.ToString()
+            , $"Added details to order: {orderDetails.Id}")!;
+        return Ok(new { orderDetailsId = orderDetails.Id });
     }
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateOrderDetails(Guid id, [FromBody] UpdateOrderDetailsModel updateOrderDetailsModel)
+    public async Task<ActionResult> UpdateOrderDetails(Guid id, [FromBody] JsonPatchDocument<UpdateOrderDetailsModel> updateOrderDetailsModelJpd)
     {
         var orderDetails = await _orderDetailsService.GetOrderDetailsAsync(id);
         CheckIfEntityExists(orderDetails, "Given orderDetails does not exist");
-        var updatedOrderDetails = Mapper.Map(updateOrderDetailsModel, orderDetails);
-        await _orderDetailsService.UpdateOrderDetailsAsync(updatedOrderDetails);
+        await _orderDetailsService.UpdateOrderDetailsAsync(orderDetails, updateOrderDetailsModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateOrderDetails, orderDetails.Id.ToString()
+            , $"Updated details of order: {orderDetails.Id}")!;
         return Ok();
     }
 
@@ -68,6 +74,8 @@ public class OrderDetailsController : BaseController<OrderDetails>
         var orderDetails = await _orderDetailsService.GetOrderDetailsAsync(id);
         CheckIfEntityExists(orderDetails, "Given orderDetails does not exist");
         await _orderDetailsService.DeleteOrderDetailsAsync(orderDetails);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteOrderDetails, orderDetails.Id.ToString()
+            , $"Deleted details of order: {orderDetails.Id}")!;
         return Ok();
     }
 }

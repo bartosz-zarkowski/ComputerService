@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 
 namespace ComputerService.Profiles;
 
@@ -17,6 +18,8 @@ public class UserProfile : Profile
 
         CreateMap<UpdateUserModel, User>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTimeOffset.Now));
+
+        CreateMap<User, UpdateUserModel>();
 
         CreateMap<User, AuthenticateRequestModel>();
 

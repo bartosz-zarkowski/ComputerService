@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using ComputerService.Entities;
+using ComputerService.Entities.Enums;
 using ComputerService.Enums;
 using ComputerService.Interfaces;
 using ComputerService.Models;
+using ComputerService.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerService.Controllers;
@@ -15,7 +18,7 @@ namespace ComputerService.Controllers;
 public class DeviceController : BaseController<Device>
 {
     private readonly IDeviceService _deviceService;
-    public DeviceController(IDeviceService deviceService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Device>> logger) : base(paginationService, mapper, logger)
+    public DeviceController(IDeviceService deviceService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<Device>> logger, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
     {
         _deviceService = deviceService;
     }
@@ -48,17 +51,18 @@ public class DeviceController : BaseController<Device>
     {
         var device = Mapper.Map<Device>(createDeviceModel);
         await _deviceService.AddDeviceAsync(device);
-        return Ok();
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateDevice, device.Id.ToString(), $"Added device '{device.Name}' to order with id '{device.OrderId}'")!;
+        return Ok(new { deviceId = device.Id });
     }
 
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult> UpdateDevice(Guid id, [FromBody] UpdateDeviceModel updateDeviceModel)
+    public async Task<ActionResult> UpdateDevice(Guid id, [FromBody] JsonPatchDocument<UpdateDeviceModel> updateDeviceModelJpd)
     {
         var device = await _deviceService.GetDeviceAsync(id);
         CheckIfEntityExists(device, "Given device does not exist");
-        var updatedDevice = Mapper.Map(updateDeviceModel, device);
-        await _deviceService.UpdateDeviceAsync(updatedDevice);
+        await _deviceService.UpdateDeviceAsync(device, updateDeviceModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateDevice, device.Id.ToString(), $"Updated device '{device.Name}' in order with id '{device.OrderId}'")!;
         return Ok();
     }
 
@@ -68,6 +72,7 @@ public class DeviceController : BaseController<Device>
         var device = await _deviceService.GetDeviceAsync(id);
         CheckIfEntityExists(device, "Given device does not exist");
         await _deviceService.DeleteDeviceAsync(device);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.DeleteDevice, device.Id.ToString(), $"Deleted device '{device.Name}' from order with id '{device.OrderId}'")!;
         return Ok();
     }
 }

@@ -1,9 +1,10 @@
 ﻿namespace ComputerService.Enums;
 public enum OrderSortEnum
 {
+    Title,
     CreatedAt,
     UpdatedAt,
-    ReceivedAt,
+    CompletedAt,
     Status,
     CreatedBy,
     ServicedBy,
