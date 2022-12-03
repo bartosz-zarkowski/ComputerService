@@ -52,7 +52,7 @@ public class CustomerController : BaseController<Customer>
         var customer = Mapper.Map<Customer>(createCustomerModel);
         await _customerService.AddCustomerAsync(customer);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateCustomer, customer.Id.ToString(), $"Created customer '{customer.FirstName} {customer.LastName}'")!;
-        return Ok();
+        return Ok(new { customerId = customer.Id });
     }
 
     [Authorize(Roles = "Administrator, Receiver, Technician")]

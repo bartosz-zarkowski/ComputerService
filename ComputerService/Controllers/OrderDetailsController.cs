@@ -52,7 +52,7 @@ public class OrderDetailsController : BaseController<OrderDetails>
         await _orderDetailsService.AddOrderDetailsAsync(orderDetails);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateOrderDetails, orderDetails.Id.ToString()
             , $"Added details to order: {orderDetails.Id}")!;
-        return Ok();
+        return Ok(new { orderDetailsId = orderDetails.Id });
     }
 
     [HttpPatch("{id:guid}")]

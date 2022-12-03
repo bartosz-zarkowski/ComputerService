@@ -53,7 +53,7 @@ public class OrderController : BaseController<Order>
         await _orderService.AddOrderAsync(order);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.CreateOrder, order.Id.ToString()
             , $"Created order '{order.Title}' for customer with id '{order.CustomerId}'")!;
-        return Ok();
+        return Ok(new { orderId = order.Id });
     }
 
     [HttpPatch("{id:guid}")]
