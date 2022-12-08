@@ -24,5 +24,7 @@ public class UserProfile : Profile
         CreateMap<User, AuthenticateRequestModel>();
 
         CreateMap<User, JwtUserModel>();
+
+        CreateMap<JwtUserModel, UserViewModel>();
     }
 }
