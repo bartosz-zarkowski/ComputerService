@@ -1,5 +1,7 @@
-﻿using ComputerService.Models;
+﻿using AutoMapper;
+using ComputerService.Models;
 using ComputerService.Security;
+using ComputerService.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,11 +16,12 @@ public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly ITokenManager _tokenManager;
-
-    public AuthenticationController(IAuthenticationService authenticationService, ITokenManager tokenManager)
+    private readonly IMapper _mapper;
+    public AuthenticationController(IAuthenticationService authenticationService, ITokenManager tokenManager, IMapper mapper)
     {
         _authenticationService = authenticationService;
         _tokenManager = tokenManager;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -29,11 +32,12 @@ public class AuthenticationController : ControllerBase
         var user = await _authenticationService.GetUserAsync(loginUser);
         var token = _authenticationService.GetToken(user);
 
-        return new
+        return new Response<object>(new
         {
-            token = new JwtSecurityTokenHandler().WriteToken(token),
+            accessToken = new JwtSecurityTokenHandler().WriteToken(token),
+            userData = _mapper.Map<UserViewModel>(user),
             expires = token.ValidTo
-        };
+        });
     }
 
     [HttpPost("authentication/cancel")]
