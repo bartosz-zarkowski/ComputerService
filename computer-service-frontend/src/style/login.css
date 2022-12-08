@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap');
+
+:root {
+  --main-color: #28A745;
+  --secondary-color: #003E39;
+  --font-color: #fff;
+}
+
+
+.whole-content {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+.card-container.card {
+    max-width: 350px !important;
+    padding: 40px 40px;
+  }
+  
+  .card {
+    background-color: var(--main-color);
+    color: var(--font-color);
+    font-family: 'PT Sans', sans-serif;
+    padding: 20px 25px 30px;
+    margin: 0 auto 25px;
+    margin-top: 50px;
+    border: none;
+    box-shadow: 0 4px 4px rgba(0.5, 0.5, 0.5, 0.5);
+  }
+  
+  .profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border: var(--secondary-color);
+    border-radius: 50%;
+  }
+
+  img {
+    border: var(--secondary-color);
+  }
+
+  .form-control {
+    background-color: var(--main-color);
+    color: var(--font-color);
+    border-width: 2px;
+    border-color: var(--font-color);
+  }
+
+  .form-control:focus {
+    background-color: var(--font-color);
+    color: var(--secondary-color);
+  }
+
+  .btn {
+    background-color: var(--secondary-color);
+    color: var(--font-color);
+    border-width: 2px;
+    border-color:var(--main-color);
+  }
+
+  .btn:hover {
+    background-color: var(--main-color);
+    color: var(--font-color);
+    border-width: 2px;
+    border-color: var(--secondary-color);
+  }
+
+  .btn:focus {
+    background-color: var(--main-color);
+    color: var(--font-color);
+    border-width: 2px;
+    border-color: var(--secondary-color);
+  }
+
+  textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {   
+  border-color: var(--secondary-color);
+  box-shadow: 0 1px 1px var(--secondary-color) inset, 0 0 4px var(--secondary-color);
+  outline: 0 none;
+}
+
+.alert {
+    margin-top: 2px;
+}
