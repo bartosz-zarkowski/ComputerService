@@ -1,81 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap");
 
 :root {
-  --main-color: #28A745;
-  --secondary-color: #003E39;
+  --main-color: #28a745;
+  --secondary-color: #003e39;
   --font-color: #fff;
   --topbar-height: 80px;
 }
 
 body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
 }
 
-/* navbar */
-.topbar {
-  background-color: var(--main-color);
-  height: var(--topbar-height);
-  min-width: 100%;
-  color: var(--font-color);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-}
-
-.userDropdown {
-  position: absolute;
-  right: 60px;
-}
-
-.user {
+.bd-content {
   display: flex;
-  align-items: center;
-  color: var(--font-color);
-  height: 60px;
-  min-width: 190px;
-  text-align: center;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1200px;
 }
 
-.user:hover {
-  background-color: var(--font-color);
-  color: var(--secondary-color);
-}
-
-.dropdown-menu {
-    background-color: var(--main-color);
-    color: var(--font-color);
-    border-width: 2px;
-    border-color: var(--secondary-color);
-}
-
-.navbar-brand {
-  margin-left: 60px;
-}
-
-/* sidebar */
-.sidebar {
-  background-color: var(--main-color);
-  color: var(--font-color);
-  min-width: 300px;
-  font-size: 20px;
-  min-height: calc(100vh - var(--topbar-height));
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-}
-
-.list-group-item {
-  background-color: var(--main-color);
-  color: var(--font-color);
-  border: none;
-}
-
-.list-group-item:hover {
-  background-color: var(--font-color);
-  color: var(--secondary-color);
-}
-
-label {
-  display: block;
-  margin-top: 10px;
+.main-content {
+  width: 100%;
+  word-wrap: break-word;
 }
