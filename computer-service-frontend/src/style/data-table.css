@@ -1,0 +1,28 @@
+.dataTable {
+  max-width: 1200px;
+  width: 80%;
+}
+
+.beUiVL {
+  font-size: 20px !important;
+}
+
+.rdt_TableRow {
+  font-size: 15px !important;
+}
+
+.rdt_Pagination {
+  font-size: 15px !important;
+}
+
+.rdt_TableHeader {
+  text-align: center;
+}
+
+.rdt_Pagination {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.rdt_TableCol {
+}
