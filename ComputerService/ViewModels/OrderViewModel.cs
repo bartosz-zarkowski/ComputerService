@@ -9,13 +9,13 @@ public class OrderViewModel
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? ReceivedAt { get; set; }
-    public Guid CustomerId { get; set; }
+    public CustomerViewModel Customer { get; set; }
     public OrderStatusEnum Status { get; set; }
     public string? Description { get; set; }
     public virtual OrderDetailsViewModel Details { get; set; }
-    public Guid CreatedBy { get; set; }
-    public Guid? ServicedBy { get; set; }
-    public Guid? CompletedBy { get; set; }
+    public UserViewModel CreateUser { get; set; }
+    public UserViewModel ServiceUser { get; set; }
+    public UserViewModel CompleteUser { get; set; }
     public virtual IEnumerable<DeviceViewModel>? Devices { get; set; }
     public virtual IEnumerable<OrderAccessoryViewModel>? Accessories { get; set; }
 }
