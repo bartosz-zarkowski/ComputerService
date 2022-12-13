@@ -1,6 +1,4 @@
-﻿using ComputerService.Entities;
-
-namespace ComputerService.ViewModels;
+﻿namespace ComputerService.ViewModels;
 
 public class CustomerViewModel
 {
@@ -12,6 +10,4 @@ public class CustomerViewModel
     public string? Email { get; set; }
     public string PhoneNumber { get; set; }
     public virtual AddressViewModel? Address { get; set; }
-    public virtual IEnumerable<Device>? Devices { get; set; }
-    public virtual IEnumerable<Order>? Orders { get; set; }
 }

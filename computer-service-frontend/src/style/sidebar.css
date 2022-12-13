@@ -1,0 +1,28 @@
+.sidebar {
+  background-color: var(--main-color);
+  color: var(--font-color);
+  min-width: 300px;
+  font-size: 20px;
+  min-height: calc(100vh - var(--topbar-height));
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.list-group-item {
+  background-color: var(--main-color);
+  color: var(--font-color);
+  border: none;
+}
+
+.list-group-item:hover {
+  background-color: var(--font-color);
+  color: var(--secondary-color);
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}

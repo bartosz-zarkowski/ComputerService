@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap");
+
+:root {
+  --main-color: #28a745;
+  --secondary-color: #003e39;
+  --font-color: #fff;
+  --topbar-height: 80px;
+}
+
+body {
+  font-family: "PT Sans", sans-serif;
+}
+
+.bd-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1200px;
+}
+
+.main-content {
+  width: 100%;
+  word-wrap: break-word;
+}

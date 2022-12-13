@@ -23,7 +23,7 @@ public class CustomerController : BaseController<Customer>
         _customerService = customerService;
     }
 
-    [Authorize(Roles = "Administrator, Receiver")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     [HttpGet]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<CustomerViewModel>>>> GetAllCustomersAsync([FromQuery] ParametersModel parameters, [FromQuery] CustomerSortEnum? sortOrder)
     {

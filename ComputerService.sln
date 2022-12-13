@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerService", "ComputerService\ComputerService.csproj", "{8E70FD66-4A65-479D-8770-BDB2D763D60C}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "computer-service-frontend", "computer-service-frontend\computer-service-frontend.esproj", "{73F3FC7D-FCE4-490F-A1C0-0E0EAA4BA428}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{8E70FD66-4A65-479D-8770-BDB2D763D60C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E70FD66-4A65-479D-8770-BDB2D763D60C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E70FD66-4A65-479D-8770-BDB2D763D60C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73F3FC7D-FCE4-490F-A1C0-0E0EAA4BA428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73F3FC7D-FCE4-490F-A1C0-0E0EAA4BA428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73F3FC7D-FCE4-490F-A1C0-0E0EAA4BA428}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{73F3FC7D-FCE4-490F-A1C0-0E0EAA4BA428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73F3FC7D-FCE4-490F-A1C0-0E0EAA4BA428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73F3FC7D-FCE4-490F-A1C0-0E0EAA4BA428}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
