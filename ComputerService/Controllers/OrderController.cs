@@ -25,9 +25,9 @@ public class OrderController : BaseController<Order>
 
     [HttpGet]
     [Authorize(Roles = "Administrator, Receiver, Technician")]
-    public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters, [FromQuery] OrderSortEnum? sortOrder)
+    public async Task<ActionResult<PagedListViewModel<PagedResponse<OrderViewModel>>>> GetAllOrdersAsync([FromQuery] ParametersModel parameters, [FromQuery] OrderSortEnum? sortOrder, OrderStatusEnum? orderStatus)
     {
-        var orders = await _orderService.GetPagedOrdersAsync(parameters, sortOrder);
+        var orders = await _orderService.GetPagedOrdersAsync(parameters, sortOrder, orderStatus);
         Logger.LogInformation("Returned {Count} orders from database. ", orders.Count());
 
         var mappedOrders = PaginationService.ToPagedListViewModelAsync<Order, OrderViewModel>(orders);

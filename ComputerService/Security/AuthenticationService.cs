@@ -62,6 +62,7 @@ public class AuthenticationService : BaseRepository<User>, IAuthenticationServic
             new Claim("firstName", user.FirstName),
             new Claim("lastName", user.LastName),
             new Claim("email", user.Email),
+            new Claim("phoneNumber", user.PhoneNumber),
             new Claim("role", user.Role.ToString()),
         };
     }
