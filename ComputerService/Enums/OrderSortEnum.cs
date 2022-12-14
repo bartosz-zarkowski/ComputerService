@@ -5,6 +5,7 @@ public enum OrderSortEnum
     CreatedAt,
     UpdatedAt,
     CompletedAt,
+    Customer,
     Status,
     CreatedBy,
     ServicedBy,

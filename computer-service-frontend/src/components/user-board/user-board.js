@@ -149,7 +149,7 @@ const UserBoard = () => {
             )}
           </div>
         </div>
-        <div className="container-fluid bd-content mt-3">
+        <div className="container-fluid bd-content mt-5">
           <AppRoutes />
         </div>
         <AuthVerify logOut={logOut} />

@@ -1,5 +1,5 @@
 import { React, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions/auth";
@@ -10,7 +10,13 @@ import { PersonCircle } from "react-bootstrap-icons";
 const Topbar = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
+
+  const toSettings = () => {
+    dispatch(navigate("/settings"));
+  }
 
   const logOut = useCallback(() => {
     dispatch(logout());
@@ -42,7 +48,7 @@ const Topbar = () => {
           <Dropdown.Menu>
             <Dropdown.Item eventKey="1">
               <Link to={"/settings"}>
-                <Dropdown.Item>Settings</Dropdown.Item>
+                <Dropdown.Item onClick={toSettings}>Settings</Dropdown.Item>
               </Link>
             </Dropdown.Item>
             <Dropdown.Item eventKey="2">

@@ -20,9 +20,13 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         _tokenManager = tokenManager;
     }
 
-    public IQueryable<Order> GetAllOrders(ParametersModel parameters, OrderSortEnum? sortOrder)
+    public IQueryable<Order> GetAllOrders(ParametersModel parameters, OrderSortEnum? sortOrder, OrderStatusEnum? orderStatus)
     {
         var orders = FindAll();
+
+        if (orderStatus is not null)
+            orders = orders.Where(o => o.Status == orderStatus);
+
         if (sortOrder != null)
         {
             var asc = parameters.asc ?? true;
@@ -41,14 +45,17 @@ public class OrderService : BaseEntityService<Order>, IOrderService
                 OrderSortEnum.CompletedAt => asc
                     ? orders.OrderBy(order => order.CompletedAt)
                     : orders.OrderByDescending(order => order.CompletedAt),
+                OrderSortEnum.Customer => asc
+                    ? orders.OrderBy(order => order.Customer.LastName)
+                    : orders.OrderByDescending(order => order.Customer.LastName),
                 OrderSortEnum.Status => asc
                     ? orders.OrderBy(order => order.Status)
                     : orders.OrderByDescending(order => order.Status),
                 OrderSortEnum.CreatedBy => asc
-                    ? orders.OrderBy(order => order.CreatedBy)
-                    : orders.OrderByDescending(order => order.CreatedBy),
+                    ? orders.OrderBy(order => order.CreateUser.LastName)
+                    : orders.OrderByDescending(order => order.CreateUser.LastName),
                 OrderSortEnum.ServicedBy => asc
-                    ? orders.OrderBy(order => order.ServicedBy)
+                    ? orders.OrderBy(order => order.ServiceUser)
                     : orders.OrderByDescending(order => order.ServicedBy),
                 OrderSortEnum.CompletedBy => asc
                     ? orders.OrderBy(order => order.CompletedBy)
@@ -59,14 +66,18 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         if (!IsNullOrEmpty(parameters.searchString))
         {
             orders = orders.Where(order => order.Title.Contains(parameters.searchString) ||
-                                           order.Description.Contains(parameters.searchString));
+                                           order.Customer.FirstName.Contains(parameters.searchString) ||
+                                           order.Customer.LastName.Contains(parameters.searchString) ||
+                                           order.CreateUser.FirstName.Contains(parameters.searchString) ||
+                                           order.CreateUser.FirstName.Contains(parameters.searchString));
+            //order.Status.ToString().Contains(parameters.searchString));
         }
         return orders;
     }
 
-    public async Task<PagedList<Order>> GetPagedOrdersAsync(ParametersModel parameters, OrderSortEnum? sortOrder)
+    public async Task<PagedList<Order>> GetPagedOrdersAsync(ParametersModel parameters, OrderSortEnum? sortOrder, OrderStatusEnum? orderStatus)
     {
-        return await PagedList<Order>.ToPagedListAsync(GetAllOrders(parameters, sortOrder), parameters);
+        return await PagedList<Order>.ToPagedListAsync(GetAllOrders(parameters, sortOrder, orderStatus), parameters);
     }
 
     public async Task<Order> GetOrderAsync(Guid id)

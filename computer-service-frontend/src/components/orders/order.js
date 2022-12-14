@@ -38,7 +38,6 @@ const Order = () => {
     fetchOrder(currentOrder);
   }, []);
 
-  console.log(data);
   return <div className="main-content">essa</div>;
 };
 
