@@ -24,5 +24,7 @@
   justify-content: center !important;
 }
 
-.rdt_TableCol {
+.search {
+  border-color: var(--secondary-color) !important;
+  width: 240px
 }

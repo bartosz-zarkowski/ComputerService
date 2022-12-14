@@ -22,3 +22,7 @@ body {
   width: 100%;
   word-wrap: break-word;
 }
+
+.content-header{
+  text-align: center;
+}
