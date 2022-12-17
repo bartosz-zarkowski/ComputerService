@@ -37,7 +37,7 @@ const Topbar = () => {
               <div className="user-name col-6">
                 {currentUser.data.userData.firstName}
                 <br></br>
-                {currentUser.data.userData.firstName}
+                {currentUser.data.userData.lastName}
               </div>
               <div className="user-icon col-6">
                 <PersonCircle size={50} />
