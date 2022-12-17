@@ -13,6 +13,7 @@ const Customers = () => {
 
   return (
     <div className="main-content">
+      <h2 className="content-header">Customers</h2>
       <CustomersTable />
     </div>
   );

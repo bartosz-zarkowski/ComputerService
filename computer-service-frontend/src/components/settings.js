@@ -1,18 +1,14 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MDBTable, MDBTableBody } from 'mdb-react-ui-kit';
 
 const Settings = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!currentUser) {
-      navigate("/login");
-      window.location.reload();
-    }
-  }, []);
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <MDBTable hover>
