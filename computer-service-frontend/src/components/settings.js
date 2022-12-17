@@ -5,11 +5,13 @@ import { MDBTable, MDBTableBody } from 'mdb-react-ui-kit';
 
 const Settings = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-  console.log(currentUser)
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) navigate("/login");
+    if (!currentUser) {
+      navigate("/login");
+      window.location.reload();
+    }
   }, []);
 
   return (

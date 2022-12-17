@@ -12,7 +12,7 @@ const CreateOrder = () => {
 
   return (
     <div className="main-content">
-      <h2 class="content-header">Orders</h2>
+      <h2 className="content-header">Orders</h2>
       <OrdersTable />
     </div>
   );

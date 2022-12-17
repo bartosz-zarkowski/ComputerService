@@ -17,6 +17,7 @@ const UserLogs = () => {
 
   return (
     <div className="main-content">
+      <h2 className="content-header">User Logs</h2>
       <LogsTable />
     </div>
   );

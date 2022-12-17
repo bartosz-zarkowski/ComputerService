@@ -19,6 +19,7 @@ const columns = [
   },
   {
     name: "Customer",
+    
     selector: (row) =>
       `${row.customer.firstName + ` ` + row.customer.lastName}`,
     sortable: true,
@@ -53,9 +54,9 @@ const OrdersTable = () => {
   const [sortColumn, setSortColumn] = useState("CreatedAt");
   const [sortDirection, setSortDirection] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchString, setSearchString] = useState("order");
+  const [searchString, setSearchString] = useState("");
 
-  const fetchOrders = async (
+  const fetchData = async (
     Page = currentPage,
     PageSize = pageSize,
     SortDirection = sortDirection,
@@ -74,57 +75,50 @@ const OrdersTable = () => {
   };
 
   useEffect(() => {
-    fetchOrders(1);
+    fetchData(1);
   }, []);
 
   const handlePageChange = async (page) => {
-    fetchOrders(page, pageSize, sortDirection, sortColumn, searchString);
+    fetchData(page, pageSize, sortDirection, sortColumn, searchString);
     setCurrentPage(page);
   };
 
   const handlePerPageChange = async (newPageSize, page) => {
-    fetchOrders(page, newPageSize, sortDirection, sortColumn, searchString);
+    fetchData(page, newPageSize, sortDirection, sortColumn, searchString);
     setPageSize(newPageSize);
   };
 
   const handleSortChange = async (newSortColumn, newSortDirection, page) => {
     var orderBy = newSortColumn.sortField;
     var asc = newSortDirection === "asc" ? true : false;
-    fetchOrders(currentPage, pageSize, asc, orderBy, searchString);
+    fetchData(currentPage, pageSize, asc, orderBy, searchString);
     setSortColumn(orderBy);
     setSortDirection(asc);
   };
 
   const handleSearchStringChange = async () => {
-    fetchOrders(currentPage, pageSize, sortDirection, sortColumn);
+    fetchData(currentPage, pageSize, sortDirection, sortColumn);
   };
 
   const handleEnterPressed = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const SearchString = e.target.value;
-      fetchOrders(1, pageSize, sortDirection, sortColumn, SearchString);
+      fetchData(1, pageSize, sortDirection, sortColumn, SearchString);
       setSearchString(SearchString);
     }
-  };
-
-  const onChangeSearchString = (e) => {
-    const SearchString = e.target.value;
-    fetchOrders(1, pageSize, sortDirection, sortColumn, SearchString);
-    setSearchString(SearchString);
   };
 
   return (
     <div>
       <Form onSubmit={handleSearchStringChange}>
         <div className="form-group">
-          <label htmlFor="password">Search</label>
+          <label htmlFor="search">Search</label>
           <Input
             type="search"
             className="search form-control rounded"
             name="search"
             onKeyPress={handleEnterPressed}
-            // onChange={onChangeSearchString}
           />
         </div>
       </Form>
