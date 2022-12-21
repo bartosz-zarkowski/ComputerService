@@ -15,7 +15,6 @@ const Order = () => {
 
   const fetchOrder = async (orderId = currentOrder) => {
     setLoading(true);
-
     await axios
       .get(API_URL + `${orderId}`, {
         headers: AuthHeader(),
@@ -36,9 +35,9 @@ const Order = () => {
   useEffect(() => {
     if (!currentUser) navigate("/login");
     fetchOrder(currentOrder);
-  }, []);
+  });
 
-  return <div className="main-content">essa</div>;
+  return <div className="container-fluid bd-content mt-5">essa</div>;
 };
 
 export default Order;

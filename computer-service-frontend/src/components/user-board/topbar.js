@@ -46,11 +46,13 @@ const Topbar = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
+            <Link to={"/settings"}>
             <Dropdown.Item eventKey="1">
-              <Link to={"/settings"}>
+              
                 <Dropdown.Item onClick={toSettings}>Settings</Dropdown.Item>
-              </Link>
+              
             </Dropdown.Item>
+            </Link>
             <Dropdown.Item eventKey="2">
               <Link to={"/login"}>
                 <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>

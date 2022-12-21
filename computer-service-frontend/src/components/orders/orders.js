@@ -11,7 +11,7 @@ const CreateOrder = () => {
   }
 
   return (
-    <div className="main-content">
+    <div className="container-fluid bd-content mt-5">
       <h2 className="content-header">Orders</h2>
       <OrdersTable />
     </div>
