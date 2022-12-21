@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComputerService.Migrations
 {
     [DbContext(typeof(ComputerServiceContext))]
-    [Migration("20221221181515_User_InitBasicUser")]
+    [Migration("20221221182734_User_InitBasicUser")]
     partial class UserInitBasicUser
     {
         /// <inheritdoc />
