@@ -4,6 +4,10 @@
   min-width: 300px;
   font-size: 20px;
   min-height: calc(100vh - var(--topbar-height));
+  max-height: calc(100vh - var(--topbar-height));
+  position: -webkit-sticky;
+  position: sticky;
+  top: 80px;
 }
 
 .nav-item {
@@ -19,7 +23,7 @@
 
 .list-group-item:hover {
   background-color: var(--font-color);
-  color: var(--secondary-color);
+  color: var(--main-color);
 }
 
 label {

@@ -12,6 +12,7 @@ import { isEmail } from "validator";
 import { register } from "../../actions/auth";
 import PasswordStrengthBar from "react-password-strength-bar";
 import RolesService from "../../services/auth/roles";
+import { Card } from "react-bootstrap";
 
 const required = (value) => {
   if (!value) {
@@ -95,9 +96,7 @@ const vPhoneNumber = (value) => {
 };
 
 const validRole = (value) => {
-  console.log(value);
   if (value !== "Technician") {
-    console.log(value);
     return (
       <div className="alert alert-danger" role="alert">
         The role must be: Technician, Receiver, Administrator.
@@ -115,7 +114,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Technician");
   const [successful, setSuccessful] = useState(false);
 
   const { message } = useSelector((state) => state.message);
@@ -182,114 +181,116 @@ const Register = () => {
   };
 
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        />
+    <div className="container-fluid bd-content mt-5">
+      <div className="register-form">
+        <Card>
+          <img
+            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            alt="profile-img"
+            className="profile-img-card"
+          />
 
-        <Form className="register-form" onSubmit={handleRegister} ref={form}>
-          {!successful && (
-            <div>
-              <div className="form-group">
-                <label htmlFor="firstName">First Name</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="firstName"
-                  value={firstName}
-                  onChange={onChangeFirstName}
-                  validations={[required, vFirstName]}
-                />
+          <Form onSubmit={handleRegister} ref={form}>
+            {!successful && (
+              <div>
+                <div className="form-group">
+                  <label htmlFor="firstName">First Name</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="firstName"
+                    value={firstName}
+                    onChange={onChangeFirstName}
+                    validations={[required, vFirstName]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="lastName">Last Name</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="lastName"
+                    value={lastName}
+                    onChange={onChangeLastName}
+                    validations={[required, vLastName]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="email"
+                    value={email}
+                    onChange={onChangeEmail}
+                    validations={[required, validEmail]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={password}
+                    onChange={onChangePassword}
+                    validations={[required, validPassword]}
+                  />
+                  <PasswordStrengthBar password={password} />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phoneNumber">PhoneNumber</label>
+                  <Input
+                    type="number"
+                    className="form-control"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={onChangePhoneNumber}
+                    validations={[required, vPhoneNumber]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Role</label>
+                  <select
+                    className="btn"
+                    value={role}
+                    onChange={onChangeRole}
+                    validations={[required, validRole]}
+                  >
+                    <option value="Technician">Technician</option>
+                    <option value="Receiver">Receiver</option>
+                    <option value="Administrator">Administrator</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <button className="btn btn-primary btn-block">
+                    Sign Up User
+                  </button>
+                </div>
               </div>
+            )}
 
+            {message && (
               <div className="form-group">
-                <label htmlFor="lastName">Last Name</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="lastName"
-                  value={lastName}
-                  onChange={onChangeLastName}
-                  validations={[required, vLastName]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="email"
-                  value={email}
-                  onChange={onChangeEmail}
-                  validations={[required, validEmail]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={password}
-                  onChange={onChangePassword}
-                  validations={[required, validPassword]}
-                />
-                <PasswordStrengthBar password={password} />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="phoneNumber">PhoneNumber</label>
-                <Input
-                  type="number"
-                  className="form-control"
-                  name="phoneNumber"
-                  value={phoneNumber}
-                  onChange={onChangePhoneNumber}
-                  validations={[required, vPhoneNumber]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Role</label>
-                <select
-                  className="btn"
-                  value={role}
-                  onChange={onChangeRole}
-                  validations={[required, validRole]}
+                <div
+                  className={
+                    successful ? "alert alert-success" : "alert alert-danger"
+                  }
+                  role="alert"
                 >
-                  <option value="Technician">Technician</option>
-                  <option value="Receiver">Technician</option>
-                  <option value="Administrator">Administrator</option>
-                </select>
+                  {message}
+                </div>
               </div>
-
-              <div className="form-group">
-                <button className="btn btn-primary btn-block">
-                  Sign Up User
-                </button>
-              </div>
-            </div>
-          )}
-
-          {message && (
-            <div className="form-group">
-              <div
-                className={
-                  successful ? "alert alert-success" : "alert alert-danger"
-                }
-                role="alert"
-              >
-                {message}
-              </div>
-            </div>
-          )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
+            )}
+            <CheckButton style={{ display: "none" }} ref={checkBtn} />
+          </Form>
+        </Card>
       </div>
     </div>
   );

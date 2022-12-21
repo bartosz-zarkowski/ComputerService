@@ -28,10 +28,10 @@ public class UserTrackingService : BaseEntityService<UserTracking>, IUserTrackin
             var asc = parameters.asc ?? true;
             userTrackings = sortOrder switch
             {
-                UserTrackingSortEnum.Name => asc
+                UserTrackingSortEnum.LastName => asc
                     ? userTrackings.OrderBy(userTracking => userTracking.LastName)
                     : userTrackings.OrderByDescending(userTracking => userTracking.LastName),
-                UserTrackingSortEnum.TrackingActionType => asc
+                UserTrackingSortEnum.Type => asc
                     ? userTrackings.OrderBy(userTracking => userTracking.TrackingActionType)
                     : userTrackings.OrderByDescending(userTracking => userTracking.TrackingActionType),
                 UserTrackingSortEnum.Date => asc
@@ -44,7 +44,8 @@ public class UserTrackingService : BaseEntityService<UserTracking>, IUserTrackin
         if (!IsNullOrEmpty(parameters.searchString))
         {
             userTrackings = userTrackings.Where(userTracking => userTracking.FirstName.Contains(parameters.searchString) ||
-                                                                userTracking.LastName.Contains(parameters.searchString));
+                                                                userTracking.FirstName.Contains(parameters.searchString) ||
+                                                                userTracking.Description.Contains(parameters.searchString));
         }
 
         return userTrackings;

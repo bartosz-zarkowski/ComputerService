@@ -1,16 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap");
-
-:root {
-  --main-color: #28a745;
-  --secondary-color: #003e39;
-  --font-color: #fff;
-}
-
 .whole-content {
   min-height: 100vh;
   display: flex;
   align-items: center;
 }
+
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;

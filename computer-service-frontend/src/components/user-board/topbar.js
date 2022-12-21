@@ -1,5 +1,5 @@
 import { React, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions/auth";
@@ -10,7 +10,13 @@ import { PersonCircle } from "react-bootstrap-icons";
 const Topbar = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
+
+  const toSettings = () => {
+    dispatch(navigate("/settings"));
+  }
 
   const logOut = useCallback(() => {
     dispatch(logout());
@@ -31,7 +37,7 @@ const Topbar = () => {
               <div className="user-name col-6">
                 {currentUser.data.userData.firstName}
                 <br></br>
-                {currentUser.data.userData.firstName}
+                {currentUser.data.userData.lastName}
               </div>
               <div className="user-icon col-6">
                 <PersonCircle size={50} />
@@ -40,11 +46,13 @@ const Topbar = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
+            <Link to={"/settings"}>
             <Dropdown.Item eventKey="1">
-              <Link to={"/settings"}>
-                <Dropdown.Item>Settings</Dropdown.Item>
-              </Link>
+              
+                <Dropdown.Item onClick={toSettings}>Settings</Dropdown.Item>
+              
             </Dropdown.Item>
+            </Link>
             <Dropdown.Item eventKey="2">
               <Link to={"/login"}>
                 <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>

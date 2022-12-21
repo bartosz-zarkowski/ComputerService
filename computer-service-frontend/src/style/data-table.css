@@ -1,6 +1,6 @@
 .dataTable {
   max-width: 1200px;
-  width: 80%;
+  width: 100%;
 }
 
 .beUiVL {
@@ -24,5 +24,12 @@
   justify-content: center !important;
 }
 
-.rdt_TableCol {
+.search {
+  border-color: var(--main-color) !important;
+  width: 240px
+}
+
+.table-content {
+  width: 100%;
+  font-family: ;
 }

@@ -10,9 +10,11 @@ const Home = () => {
   }
 
   return (
-    <div className="main-content">
-      Home
+    <div className="container-fluid bd-content mt-5">
+      <div className="home-content">
+      <h2 className="content-header">Home</h2>
       {sessionStorage.getItem("user")}
+      </div>
     </div>
   );
 };

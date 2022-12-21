@@ -39,7 +39,8 @@ const login = (email, password) => {
 };
 
 const logout = () => {
-  sessionStorage.removeItem("user");
+  sessionStorage.clear();
+  localStorage.clear();
 };
 
 const AuthService = {
