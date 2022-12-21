@@ -39,7 +39,7 @@ const User = () => {
   }, []);
 
   return (
-    <div className="main-content">
+    <div className="container-fluid bd-content mt-5">
       Customer Page <br />
       Customer Id: {currentCustomerId}
     </div>

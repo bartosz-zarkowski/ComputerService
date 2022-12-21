@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MDBTable, MDBTableBody } from 'mdb-react-ui-kit';
+import { Card } from "react-bootstrap";
 
 const Settings = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -11,6 +12,7 @@ const Settings = () => {
   }
 
   return (
+    <div className="container-fluid bd-content mt-5">
     <MDBTable hover>
     <MDBTableBody>
       <tr>
@@ -40,6 +42,7 @@ const Settings = () => {
       </tr>
     </MDBTableBody>
   </MDBTable>
+  </div>
   );
 };
 

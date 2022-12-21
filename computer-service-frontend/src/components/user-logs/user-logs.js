@@ -16,7 +16,7 @@ const UserLogs = () => {
   }
 
   return (
-    <div className="main-content">
+    <div className="container-fluid bd-content mt-5">
       <h2 className="content-header">User Logs</h2>
       <LogsTable />
     </div>

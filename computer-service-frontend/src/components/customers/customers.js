@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import RolesService from "../../services/auth/roles";
 import CustomersTable from "./customers-table";
 
 const Customers = () => {
@@ -12,7 +11,7 @@ const Customers = () => {
   }
 
   return (
-    <div className="main-content">
+    <div className="container-fluid bd-content mt-5">
       <h2 className="content-header">Customers</h2>
       <CustomersTable />
     </div>

@@ -1,26 +1,29 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import { React } from "react";
 import { useSelector } from "react-redux";
-import RolesService from "../../services/auth/roles";
-import UsersTable from "./users-table";
+import { Navigate } from "react-router-dom";
 
-const Users = () => {
+import RolesService from "../../services/auth/roles";
+import OrderForm from "./order-form";
+
+
+const CreateOrder = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
 
-  if (!RolesService.isAdmin()) {
+  if (RolesService.isTechnician()) {
+    console.log(RolesService.isTechnician())
     return <Navigate to="/home" />;
   }
 
   return (
     <div className="container-fluid bd-content mt-5">
-      <h2 className="content-header">Users</h2>
-      <UsersTable />
+      <h2 className="content-header">Create Order</h2>
+      <OrderForm />
     </div>
   );
 };
 
-export default Users;
+export default CreateOrder;

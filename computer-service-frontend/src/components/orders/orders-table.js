@@ -19,7 +19,7 @@ const columns = [
   },
   {
     name: "Customer",
-    
+
     selector: (row) =>
       `${row.customer.firstName + ` ` + row.customer.lastName}`,
     sortable: true,
@@ -43,6 +43,9 @@ const columns = [
     selector: (row) => `${row.status}`,
     sortable: true,
     sortField: "Status",
+  },
+  {
+    name: "Details",
   },
 ];
 
@@ -110,7 +113,7 @@ const OrdersTable = () => {
   };
 
   return (
-    <div>
+    <div className="table-content">
       <Form onSubmit={handleSearchStringChange}>
         <div className="form-group">
           <label htmlFor="search">Search</label>

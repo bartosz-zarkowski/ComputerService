@@ -1,0 +1,20 @@
+.order-form {
+  max-width: 900px;
+  width: 600px;
+}
+
+label {
+  text-align: left;
+}
+
+.order-accessories-table.dApqnJ {
+  background-color: var(--font-color);
+  color: var(--secondary-color);
+  border-width: 2px;
+  border-color: var(--font-color);
+}
+
+.add-accessory-button {
+  display: flex;
+  align-items: flex-end;
+}

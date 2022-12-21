@@ -36,10 +36,10 @@ const User = () => {
   useEffect(() => {
     if (!currentUser) navigate("/login");
     fetchOrder(currentUserId);
-  }, []);
+  });
 
   return (
-    <div className="main-content">
+    <div className="container-fluid bd-content mt-5">
       Customer Page <br />
       Customer Id: {currentUserId}
     </div>

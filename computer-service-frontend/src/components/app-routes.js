@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./home";
-import CreateOrder from "./create-order";
+import CreateOrder from "./create-order/create-order.js";
 import Orders from "./orders/orders";
 import UserLogs from "./user-logs/user-logs";
 import Users from "./users/users";
