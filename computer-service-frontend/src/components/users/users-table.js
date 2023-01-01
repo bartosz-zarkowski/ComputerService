@@ -40,6 +40,12 @@ const columns = [
     sortField: "Role",
   },
   {
+    name: "Created At",
+    selector: (row) => `${new Date(row.createdAt).toLocaleString()}`,
+    sortable: true,
+    sortField: "CreatedAt",
+  },
+  {
     name: "Active",
     selector: (row) => `${row.isActive}`,
   },

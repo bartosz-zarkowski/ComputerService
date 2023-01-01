@@ -29,7 +29,15 @@
   width: 240px
 }
 
+.content {
+  width: 100%;
+}
+
+.home-content {
+  width: 100%;
+  max-width: 1000px;
+}
+
 .table-content {
   width: 100%;
-  font-family: ;
 }

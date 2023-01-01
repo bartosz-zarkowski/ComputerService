@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     if (["/login"].includes(location.pathname)) {
-      dispatch(clearMessage()); // clear message when changing location
+      dispatch(clearMessage());
     }
   }, [dispatch, location]);
 
