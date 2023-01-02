@@ -3,11 +3,15 @@
 :root {
   --main-color: #202d3d ;
   --secondary-color: #07bcad;
+  --trinary-color: #E1E1E1;
   --primary-danger: #dc3545;
   --secondary-danger: #850512;
   --font-color: #fff;
   --topbar-height: 80px;
+  --sidebar-width: 300px;
+  --footer-height: 60px;
   --font-family: "PT Sans", sans-serif;
+  width: 100%;
 }
 
 body {
@@ -22,8 +26,17 @@ body {
   word-wrap: break-word;
   max-width: 1200px;
   position: inherit;
+  margin-bottom: 40px;
 }
 
 .content-header {
   text-align: center;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }

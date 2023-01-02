@@ -18,6 +18,8 @@ import {
 } from "react-bootstrap-icons";
 import AuthVerify from "../../services/auth/auth-verify";
 import Topbar from "./topbar";
+import Footer from "./footer";
+import { Row } from "react-bootstrap";
 
 const UserBoard = () => {
   const [showReceiverBoard, setShowReceiverBoard] = useState(false);
@@ -147,9 +149,15 @@ const UserBoard = () => {
                 </div>
               </Link>
             )}
+            <div className="app-version">
+              App version: {process.env.REACT_APP_VERSION}
+            </div>
           </div>
         </div>
+        <div className="content">
           <AppRoutes />
+          <Footer />
+        </div>
         <AuthVerify logOut={logOut} />
       </div>
     </div>
