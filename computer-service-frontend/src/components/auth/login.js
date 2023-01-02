@@ -12,6 +12,7 @@ import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
 import { login } from "../../actions/auth";
+import Footer from "../user-board/footer";
 
 const required = (value) => {
   if (!value) {
@@ -84,9 +85,9 @@ const Login = (props) => {
   }
 
   return (
-    <div className="container-fluid px-0 mx-0">
-      <div className="col-md-12">
-        <div className="card card-container">
+    <div className="container-fluid login-container px-0 mx-0">
+      <div className="col-md-12 login-form">
+        <div className="card card-container login-card">
           <img
             src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
             alt="profile-img"
@@ -139,6 +140,7 @@ const Login = (props) => {
           </Form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -4,6 +4,22 @@
   align-items: center;
 }
 
+.login-container {
+  height: calc(100vh - var(--footer-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-card {
+  width: 350px;
+}
+
+.login-form {
+  display: flex;
+  align-items: center;
+}
+
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;
