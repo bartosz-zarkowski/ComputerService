@@ -4,6 +4,8 @@
   --main-color: #202d3d ;
   --secondary-color: #07bcad;
   --trinary-color: #E1E1E1;
+  --primary-btn: #1D7000;
+  --secondary-btn: #144d00;
   --primary-danger: #dc3545;
   --secondary-danger: #850512;
   --font-color: #fff;
@@ -11,7 +13,7 @@
   --sidebar-width: 300px;
   --footer-height: 60px;
   --font-family: "PT Sans", sans-serif;
-  width: 100%;
+  /* width: 100%; */
 }
 
 body {
