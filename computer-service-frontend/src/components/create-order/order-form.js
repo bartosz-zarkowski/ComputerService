@@ -17,7 +17,6 @@ import {
   Col,
   Row,
   Button,
-  Modal,
 } from "react-bootstrap";
 import OrderService from "../../services/order/order.service";
 import CustomerService from "../../services/customer/customer.service";
@@ -480,8 +479,6 @@ const OrderForm = () => {
       order
         .then(() => {
           setSuccessful(true);
-          // OrderService.removeStorageAsync();
-          // window.location.reload();
         })
         .catch(() => {
           setSuccessful(false);
