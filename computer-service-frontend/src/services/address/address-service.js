@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 import authHeader from "../auth/auth-header";
 import CustomerService from "../customer/customer.service";
 
@@ -115,6 +116,22 @@ const setEmptyAddressToLocalStorage = () => {
     });
   }
 
+  async function GetCustomerAddressAsync(customerId) {
+    return await axios
+      .get(API_URL + `/${customerId}`, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response.data.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.code === "ERR_BAD_REQUEST") {
+          Navigate("/not-found");
+        }
+      });
+  };
+
   async function CreateAddressAsync() {
     const customer = await CustomerService.GetStoredCustomerAsync();
     const address = await GetStoredAddressAsync();
@@ -156,6 +173,7 @@ const setEmptyAddressToLocalStorage = () => {
     CreateAddressAsync,
     SetStoredAddress,
     SetStoredAddressAsync,
+    GetCustomerAddressAsync,
   };
   
   export default AddressService;

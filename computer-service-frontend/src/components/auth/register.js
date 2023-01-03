@@ -13,7 +13,6 @@ import { register } from "../../actions/auth";
 import PasswordStrengthBar from "react-password-strength-bar";
 import RolesService from "../../services/auth/roles";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import userService from "../../services/user/user.service";
 import UserService from "../../services/user/user.service";
 
 const required = (value) => {

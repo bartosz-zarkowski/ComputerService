@@ -7,6 +7,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 
 import "../../style/data-table.css";
+import { Link } from "react-router-dom";
+import { List, PencilSquare } from "react-bootstrap-icons";
 
 const API_URL = process.env.REACT_APP_API_URL + "customers";
 
@@ -16,28 +18,45 @@ const columns = [
     selector: (row) => `${row.firstName}`,
     sortable: true,
     sortField: "FirstName",
+    width: "180px"
   },
   {
     name: "Last Name",
     selector: (row) => `${row.lastName}`,
     sortable: true,
     sortField: "LastName",
+    width: "180px"
   },
   {
     name: "Email",
     selector: (row) => `${row.email}`,
     sortable: true,
     sortField: "Email",
+    width: "285px"
   },
   {
     name: "Phone Number",
     selector: (row) => `${row.phoneNumber}`,
+    width: "180px"
   },
   {
     name: "Created At",
-    selector: (row) => `${new Date(row.createdAt).toLocaleString()}`,
+    selector: (row) => `${new Date(row.createdAt).toLocaleString([], {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'})}`,
     sortable: true,
     sortField: "CreatedAt",
+    width: "160px"
+  },
+  {
+    name: "Show",
+    width: "100px",
+    button: true,
+    selector: (row) => <Link to={"/customers/" + row.id}><div className="nav-list"><List className="nav-show"></List></div></Link>
+  },
+  {
+    name: "Edit",
+    width: "85px",
+    button: true,
+    selector: (row) => <Link to={"/customers/" + row.id}><div className="nav-list"><PencilSquare className="nav-edit"></PencilSquare></div></Link>
   },
 ];
 
@@ -124,6 +143,7 @@ const CustomersTable = () => {
         onSort={handleSortChange}
         sortServer
         progressPending={loading}
+        highlightOnHover
         pagination
         paginationServer
         paginationTotalRows={totalCount}
