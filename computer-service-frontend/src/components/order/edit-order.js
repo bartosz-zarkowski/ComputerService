@@ -3,10 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import AuthHeader from "../../services/auth/auth-header";
+import OrderTable from "./order-table";
 
 const API_URL = process.env.REACT_APP_API_URL + "orders/";
 
-const Order = () => {
+const EditOrder = () => {
   const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
@@ -37,7 +38,12 @@ const Order = () => {
     fetchOrder(currentOrder);
   });
 
-  return <div className="container-fluid bd-content mt-5">essa</div>;
+  return (
+  <div className="container-fluid bd-content mt-5">
+  <h2 className="content-header">Order</h2>
+  <OrderTable />
+  </div>
+  );
 };
 
-export default Order;
+export default EditOrder;

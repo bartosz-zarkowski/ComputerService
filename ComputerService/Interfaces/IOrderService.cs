@@ -13,6 +13,7 @@ public interface IOrderService
     Task<Order> GetOrderAsync(Guid id);
     Task AddOrderAsync(Order order);
     Task UpdateOrderAsync(Order order, JsonPatchDocument<UpdateOrderModel> updateOrderModelJpd);
+    Task SetOrderAsServiced(Order order, bool isServiced);
     Task SetOrderAsCompleted(Order order, bool isCompleted);
     Task DeleteOrderAsync(Order order);
 }

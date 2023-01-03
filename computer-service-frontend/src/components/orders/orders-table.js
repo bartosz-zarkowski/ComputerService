@@ -7,6 +7,9 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 
 import "../../style/data-table.css";
+import { List, PencilSquare, Smartwatch } from "react-bootstrap-icons";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL + "orders";
 
@@ -16,14 +19,15 @@ const columns = [
     selector: (row) => `${row.title}`,
     sortable: true,
     sortField: "Title",
+    width: "310px"
   },
   {
     name: "Customer",
-
     selector: (row) =>
       `${row.customer.firstName + ` ` + row.customer.lastName}`,
     sortable: true,
     sortField: "Customer",
+    width: "190px",
   },
   {
     name: "Created By",
@@ -31,21 +35,34 @@ const columns = [
       `${row.createUser?.firstName + ` ` + row.createUser?.lastName}`,
     sortable: true,
     sortField: "CreatedBy",
+    width: "190px",
   },
   {
     name: "Created At",
-    selector: (row) => `${new Date(row.createdAt).toLocaleString()}`,
+    selector: (row) => `${new Date(row.createdAt).toLocaleString([], {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'})}`,
     sortable: true,
     sortField: "CreatedAt",
+    width: "160px",
+    
   },
   {
     name: "Status",
     selector: (row) => `${row.status}`,
     sortable: true,
     sortField: "Status",
+    width: "135px"
   },
   {
-    name: "Details",
+    name: "Show",
+    width: "100px",
+    button: true,
+    selector: (row) => <Link to={"/orders/" + row.id}><div className="nav-list"><List className="nav-show"></List></div></Link>
+  },
+  {
+    name: "Edit",
+    width: "85px",
+    button: true,
+    selector: (row) => <Link to={"/orders/" + row.id}><div className="nav-list"><PencilSquare className="nav-edit"></PencilSquare></div></Link>
   },
 ];
 
@@ -132,6 +149,7 @@ const OrdersTable = () => {
         onSort={handleSortChange}
         sortServer
         progressPending={loading}
+        highlightOnHover
         pagination
         paginationServer
         paginationTotalRows={totalCount}

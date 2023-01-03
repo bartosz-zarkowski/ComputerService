@@ -8,7 +8,7 @@ public class OrderViewModel
     public string Title { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    public DateTimeOffset? ReceivedAt { get; set; }
+    public DateTimeOffset? CompletedAt { get; set; }
     public CustomerViewModel Customer { get; set; }
     public OrderStatusEnum Status { get; set; }
     public string? Description { get; set; }

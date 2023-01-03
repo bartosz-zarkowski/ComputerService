@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
 
 :root {
   --main-color: #202d3d ;
@@ -9,15 +9,18 @@
   --primary-danger: #dc3545;
   --secondary-danger: #850512;
   --font-color: #fff;
+  --hover-background-color: rgba(32, 45, 61, 0.5);
   --topbar-height: 80px;
   --sidebar-width: 300px;
   --footer-height: 60px;
   --font-family: "PT Sans", sans-serif;
-  /* width: 100%; */
+  --font-weight-text: 400;
+  --font-weight-title: 700;
 }
 
 body {
   font-family: var(--font-family);
+  font-weight: var(--font-weight-text);
 }
 
 .bd-content {
@@ -41,4 +44,16 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+.content-header {
+  font-weight: var(--font-weight-title);
+}
+
+.header {
+  font-weight: var(--font-weight-title);
+}
+
+.btn {
+  font-weight: var(--font-weight-title);
 }

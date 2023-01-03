@@ -14,16 +14,6 @@ const required = (value) => {
   }
 };
 
-// const validName = (value) => {
-//   if (value.length < 5) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         The name must be have at least 5 characters.
-//       </div>
-//     );
-//   }
-// };
-
 const Details = () => {
   const form = useRef();
   const checkBtn = useRef();
@@ -49,19 +39,18 @@ const Details = () => {
   );
 
   const OnChangeDeviceName = (e) => {
-    // const deviceName = e.target.value;
-    // setDeviceName(deviceName);
-    console.log(deviceName)
-    // DeviceService.SetStoredOrderDevice(
-    //   "",
-    //   deviceName,
-    //   deviceSerialNumber,
-    //   devicePassword,
-    //   deviceCondition,
-    //   deviceHasWarranty,
-    //   customerId,
-    //   orderId
-    // );
+    const deviceName = e.target.value;
+    setDeviceName(deviceName);
+    DeviceService.SetStoredOrderDevice(
+      "",
+      deviceName,
+      deviceSerialNumber,
+      devicePassword,
+      deviceCondition,
+      deviceHasWarranty,
+      customerId,
+      orderId
+    );
   };
 
   return (
@@ -80,7 +69,7 @@ const Details = () => {
                 className="form-control"
                 name="deviceName"
                 value={deviceName}
-                // onChange={OnChangeDeviceName}
+                onChange={OnChangeDeviceName}
                 validations={[required]}
               />
             </FormGroup>
