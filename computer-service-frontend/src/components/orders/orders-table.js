@@ -23,7 +23,7 @@ const columns = [
   {
     name: "Customer",
     selector: (row) =>
-      `${row.customer.firstName + ` ` + row.customer.lastName}`,
+      `${row.customer.lastName} ${row.customer.firstName}`,
     sortable: true,
     sortField: "Customer",
     width: "190px",
@@ -31,7 +31,7 @@ const columns = [
   {
     name: "Created By",
     selector: (row) =>
-      `${row.createUser?.firstName + ` ` + row.createUser?.lastName}`,
+      `${row.createUser?.lastName} ${row.createUser?.firstName}`,
     sortable: true,
     sortField: "CreatedBy",
     width: "190px",
