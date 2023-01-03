@@ -15,7 +15,7 @@ const Topbar = () => {
   const dispatch = useDispatch();
 
   const toSettings = () => {
-    dispatch(navigate("/settings"));
+    navigate("/settings");
   }
 
   const logOut = useCallback(() => {
@@ -46,18 +46,12 @@ const Topbar = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Link to={"/settings"}>
             <Dropdown.Item eventKey="1">
-              
-                <Dropdown.Item onClick={toSettings}>Settings</Dropdown.Item>
-              
+              <Dropdown.Item onClick={toSettings}>Settings</Dropdown.Item>
             </Dropdown.Item>
-            </Link>
-            <Dropdown.Item eventKey="2">
-              <Link to={"/login"}>
-                <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
-              </Link>
-            </Dropdown.Item>
+              <Dropdown.Item eventKey="2">
+                  <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
+              </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>

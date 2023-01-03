@@ -13,8 +13,7 @@ const CreateOrder = () => {
     return <Navigate to="/login" />;
   }
 
-  if (RolesService.isTechnician()) {
-    console.log(RolesService.isTechnician())
+  if (!RolesService.isAdmin()) {
     return <Navigate to="/home" />;
   }
 

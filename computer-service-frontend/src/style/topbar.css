@@ -43,6 +43,9 @@
   display: flex;
   justify-content: center;
   color: var(--font-color);
+  padding: 0;
+  height: 40px;
+  align-items: center;
 }
 
 .dropdown-menu {
@@ -52,6 +55,7 @@
 
 .dropdown-item:hover {
   text-decoration: none !important;
+  background-color: var(--font-color)
 }
 
 .navbar-brand {

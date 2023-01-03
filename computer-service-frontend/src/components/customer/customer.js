@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MDBTable, MDBTableBody } from "mdb-react-ui-kit";
 import { Button, Col, Row } from "react-bootstrap";
@@ -9,9 +9,9 @@ import AddressService from "../../services/address/address-service";
 
 import "../../style/table.css";
 import "../../style/customer.css";
+import RolesService from "../../services/auth/roles";
 
 const Customer = () => {
-  const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
   const [dataFetched, setDataFetched] = useState(false);
   const customerId = useParams().customerId;
@@ -29,10 +29,6 @@ const Customer = () => {
   };
 
   useEffect(() => {
-    if (!currentUser) navigate("/login");
-  });
-
-  useEffect(() => {
     async function getData() {
       const customer = await CustomerService.GetCustomerAsync(customerId);
       const address = await AddressService.GetCustomerAddressAsync(customerId);
@@ -44,6 +40,14 @@ const Customer = () => {
       getData();
     }
   }, []);
+
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
+
+  if (RolesService.isTechnician()) {
+    return <Navigate to="/home" />;
+  }
   
   if (dataFetched) {
     return (

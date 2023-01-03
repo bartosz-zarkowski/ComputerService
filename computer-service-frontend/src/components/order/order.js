@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MDBTable, MDBTableBody } from "mdb-react-ui-kit";
 
@@ -11,7 +11,6 @@ import "../../style/table.css";
 import "../../style/order.css";
 
 const Order = () => {
-  const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
   const [dataFetched, setDataFetched] = useState(false);
   const orderId = useParams().orderId;
@@ -34,10 +33,6 @@ const Order = () => {
       minute: "2-digit",
     });
   };
-
-  useEffect(() => {
-    if (!currentUser) navigate("/login");
-  });
 
   useEffect(() => {
     const accessoriesToString = (orderAccessories) => {
@@ -85,6 +80,10 @@ const Order = () => {
     }
     
   }, []);
+
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
 
   if (dataFetched) {
     return (
