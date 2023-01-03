@@ -9,7 +9,7 @@ import Customers from "./customers/customers";
 import Settings from "./settings";
 import Register from "./auth/register";
 import Login from "./auth/login";
-import Order from "./orders/order";
+import Order from "./order/order";
 import NotFound from "./not-found";
 import User from "./users/user";
 

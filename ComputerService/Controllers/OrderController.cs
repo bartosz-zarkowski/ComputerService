@@ -68,6 +68,17 @@ public class OrderController : BaseController<Order>
         return Ok();
     }
 
+    [HttpPatch("/service/{id:guid}")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    public async Task<ActionResult> SetOrderAsServiced(Guid id, [FromQuery] bool? isServiced)
+    {
+        var order = await _orderService.GetOrderAsync(id);
+        await _orderService.SetOrderAsServiced(order, isServiced ?? true);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateOrder, order.Id.ToString()
+            , $"Services order '{order.Title}' of customer with id '{order.CustomerId}'")!;
+        return Ok();
+    }
+
     [HttpPatch("/complete/{id:guid}")]
     [Authorize(Roles = "Administrator, Receiver")]
     public async Task<ActionResult> SetOrderAsCompleted(Guid id, [FromQuery] bool? isCompleted)

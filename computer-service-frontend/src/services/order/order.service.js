@@ -5,6 +5,7 @@ import CustomerService from "../customer/customer.service";
 import DeviceService from "../device/device.service";
 import OrderAccessoryService from "../order-accessory/order-accessory.service";
 import AddressService from "../address/address-service";
+import { Navigate } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL + "orders";
 
@@ -66,6 +67,22 @@ async function SetStoredOrderAsync(orderId, customerId, title, description) {
   );
 }
 
+async function GetOrderAsync(orderId) {
+  return await axios
+    .get(API_URL + `/${orderId}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err.code === "ERR_BAD_REQUEST") {
+        Navigate("/not-found");
+      }
+    });
+};
+
 async function createOrderAsync() {
   const order = await GetStoredOrderAsync();
   const customer = await CustomerService.GetStoredCustomerAsync();
@@ -124,6 +141,7 @@ const OrderService = {
   SetStoredOrder,
   GetStoredOrderAsync,
   SetStoredOrderAsync,
+  GetOrderAsync,
   removeStorageAsync
 };
 

@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 const Footer = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-  console.log(currentUser)
  return (
     <MDBFooter className='footer'>
       <Row className='footer-items'>
