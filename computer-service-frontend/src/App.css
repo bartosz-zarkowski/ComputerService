@@ -57,3 +57,7 @@ body {
 .btn {
   font-weight: var(--font-weight-title);
 }
+
+.loading {
+  font-size: 25px;
+}

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import "../../style/register.css";
 
@@ -108,7 +108,7 @@ const validRole = (value) => {
 
 const Register = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-
+  const navigate = useNavigate();
   const form = useRef();
   const checkBtn = useRef();
 
@@ -120,7 +120,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(storedRegisteredUser.phoneNumber);
   const [role, setRole] = useState(storedRegisteredUser.role);
-  const [successful, setSuccessful] = useState(false);
+  const [successful, setSuccessful] = useState("");
 
   const ClearRegisteredUser = () => {
     SetStoredRegisteredUser(UserService.GetStoredRegisteredUser());
@@ -224,6 +224,9 @@ const Register = () => {
         .then(() => {
           setSuccessful(true);
           UserService.RemoveStoredRegisteredUserAsync();
+          var registeredUserId = sessionStorage.getItem("RegisteredUserId");
+          var userPage = `/users/${registeredUserId}`;
+          navigate(userPage);
         })
         .catch(() => {
           setSuccessful(false);
@@ -330,7 +333,7 @@ const Register = () => {
               </div>
             )}
 
-            {message && (
+            {(successful === false) && (
               <div className="form-group">
                 <div
                   className={
