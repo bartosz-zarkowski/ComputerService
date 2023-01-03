@@ -132,7 +132,7 @@ const OrdersTable = () => {
     <div className="table-content">
       <Form onSubmit={handleSearchStringChange}>
         <div className="form-group">
-          <label htmlFor="search">Search</label>
+          <label htmlFor="search" className="header">Search</label>
           <Input
             type="search"
             className="search form-control rounded"
