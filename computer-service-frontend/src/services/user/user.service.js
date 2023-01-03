@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 import authHeader from "../auth/auth-header";
 
 const API_URL = process.env.REACT_APP_API_URL + "users";
@@ -101,6 +102,22 @@ const GetUsers = () => {
     });
   }
 
+  async function GetUserAsync(userId) {
+    return await axios
+      .get(API_URL + `/${userId}`, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        return response.data.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.code === "ERR_BAD_REQUEST") {
+          Navigate("/not-found");
+        }
+      });
+  };
+
 const UserService = {
   GetStoredRegisteredUser,
   GetStoredRegisteredUserAsync,
@@ -108,6 +125,7 @@ const UserService = {
   SetRegisteredUserAsync,
   RemoveStoredRegisteredUserAsync,
   GetUsers,
+  GetUserAsync,
 }
 
 export default UserService;

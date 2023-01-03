@@ -7,47 +7,61 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 
 import "../../style/data-table.css";
+import { List, PencilSquare } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL + "users";
 
 const columns = [
   {
-    name: "First Name",
-    selector: (row) => `${row.firstName}`,
-    sortable: true,
-    sortField: "FirstName",
-  },
-  {
-    name: "Last Name",
-    selector: (row) => `${row.lastName}`,
+    name: "Name",
+    selector: (row) => `${row.lastName} ${row.firstName} `,
     sortable: true,
     sortField: "LastName",
+    width: "200px"
   },
   {
     name: "Email",
     selector: (row) => `${row.email}`,
     sortable: true,
     sortField: "Email",
+    width: "245px"
   },
   {
     name: "Phone Number",
     selector: (row) => `${row.phoneNumber}`,
+    width: "170px"
   },
   {
     name: "Role",
     selector: (row) => `${row.role}`,
     sortable: true,
     sortField: "Role",
+    width: "120px"
   },
   {
     name: "Created At",
-    selector: (row) => `${new Date(row.createdAt).toLocaleString()}`,
+    selector: (row) => `${new Date(row.createdAt).toLocaleString([], {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'})}`,
     sortable: true,
     sortField: "CreatedAt",
+    width: "160px"
   },
   {
     name: "Active",
     selector: (row) => `${row.isActive}`,
+    width: "90px"
+  },
+  {
+    name: "Show",
+    width: "100px",
+    button: true,
+    selector: (row) => <Link to={"/users/" + row.id}><div className="nav-list"><List className="nav-show"></List></div></Link>
+  },
+  {
+    name: "Edit",
+    width: "85px",
+    button: true,
+    selector: (row) => <Link to={"/users/" + row.id}><div className="nav-list"><PencilSquare className="nav-edit"></PencilSquare></div></Link>
   },
 ];
 
@@ -134,6 +148,7 @@ const UsersTable = () => {
         onSort={handleSortChange}
         sortServer
         progressPending={loading}
+        highlightOnHover
         pagination
         paginationServer
         paginationTotalRows={totalCount}

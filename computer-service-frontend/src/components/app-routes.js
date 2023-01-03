@@ -11,8 +11,8 @@ import Register from "./auth/register";
 import Login from "./auth/login";
 import Order from "./order/order";
 import NotFound from "./not-found";
-import User from "./users/user";
-import Customer from "./cusotmer/customer";
+import Customer from "./customer/customer";
+import User from "./user/user";
 
 const AppRoutes = () => {
   return (
