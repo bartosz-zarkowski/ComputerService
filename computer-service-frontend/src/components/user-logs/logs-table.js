@@ -14,28 +14,33 @@ const columns = [
   {
     name: "First name",
     selector: (row) => `${row.firstName}`,
+    width: "180px"
   },
   {
     name: "Last name",
     selector: (row) => `${row.lastName}`,
     sortable: true,
     sortField: "LastName",
+    width: "180px"
   },
   {
     name: "Type",
     selector: (row) => `${row.trackingActionType}`,
     sortable: true,
     sortField: "Type",
+    width: "180px"
   },
   {
     name: "Description",
     selector: (row) => `${row.description}`,
+    width: "470px"
   },
   {
     name: "Date",
-    selector: (row) => `${new Date(row.date).toLocaleString()}`,
+    selector: (row) => `${new Date(row.date).toLocaleString([], {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'})}`,
     sortable: true,
     sortField: "Date",
+    width: "160px"
   },
 ];
 
@@ -106,7 +111,7 @@ const LogsTable = () => {
     <div className="table-content">
       <Form onSubmit={handleSearchStringChange}>
         <div className="form-group">
-          <label htmlFor="search">Search</label>
+          <label htmlFor="search" className="header">Search</label>
           <Input
             type="search"
             className="search form-control rounded"
