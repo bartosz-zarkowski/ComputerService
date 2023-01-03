@@ -100,7 +100,13 @@ public class OrderService : BaseEntityService<Order>, IOrderService
         await ValidateEntityAsync(order);
         await UpdateAsync(order);
     }
-
+    public async Task SetOrderAsServiced(Order order, bool isServiced)
+    {
+        order.ServicedBy = isServiced ? _tokenManager.GetCurrentUserId() : null;
+        order.UpdatedAt = isServiced ? DateTimeOffset.Now : null;
+        order.Status = isServiced ? OrderStatusEnum.InProgress : OrderStatusEnum.Pending;
+        await UpdateAsync(order);
+    }
     public async Task SetOrderAsCompleted(Order order, bool isCompleted)
     {
         order.CompletedBy = isCompleted ? _tokenManager.GetCurrentUserId() : null;

@@ -1,0 +1,36 @@
+.table-content {
+    padding: 0;
+}
+
+.table {
+    max-width: 1200px;
+    width: 100%;
+}
+
+.table-row {
+    height: 50px;
+}
+
+.table-element-title {
+    max-width: 300px;
+    width: 300px;
+    padding: 0;
+    border-right: 0.5px solid rgba(32, 45, 61, 0.5);
+    font-size: 20px;
+    font-weight: var(--font-weight-title);
+}
+
+.user-header {
+    max-width: 170px !important;
+}
+
+.table-data-header {
+    font-weight: var(--font-weight-title);
+    max-width: 170px;
+}
+
+.table-data {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}

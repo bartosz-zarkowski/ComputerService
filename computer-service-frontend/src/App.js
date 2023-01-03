@@ -20,11 +20,19 @@ const App = () => {
     }
   }, [dispatch, location]);
 
-  return (
-    <div className="whole-content container-fluid px-0">
-      {currentUser ? <UserBoard /> : <AppRoutes />}
-    </div>
-  );
-};
+  if (currentUser) {
+    return (
+      <div className="whole-content container-fluid px-0">
+      <UserBoard />
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return (
+      <AppRoutes />
+    );
+  }
+}
 
 export default App;

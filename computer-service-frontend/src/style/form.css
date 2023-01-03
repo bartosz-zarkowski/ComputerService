@@ -11,60 +11,60 @@
 }
 
 .btn {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-btn);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--main-color);
+  border-color: var(--primary-btn);
 }
 
 .btn:hover {
-  background-color: var(--main-color);
+  background-color: var(--secondary-btn);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-btn);
 }
 
 .btn:focus {
-  background-color: var(--main-color);
+  background-color: var(--secondary-btn);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-btn);
 }
 
 .btn-danger {
   background-color: var(--primary-danger);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--main-color);
+  border-color: var(--primary-danger);
 }
 
 .btn-danger:hover {
   background-color: var(--secondary-danger);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-danger);
 }
 
 select {
   width: 100%;
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-btn);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--main-color);
+  border-color: var(--secondary-btn);
 }
 
 select:hover {
-  background-color: var(--main-color);
+  background-color: var(--secondary-btn);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-btn);
 }
 
 select:active {
-  background-color: var(--main-color);
+  background-color: var(--secondary-btn);
   color: var(--font-color);
   border-width: 2px;
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-btn);
 }
 
 /* textarea:focus,

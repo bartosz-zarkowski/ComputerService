@@ -17,7 +17,6 @@ import {
   Col,
   Row,
   Button,
-  Modal,
 } from "react-bootstrap";
 import OrderService from "../../services/order/order.service";
 import CustomerService from "../../services/customer/customer.service";
@@ -90,7 +89,7 @@ const vTitle = (value) => {
 const OrderForm = () => {
   const form = useRef();
   const checkBtn = useRef();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [selectedRows, setSelectedRows] = useState(false);
   const [toggledClearRows, setToggleClearRows] = useState(false);
@@ -480,8 +479,7 @@ const OrderForm = () => {
       order
         .then(() => {
           setSuccessful(true);
-          // OrderService.removeStorageAsync();
-          // window.location.reload();
+          navigate("/home");
         })
         .catch(() => {
           setSuccessful(false);

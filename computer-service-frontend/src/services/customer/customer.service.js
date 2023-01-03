@@ -1,6 +1,7 @@
 import axios from "axios";
 import authHeader from "../auth/auth-header";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Navigate } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL + "customers";
 
@@ -96,6 +97,22 @@ async function GetCustomersAsync() {
   });
 }
 
+async function GetCustomerAsync(customerId) {
+  return await axios
+    .get(API_URL + `/${customerId}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err.code === "ERR_BAD_REQUEST") {
+        Navigate("/not-found");
+      }
+    });
+};
+
 async function CreateCustomerAsync() {
   const customer = await GetStoredCustomerAsync();
   return axios
@@ -131,6 +148,7 @@ const CustomerService = {
   GetCustomersAsync,
   SetStoredCustomer,
   SetStoredCustomerAsync,
+  GetCustomerAsync,
   CreateCustomerAsync,
 };
 

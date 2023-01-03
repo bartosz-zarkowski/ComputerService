@@ -12,7 +12,8 @@ import { isEmail } from "validator";
 import { register } from "../../actions/auth";
 import PasswordStrengthBar from "react-password-strength-bar";
 import RolesService from "../../services/auth/roles";
-import { Card } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
+import UserService from "../../services/user/user.service";
 
 const required = (value) => {
   if (!value) {
@@ -106,43 +107,73 @@ const validRole = (value) => {
 };
 
 const Register = () => {
+  const { user: currentUser } = useSelector((state) => state.auth);
+
   const form = useRef();
   const checkBtn = useRef();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [storedRegisteredUser, SetStoredRegisteredUser] = useState(UserService.GetStoredRegisteredUser());
+
+  const [firstName, setFirstName] = useState(storedRegisteredUser.firstName);
+  const [lastName, setLastName] = useState(storedRegisteredUser.lastName);
+  const [email, setEmail] = useState(storedRegisteredUser.email);
   const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [role, setRole] = useState("Technician");
+  const [phoneNumber, setPhoneNumber] = useState(storedRegisteredUser.phoneNumber);
+  const [role, setRole] = useState(storedRegisteredUser.role);
   const [successful, setSuccessful] = useState(false);
+
+  const ClearRegisteredUser = () => {
+    SetStoredRegisteredUser(UserService.GetStoredRegisteredUser());
+    setFirstName(storedRegisteredUser.firstName);
+    setLastName(storedRegisteredUser.lastName);
+    setEmail(storedRegisteredUser.email);
+    setPhoneNumber(storedRegisteredUser.phoneNumber);
+    setRole(storedRegisteredUser.role);
+  }
+
+  const clearForm = () => {
+    UserService.RemoveStoredRegisteredUserAsync();
+    ClearRegisteredUser();
+    window.location.reload();
+  }
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
-  const { user: currentUser } = useSelector((state) => state.auth);
-
-  if (!currentUser) {
-    return <Navigate to="/login" />;
-  }
-
-  if (!RolesService.isAdmin()) {
-    return <Navigate to="/home" />;
-  }
-
   const onChangeFirstName = (e) => {
     const firstName = e.target.value;
     setFirstName(firstName);
+    UserService.SetRegisteredUser(
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      role
+    );
   };
 
   const onChangeLastName = (e) => {
     const lastName = e.target.value;
     setLastName(lastName);
+    UserService.SetRegisteredUser(
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      role
+    );
   };
 
   const onChangeEmail = (e) => {
     const email = e.target.value;
     setEmail(email);
+    UserService.SetRegisteredUser(
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      role
+    );
   };
 
   const onChangePassword = (e) => {
@@ -153,11 +184,30 @@ const Register = () => {
   const onChangePhoneNumber = (e) => {
     const phoneNumber = e.target.value;
     setPhoneNumber(phoneNumber);
+    UserService.SetRegisteredUser(
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      role
+    );
   };
 
   const onChangeRole = (e) => {
     const role = e.target.value;
     setRole(role);
+    UserService.SetRegisteredUser(
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      role
+    );
+  };
+
+  const onClickClearForm = () => {
+    UserService.RemoveStoredRegisteredUserAsync();
+    clearForm();
   };
 
   const handleRegister = (e) => {
@@ -173,6 +223,7 @@ const Register = () => {
       )
         .then(() => {
           setSuccessful(true);
+          UserService.RemoveStoredRegisteredUserAsync();
         })
         .catch(() => {
           setSuccessful(false);
@@ -180,9 +231,19 @@ const Register = () => {
     }
   };
 
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
+
+  if (!RolesService.isAdmin()) {
+    return <Navigate to="/home" />;
+  }
+
   return (
     <div className="container-fluid bd-content mt-5">
+      <h2 className="content-header">Register User</h2>
       <div className="register-form">
+      <Form onSubmit={handleRegister} ref={form}>
         <Card>
           <img
             src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -190,7 +251,6 @@ const Register = () => {
             className="profile-img-card"
           />
 
-          <Form onSubmit={handleRegister} ref={form}>
             {!successful && (
               <div>
                 <div className="form-group">
@@ -230,6 +290,18 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
+                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <Input
+                    type="number"
+                    className="form-control"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={onChangePhoneNumber}
+                    validations={[required, vPhoneNumber]}
+                  />
+                </div>
+
+                <div className="form-group">
                   <label htmlFor="password">Password</label>
                   <Input
                     type="password"
@@ -240,18 +312,6 @@ const Register = () => {
                     validations={[required, validPassword]}
                   />
                   <PasswordStrengthBar password={password} />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="phoneNumber">PhoneNumber</label>
-                  <Input
-                    type="number"
-                    className="form-control"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={onChangePhoneNumber}
-                    validations={[required, vPhoneNumber]}
-                  />
                 </div>
 
                 <div className="form-group">
@@ -266,12 +326,6 @@ const Register = () => {
                     <option value="Receiver">Receiver</option>
                     <option value="Administrator">Administrator</option>
                   </select>
-                </div>
-
-                <div className="form-group">
-                  <button className="btn btn-primary btn-block">
-                    Sign Up User
-                  </button>
                 </div>
               </div>
             )}
@@ -288,9 +342,27 @@ const Register = () => {
                 </div>
               </div>
             )}
-            <CheckButton style={{ display: "none" }} ref={checkBtn} />
-          </Form>
+            <Row>
+              <Col>
+              <CheckButton style={{ display: "none" }} ref={checkBtn} />
+              </Col>
+            </Row>
         </Card>
+        <div className="form-group">
+                <Row>
+                  <Col>
+                  <Button className="danger" variant="danger" onClick={onClickClearForm}>
+                    Clear Form
+                  </Button>{" "}
+                  </Col>
+                  <Col>
+                  <button className="btn btn-primary btn-block">
+                    Sign Up User
+                  </button>
+                  </Col>
+                </Row>
+                </div>
+        </Form>
       </div>
     </div>
   );

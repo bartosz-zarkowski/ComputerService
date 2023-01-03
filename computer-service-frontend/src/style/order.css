@@ -1,0 +1,21 @@
+.order-buttons {
+    width: 100%;
+}
+
+.delete-order-col {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.edit-order-col {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-order-btn {
+    width: 200px !important;
+} 
+
+.edit-order-btn {
+    width: 200px !important;
+}

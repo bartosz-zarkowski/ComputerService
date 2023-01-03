@@ -3,8 +3,23 @@
   width: 100%;
 }
 
+.hbotQl {
+  font-weight: var(--font-weight-title);
+}
+
 .beUiVL {
   font-size: 20px !important;
+}
+
+.jaZsat {
+  width: fit-content;
+  background-color: var(--font-color);
+}
+
+.jaZsat:hover {
+  background-color: var(--font-color);
+  color: var(--main-color);
+;
 }
 
 .rdt_TableRow {
@@ -13,6 +28,7 @@
 
 .rdt_Pagination {
   font-size: 15px !important;
+  color: var(--main-color) !important;
 }
 
 .rdt_TableHeader {
@@ -36,8 +52,36 @@
 .home-content {
   width: 100%;
   max-width: 1000px;
+  display: flex;
+  flex-direction: column;
 }
 
 .table-content {
   width: 100%;
+}
+
+.nav-list {
+  display: flex;
+  width: 45px;
+  height: 45px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+}
+
+.nav-list:hover {
+  background-color: var(--hover-background-color);
+  color: var(--font-color);
+}
+
+.nav-show {
+  height: 30px;
+  width: 30px;
+  color: var(--main-color);
+}
+
+.nav-edit {
+  height: 25px;
+  width: 25px;
+  color: var(--main-color)
 }

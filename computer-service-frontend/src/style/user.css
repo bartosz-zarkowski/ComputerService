@@ -1,0 +1,25 @@
+.user-content {
+    max-width: 800px;
+}
+
+.user-buttons {
+    width: 100%;
+}
+
+.delete-user-col {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.edit-user-col {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-user-btn {
+    width: 200px !important;
+} 
+
+.edit-user-btn {
+    width: 200px !important;
+}

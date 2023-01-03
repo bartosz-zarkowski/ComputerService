@@ -20,7 +20,7 @@ const CreateOrder = () => {
 
   return (
     <div className="container-fluid bd-content mt-5">
-      <h2 className="content-header">Create Order</h2>
+      <h2 className="content-header header">Create Order</h2>
       <OrderForm />
     </div>
   );

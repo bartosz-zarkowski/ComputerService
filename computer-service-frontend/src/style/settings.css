@@ -1,0 +1,16 @@
+.settings-content {
+    max-width: 800px;
+}
+
+.settings-buttons {
+    width: 100%;
+}
+
+.edit-data-col {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.edit-data-btn {
+    width: 200px !important;
+}

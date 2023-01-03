@@ -14,7 +14,6 @@ const OrderAccessories = () => {
   };
 
   const onClickAddAccessory = () => {
-    console.log(accessoryName);
     OrderAccessoryService.SetStoredOrderAccessories(accessoryName);
   };
 
