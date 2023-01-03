@@ -26,16 +26,15 @@ export const register =
 
         dispatch({
           type: SET_MESSAGE,
-          payload: "response.data.message",
+          payload: "User created",
         });
-
         return Promise.resolve();
       },
       (error) => {
         const message =
           (error.response &&
             error.response.data &&
-            "New user has been registered!") ||
+            "Problem creating user") ||
           error.message ||
           error.toString();
 

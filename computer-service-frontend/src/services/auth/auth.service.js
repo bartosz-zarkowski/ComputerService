@@ -7,8 +7,8 @@ const getCurrentUser = () => {
   return JSON.parse(sessionStorage.getItem("user"));
 };
 
-const register = (firstName, lastName, email, password, phoneNumber, role) => {
-  return axios.post(
+async function register(firstName, lastName, email, password, phoneNumber, role) {
+  const registeredUserId = await axios.post(
     process.env.REACT_APP_API_URL + "users",
     {
       email: email,
@@ -19,7 +19,11 @@ const register = (firstName, lastName, email, password, phoneNumber, role) => {
       role,
     },
     { headers: AuthHeader() }
-  );
+  ).then((response) => {
+    console.log(response.data)
+    return response.data.userId;
+  })
+  sessionStorage.setItem("RegisteredUserId", registeredUserId)
 };
 
 const login = (email, password) => {

@@ -87,7 +87,7 @@ async function createOrderAsync() {
   const order = await GetStoredOrderAsync();
   const customer = await CustomerService.GetStoredCustomerAsync();
   const customerId = customer.customerId;
-  return axios
+  return await axios
     .post(
       API_URL,
       {
@@ -108,6 +108,7 @@ async function createOrderAsync() {
             description: order.description,
           })
         );
+        sessionStorage.setItem("CreatedOrderId", response.data.orderId);
       }
     });
 }

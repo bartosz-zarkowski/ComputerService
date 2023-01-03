@@ -479,7 +479,9 @@ const OrderForm = () => {
       order
         .then(() => {
           setSuccessful(true);
-          navigate("/home");
+          var CreatedOrderId = sessionStorage.getItem("CreatedOrderId");
+          var orderPage = `/orders/${CreatedOrderId}`;
+          navigate(orderPage);
         })
         .catch(() => {
           setSuccessful(false);
