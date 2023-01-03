@@ -12,6 +12,7 @@ import Login from "./auth/login";
 import Order from "./order/order";
 import NotFound from "./not-found";
 import User from "./users/user";
+import Customer from "./cusotmer/customer";
 
 const AppRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AppRoutes = () => {
       <Route path="/users" element={<Users />} />
       <Route path="/users/:userId" element={<User />} />
       <Route path="/customers" element={<Customers />} />
+      <Route path="/customers/:customerId" element={<Customer />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/settings" element={<Settings />} />

@@ -7,8 +7,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 
 import "../../style/data-table.css";
-import { List, PencilSquare, Smartwatch } from "react-bootstrap-icons";
-import { Button } from "react-bootstrap";
+import { List, PencilSquare } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL + "orders";

@@ -89,7 +89,7 @@ const vTitle = (value) => {
 const OrderForm = () => {
   const form = useRef();
   const checkBtn = useRef();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [selectedRows, setSelectedRows] = useState(false);
   const [toggledClearRows, setToggleClearRows] = useState(false);
@@ -479,6 +479,7 @@ const OrderForm = () => {
       order
         .then(() => {
           setSuccessful(true);
+          navigate("/home");
         })
         .catch(() => {
           setSuccessful(false);

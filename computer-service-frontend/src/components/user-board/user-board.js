@@ -19,7 +19,6 @@ import {
 import AuthVerify from "../../services/auth/auth-verify";
 import Topbar from "./topbar";
 import Footer from "./footer";
-import { Row } from "react-bootstrap";
 
 const UserBoard = () => {
   const [showReceiverBoard, setShowReceiverBoard] = useState(false);

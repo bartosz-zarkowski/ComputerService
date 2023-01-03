@@ -1,0 +1,25 @@
+.customer-content {
+    max-width: 800px;
+}
+
+.customer-buttons {
+    width: 100%;
+}
+
+.delete-customer-col {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.edit-customer-col {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-customer-btn {
+    width: 200px !important;
+} 
+
+.edit-customer-btn {
+    width: 200px !important;
+}
