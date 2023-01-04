@@ -45,7 +45,7 @@ public class OrderDetailsController : BaseController<OrderDetails>
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrator, Receiver")]
+    [Authorize(Roles = "Administrator, Receiver, Technician")]
     public async Task<IActionResult> AddOrderDetailsAsync([FromBody] CreateOrderDetailsModel createOrderDetailsModel)
     {
         var orderDetails = Mapper.Map<OrderDetails>(createOrderDetailsModel);
