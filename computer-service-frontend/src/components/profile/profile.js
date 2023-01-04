@@ -1,19 +1,22 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MDBTable, MDBTableBody } from "mdb-react-ui-kit";
 import { Button, Col, Row } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
+import "../../style/profile.css";
 
-const Settings = () => {
+const Profile = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-  const userData = currentUser.data.userData;
+
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
+  
+  const userData = currentUser.data.userData;
 
   return (
     <div className="container-fluid bd-content user-content table-content mt-5">
-      <h2 className="content-header">User</h2>
+      <h2 className="content-header">Profile</h2>
       <MDBTable className="table mt-5" hover>
         <MDBTableBody>
           <tr className="table-row">
@@ -49,4 +52,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Profile;

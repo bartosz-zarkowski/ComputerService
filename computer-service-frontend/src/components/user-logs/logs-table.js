@@ -108,7 +108,7 @@ const LogsTable = () => {
   };
 
   return (
-    <div className="table-content">
+    <div className="data-table-content">
       <Form onSubmit={handleSearchStringChange}>
         <div className="form-group">
           <label htmlFor="search" className="header">Search</label>

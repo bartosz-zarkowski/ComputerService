@@ -1,0 +1,92 @@
+.nav-buttons {
+    position: fixed;
+    z-index: 1;
+    top: 90px;
+    left: 310px;
+    width: 80px;
+    height: 40px;
+    color: var(--main-color);
+    background-color: var(--trinary-color);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    opacity: 0.8;
+  }
+  
+  .nav-buttons-collapsed {
+    left: 110px;
+  }
+  
+  .nav-btn {
+    color: var(--main-color);
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-btn:hover {
+    background-color: var(--hover-background-color);
+    color: var(--main-color);
+    cursor: pointer;
+  }
+  
+  .create-order-btn {
+    position: fixed;
+    z-index: 1;
+    bottom: 95px;
+    right: 10px;
+    color: var(--main-color);
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--main-color);
+    background-color: var(--trinary-color);
+    padding: 0;
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .create-order-btn:hover {
+    background-color: var(--hover-background-color);
+    color: var(--main-color);
+    cursor: pointer;
+  }
+
+  .scroll-to-top-btn {
+    position: fixed;
+    z-index: 1;
+    bottom: 95px;
+    left: 310px;
+    color: var(--main-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--main-color);
+    background-color: var(--trinary-color);
+    padding: 0;
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .scroll-to-top-btn:hover {
+    background-color: var(--hover-background-color);
+    color: var(--main-color);
+    cursor: pointer;
+  }
+
+  .scroll-to-top-btn-collapsed {
+    left: 110px
+  }
