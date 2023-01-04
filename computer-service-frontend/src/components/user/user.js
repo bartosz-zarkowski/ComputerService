@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MDBTable, MDBTableBody } from "mdb-react-ui-kit";
 import { Button, Col, Row } from "react-bootstrap";
@@ -8,9 +8,9 @@ import UserService from "../../services/user/user.service";
 
 import "../../style/table.css";
 import "../../style/user.css";
+import RolesService from "../../services/auth/roles";
 
 const User = () => {
-  const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
   const [dataFetched, setDataFetched] = useState(false);
   const userId = useParams().userId;
@@ -27,10 +27,6 @@ const User = () => {
   };
 
   useEffect(() => {
-    if (!currentUser) navigate("/login");
-  });
-
-  useEffect(() => {
     async function getData() {
       const user = await UserService.GetUserAsync(userId);
       setUser(user);
@@ -41,9 +37,17 @@ const User = () => {
     }
   });
 
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
+
+  if (!RolesService.isAdmin()) {
+    return <Navigate to="/home" />;
+  }
+
   if (dataFetched) {
     return (
-      <div className="container-fluid bd-content user-content table-content mt-5">
+      <div className="container-fluid bd-content table-content mt-5">
         <h2 className="content-header">User</h2>
         <MDBTable className="table mt-5" hover>
           <MDBTableBody>

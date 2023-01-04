@@ -8,6 +8,8 @@ const Home = () => {
 
   if (!currentUser) {
     return <Navigate to="/login" />;
+  } else {
+    
   }
 
   return (

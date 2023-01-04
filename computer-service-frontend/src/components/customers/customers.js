@@ -2,12 +2,17 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CustomersTable from "./customers-table";
+import RolesService from "../../services/auth/roles";
 
 const Customers = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
 
   if (!currentUser) {
     return <Navigate to="/login" />;
+  }
+
+  if (RolesService.isTechnician()) {
+    return <Navigate to="/home" />;
   }
 
   return (

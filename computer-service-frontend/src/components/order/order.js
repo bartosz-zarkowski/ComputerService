@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MDBTable, MDBTableBody } from "mdb-react-ui-kit";
 
@@ -9,9 +9,9 @@ import { Button, Col, Row } from "react-bootstrap";
 
 import "../../style/table.css";
 import "../../style/order.css";
+import RolesService from "../../services/auth/roles";
 
 const Order = () => {
-  const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
   const [dataFetched, setDataFetched] = useState(false);
   const orderId = useParams().orderId;
@@ -34,10 +34,6 @@ const Order = () => {
       minute: "2-digit",
     });
   };
-
-  useEffect(() => {
-    if (!currentUser) navigate("/login");
-  });
 
   useEffect(() => {
     const accessoriesToString = (orderAccessories) => {
@@ -85,6 +81,10 @@ const Order = () => {
     }
     
   }, []);
+
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
 
   if (dataFetched) {
     return (
@@ -322,9 +322,11 @@ const Order = () => {
         </MDBTable>
         <Row className="order-buttons">
           <Col className="delete-order-col">
-            <Button className="danger delete-order-btn" variant="danger">
-              Delete Order
-            </Button>{" "}
+            {RolesService.isAdmin() && (
+              <Button className="danger delete-order-btn" variant="danger">
+                Delete Order
+              </Button>
+            )}
           </Col>
           <Col className="edit-order-col">
           <Button className="edit-order-btn">

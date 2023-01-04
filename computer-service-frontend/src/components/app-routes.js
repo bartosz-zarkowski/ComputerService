@@ -11,8 +11,8 @@ import Register from "./auth/register";
 import Users from "./users/users";
 import User from "./user/user";
 import UserLogs from "./user-logs/user-logs";
-import Settings from "./settings/settings";
 import NotFound from "./not-found";
+import Profile from "./profile/profile";
 
 const AppRoutes = () => {
   return (
@@ -30,7 +30,7 @@ const AppRoutes = () => {
       <Route path="/users" element={<Users />} />
       <Route path="/users/:userId" element={<User />} />
       <Route path="/user-logs" element={<UserLogs />} />
-      <Route path="/settings" element={<Settings />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/not-found" element={<NotFound />} />
     </Routes>
   );
