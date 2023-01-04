@@ -108,6 +108,7 @@ const validRole = (value) => {
 
 const Register = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
+  
   const navigate = useNavigate();
   const form = useRef();
   const checkBtn = useRef();

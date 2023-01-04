@@ -9,6 +9,7 @@ import { Button, Col, Row } from "react-bootstrap";
 
 import "../../style/table.css";
 import "../../style/order.css";
+import RolesService from "../../services/auth/roles";
 
 const Order = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -321,9 +322,11 @@ const Order = () => {
         </MDBTable>
         <Row className="order-buttons">
           <Col className="delete-order-col">
-            <Button className="danger delete-order-btn" variant="danger">
-              Delete Order
-            </Button>{" "}
+            {RolesService.isAdmin() && (
+              <Button className="danger delete-order-btn" variant="danger">
+                Delete Order
+              </Button>
+            )}
           </Col>
           <Col className="edit-order-col">
           <Button className="edit-order-btn">

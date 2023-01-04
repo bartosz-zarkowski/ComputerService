@@ -1,5 +1,5 @@
 import { React, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions/auth";
@@ -14,8 +14,8 @@ const Topbar = () => {
 
   const dispatch = useDispatch();
 
-  const toSettings = () => {
-    navigate("/settings");
+  const toProfile = () => {
+    navigate("/profile");
   }
 
   const logOut = useCallback(() => {
@@ -24,9 +24,6 @@ const Topbar = () => {
 
   return (
     <nav className="topbar navbar navbar-expand navbar-dark">
-      <Link to={"/login"} className="navbar-brand">
-        <img src={require("../../Logo.png")} alt="User Icon" />
-      </Link>
       <div className="userDropdown rounded">
         <Dropdown>
           <Dropdown.Toggle
@@ -47,10 +44,10 @@ const Topbar = () => {
 
           <Dropdown.Menu>
             <Dropdown.Item eventKey="1">
-              <Dropdown.Item onClick={toSettings}>Settings</Dropdown.Item>
+              <Dropdown.Item className="header" onClick={toProfile}>Profile</Dropdown.Item>
             </Dropdown.Item>
               <Dropdown.Item eventKey="2">
-                  <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
+                  <Dropdown.Item className="header" onClick={logOut}>Log out</Dropdown.Item>
               </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

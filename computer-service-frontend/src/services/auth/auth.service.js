@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 import AuthHeader from "../auth/auth-header";
 
 const API_URL = process.env.REACT_APP_API_URL + "authentication";
@@ -44,7 +45,6 @@ const login = (email, password) => {
 
 const logout = () => {
   sessionStorage.clear();
-  localStorage.clear();
 };
 
 const AuthService = {
