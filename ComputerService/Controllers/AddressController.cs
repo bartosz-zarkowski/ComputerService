@@ -56,7 +56,7 @@ public class AddressController : BaseController<Address>
     }
 
     [HttpPatch("{id:guid}")]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<ActionResult> UpdateAddress(Guid id, [FromBody] JsonPatchDocument<UpdateAddressModel> updateAddressModelJpd)
     {
         var address = await _addressService.GetAddressAsync(id);

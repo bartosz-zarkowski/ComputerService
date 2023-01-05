@@ -46,7 +46,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<IActionResult> AddAccessoryAsync([FromBody] CreateAccessoryModel createAccessoryModel)
     {
         var accessory = Mapper.Map<Accessory>(createAccessoryModel);
@@ -56,7 +56,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpPatch("{id:guid}")]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<ActionResult> UpdateAccessory(Guid id, [FromBody] JsonPatchDocument<UpdateAccessoryModel> updateAccessoryModelJpd)
     {
         var accessory = await _accessoryService.GetAccessoryAsync(id);
@@ -67,7 +67,7 @@ public class AccessoryController : BaseController<Accessory>
     }
 
     [HttpDelete("{id:guid}")]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<IActionResult> DeleteAccessoryAsync(Guid id)
     {
         var accessory = await _accessoryService.GetAccessoryAsync(id);
