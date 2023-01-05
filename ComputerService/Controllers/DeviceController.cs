@@ -46,7 +46,7 @@ public class DeviceController : BaseController<Device>
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<IActionResult> AddDeviceAsync([FromBody] CreateDeviceModel createDeviceModel)
     {
         var device = Mapper.Map<Device>(createDeviceModel);
@@ -56,7 +56,7 @@ public class DeviceController : BaseController<Device>
     }
 
     [HttpPatch("{id:guid}")]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<ActionResult> UpdateDevice(Guid id, [FromBody] JsonPatchDocument<UpdateDeviceModel> updateDeviceModelJpd)
     {
         var device = await _deviceService.GetDeviceAsync(id);

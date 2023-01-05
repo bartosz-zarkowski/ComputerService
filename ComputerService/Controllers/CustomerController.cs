@@ -55,7 +55,7 @@ public class CustomerController : BaseController<Customer>
         return Ok(new { customerId = customer.Id });
     }
 
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     [HttpPatch("{id:guid}")]
     public async Task<ActionResult> UpdateCustomer(Guid id, [FromBody] JsonPatchDocument<UpdateCustomerModel> updateCustomerModelJpd)
     {

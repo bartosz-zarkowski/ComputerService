@@ -61,7 +61,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpPatch("{id:guid}")]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult> UpdateUser(Guid id, [FromBody] JsonPatchDocument<UpdateUserModel> updateUserModelJpd)
     {
         var user = await _userService.GetUserAsync(id);
