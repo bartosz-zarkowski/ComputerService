@@ -46,7 +46,7 @@ public class OrderAccessoryController : BaseController<OrderAccessory>
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator, Receiver")]
     public async Task<IActionResult> AddOrderAccessoryAsync([FromBody] CreateOrderAccessoryModel createOrderAccessoryModel)
     {
         var orderAccessory = Mapper.Map<OrderAccessory>(createOrderAccessoryModel);

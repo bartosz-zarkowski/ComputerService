@@ -22,7 +22,7 @@ public class UserTrackingController : BaseController<UserTracking>
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrator, Receiver, Technician")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<PagedListViewModel<PagedResponse<AccessoryViewModel>>>> GetAllAccessoriesAsync([FromQuery] ParametersModel parameters, [FromQuery] UserTrackingSortEnum? sortOrder)
     {
         var userTrackings = await _userTrackingService.GetPagedUserTrackingsAsync(parameters, sortOrder);
