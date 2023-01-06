@@ -84,6 +84,15 @@ public class UserService : BaseEntityService<User>, IUserService
         await UpdateAsync(user);
     }
 
+    public async Task UpdateLoggedUserAsync(User user, JsonPatchDocument<UpdateLoggedUserModel> updateLoggedUserModelJpd)
+    {
+        var mappedUser = Mapper.Map<UpdateLoggedUserModel>(user);
+        updateLoggedUserModelJpd.ApplyTo(mappedUser);
+        Mapper.Map(mappedUser, user);
+        await ValidateEntityAsync(user);
+        await UpdateAsync(user);
+    }
+
     public async Task DeleteUserAsync(User user)
     {
         await DeleteAsync(user);

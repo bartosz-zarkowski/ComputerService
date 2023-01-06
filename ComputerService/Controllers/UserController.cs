@@ -19,10 +19,12 @@ public class UserController : BaseController<User>
 {
     private readonly IUserService _userService;
     private readonly IPasswordHashingService _passwordHashingService;
-    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger, IPasswordHashingService passwordHashingService, IUserTrackingService userTrackingService) : base(paginationService, mapper, logger, userTrackingService)
+    private readonly ITokenManager _tokenManager;
+    public UserController(IUserService userService, IPaginationService paginationService, IMapper mapper, ILogger<BaseController<User>> logger, IPasswordHashingService passwordHashingService, IUserTrackingService userTrackingService, ITokenManager tokenManager) : base(paginationService, mapper, logger, userTrackingService)
     {
         _userService = userService;
         _passwordHashingService = passwordHashingService;
+        _tokenManager = tokenManager;
     }
 
     [HttpGet]
@@ -69,6 +71,18 @@ public class UserController : BaseController<User>
         await _userService.UpdateUserAsync(user, updateUserModelJpd);
         await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateUser, user.Id.ToString()
             , $"Updated user: {user.FirstName} {user.LastName}")!;
+        return Ok();
+    }
+
+    [HttpPatch]
+    [Authorize(Roles = "Administrator")]
+    public async Task<ActionResult> UpdateLoggedUser([FromBody] JsonPatchDocument<UpdateLoggedUserModel> updateLoggedUserModelJpd)
+    {
+        var user = await _userService.GetUserAsync(_tokenManager.GetCurrentUserId());
+        CheckIfEntityExists(user, "Given user does not exist");
+        await _userService.UpdateLoggedUserAsync(user, updateLoggedUserModelJpd);
+        await UserTrackingService?.AddUserTrackingAsync(TrackingActionTypeEnum.UpdateUser, user.Id.ToString()
+            , $"User {user.FirstName} {user.LastName} updated profile data")!;
         return Ok();
     }
 

@@ -12,5 +12,6 @@ public interface IUserService
     Task<User> GetUserAsync(Guid id);
     Task AddUserAsync(User user);
     Task UpdateUserAsync(User user, JsonPatchDocument<UpdateUserModel> updateUserModelJpd);
+    Task UpdateLoggedUserAsync(User user, JsonPatchDocument<UpdateLoggedUserModel> updateLoggedUserModelJpd);
     Task DeleteUserAsync(User user);
 }
