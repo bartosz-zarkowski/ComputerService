@@ -85,3 +85,7 @@
   width: 25px;
   color: var(--main-color)
 }
+
+.rdt_Table, .rdt_TableRow {
+  border-radius: 5px;
+}

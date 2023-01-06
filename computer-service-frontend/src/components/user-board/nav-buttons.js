@@ -40,7 +40,7 @@ export const NavButtons = ({collapseSidebar}) => {
 
   return (
     <div className="navigation-items">
-        <Row className={collapseSidebar === false ? "nav-buttons" : "nav-buttons nav-buttons-collapsed"}>
+        <Row className="nav-buttons">
             <Col className="nav-btn" onClick={() => {navigate(-1)}}>
                 <ArrowLeft size={25} />
             </Col>
@@ -50,11 +50,11 @@ export const NavButtons = ({collapseSidebar}) => {
         </Row>
         {showCreateOrderButton() === true && (
             <div className="create-order-btn" onClick={() => navigate("/create-order")}>
-                <Plus size={45} />
+                <Plus size={64} />
             </div>
         )}
         {visible === true && (
-            <div className={collapseSidebar === false ? "scroll-to-top-btn" : "scroll-to-top-btn scroll-to-top-btn-collapsed"} onClick={scrollToTop}>
+            <div className="scroll-to-top-btn" onClick={scrollToTop}>
                 <ArrowUp size={25} />
             </div>
         )}

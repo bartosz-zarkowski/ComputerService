@@ -753,7 +753,7 @@ const OrderForm = () => {
                 <Card.Title className="pt-3">Device</Card.Title>
                 <FormGroup className="form-control-order">
                   <label htmlFor="deviceName">
-                    Name{" "}
+                    Device Name{" "}
                     <sup>
                       <Asterisk size={9} />
                     </sup>

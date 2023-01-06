@@ -1,9 +1,8 @@
 .nav-buttons {
     position: fixed;
-    z-index: 1;
     top: 90px;
-    left: 310px;
-    width: 80px;
+    right: 10px;
+    width: 100px;
     height: 40px;
     color: var(--main-color);
     background-color: var(--trinary-color);
@@ -15,14 +14,10 @@
     opacity: 0.8;
   }
   
-  .nav-buttons-collapsed {
-    left: 110px;
-  }
-  
   .nav-btn {
     color: var(--main-color);
-    max-width: 40px;
-    max-height: 40px;
+    max-width: 50px;
+    max-height: 50px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -39,34 +34,30 @@
   
   .create-order-btn {
     position: fixed;
-    z-index: 1;
-    bottom: 95px;
+    top: 50%;
     right: 10px;
-    color: var(--main-color);
-    width: 45px;
-    height: 45px;
+    color: var(--font-color);
+    width: 64px;
+    height: 64px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--main-color);
-    background-color: var(--trinary-color);
+    background-color: var(--main-color);
     padding: 0;
     margin: 0;
-    opacity: 0.8;
   }
 
   .create-order-btn:hover {
-    background-color: var(--hover-background-color);
-    color: var(--main-color);
     cursor: pointer;
+    opacity: 0.7;
   }
 
   .scroll-to-top-btn {
     position: fixed;
     z-index: 1;
     bottom: 95px;
-    left: 310px;
+    right: 10px;
     color: var(--main-color);
     width: 40px;
     height: 40px;
@@ -85,8 +76,4 @@
     background-color: var(--hover-background-color);
     color: var(--main-color);
     cursor: pointer;
-  }
-
-  .scroll-to-top-btn-collapsed {
-    left: 110px
   }
